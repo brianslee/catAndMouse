@@ -27,7 +27,7 @@ all:
 
 	
 	$(CC) -DSFML_STATIC -I $(INCLUDE) -O0 -g3 -Wall -c -fmessage-length=0 -o $(SRC)\main.o $(SRC)\main.cpp 
-	$(CC) -L $(LIBLOC) -o $(PROJECTNAME).exe $(SRC)\main.o $(LIB)
+	$(LINK) -L $(LIBLOC) -o $(PROJECTNAME).exe $(SRC)\main.o $(LIB)
 	$(COPYCOMMAND) $(LIBLOC)\*.dll .
 	$(DELCOMMAND) *-d-2.dll
 	@echo Success
