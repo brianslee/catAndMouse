@@ -11,9 +11,9 @@ int main()
 	sf::View view(sf::FloatRect(0, 0, 800, 800));
 	window.setView(view);
 	std::cout << "Loading texture...\n";
-	image.loadFromFile("maze.png");
+	image.loadFromFile("img//maze.png");
 	texture.loadFromImage(image);
-	tx2.loadFromFile("Triangle.png");
+	tx2.loadFromFile("img//Triangle.png");
 	spr.setTexture(texture);
 	spr.move(0, 0);
 	std::cout << "Creating Instances...\n";
