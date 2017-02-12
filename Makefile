@@ -5,18 +5,18 @@ PROJECTNAME=catAndMouse
 ifeq ($(OS),Windows_NT)
 	COPYCOMMAND=copy
 	DELCOMMAND=del
-	PATHSEP2=\
+	PATHSEP2=\\
 	LIBLOC=C:\bin\SFML\lib
-	INCLUDE="C:\bin\SFML-2.4.1\include"
+	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
 
 else
     UNAME_S := $(shell uname -s)
 	COPYCOMMAND=cp
 	DELCOMMAND=rm
 	PATHSEP2=/
-
+	
     ifeq ($(UNAME_S),Linux)
-
+		
     endif
     ifeq ($(UNAME_S),Darwin)
 
@@ -29,15 +29,16 @@ SRC=src
 all: linux
 
 %.o: $(SRC)$(PATHSEP2)%.cpp 
-	rm -rf *.o
-	$(CC) -c $< -o $@
+	$(DELCOMMAND) -rf *.o
+	$(CC) $(INCLUDE) -c $< -o $@
 
 
-window: 
-	$(CC)  -I $(INCLUDE) -O0 -g3 -Wall -c -fmessage-length=0 -o $(SRC)\main.o $(SRC)\main.cpp 
-	$(LINK) -L $(LIBLOC) -o $(PROJECTNAME).exe $(SRC)\main.o $(LIB)
+window:  main.o
+	
+	$(CC) -L $(LIBLOC) -o $(PROJECTNAME).exe main.o $(LIB)
 	$(COPYCOMMAND) $(LIBLOC)\*.dll .
 	$(DELCOMMAND) *-d-2.dll
+	$(DELCOMMAND) main.o
 	@echo Success
 
 

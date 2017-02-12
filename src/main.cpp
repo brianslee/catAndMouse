@@ -12,23 +12,26 @@ int main()
 	sf::Sprite spr;
 	sf::View view(sf::FloatRect(0, 0, 800, 800));
 
-	Item i=Item("img/circle.png","Damage Trap","Item");
+	Item item_test=Item("img/circle.png","Damage Trap","Item");
+	Item item_test2=Item("img/circle.png","Sword","Item");
 	Chest ch=Chest("It looks safe");
 	Chest ch2=Chest("It's a chest");
-	ch2.setItem(&i);
+	ch.setItem(&item_test2);
+	ch2.setItem(&item_test);
 	std::vector<Interactable*> itemsList;
-	itemsList.push_back(&i);
+
 	itemsList.push_back(&ch);
+	itemsList.push_back(&item_test2);
 	itemsList.push_back(&ch2);
+	itemsList.push_back(&item_test);
 
+	for(unsigned i=0;i<itemsList.size();i++)
+		itemsList[i]->getSprite().setScale(0.6,0.6);
 
-	ch.getSprite().setScale(0.6,0.6);
-	ch.setPosition(100,300);
-	ch2.getSprite().setScale(0.6,0.6);
+	ch.setPosition(1000,300);
 	ch2.setPosition(300,200);
-//	i.setPosition(300,200);
-	i.getSprite().setScale(0.6,0.6);
-	i.setIsLoaded(false);
+	item_test.setIsLoaded(false);
+	item_test2.setIsLoaded(false);
 
 	window.setView(view);
 	std::cout << "Loading texture...\n";
@@ -118,9 +121,11 @@ int main()
 		//        std::cout << "Drawing Maze...\n";
 
 		window.draw(spr);
-		ch.draw(window);
-		ch2.draw(window);
-		i.draw(window);
+
+		for(unsigned int i=0;i<itemsList.size();i++){
+			itemsList[i]->draw(window);
+		}
+
 		//        std::cout << "Drawing Shade...\n";
 		//for (int i = 0; i < 15; i++)
 		//    for (int j = 0; j < 15; j++)
