@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 #include "helper.h"
+#include "Chest.h"
 
 int main()
 {
@@ -9,6 +11,25 @@ int main()
 	sf::Image image;
 	sf::Sprite spr;
 	sf::View view(sf::FloatRect(0, 0, 800, 800));
+
+	Item i=Item("img/circle.png","Damage Trap","Item");
+	Chest ch=Chest("It looks safe");
+	Chest ch2=Chest("It's a chest");
+	ch2.setItem(&i);
+	std::vector<Interactable*> itemsList;
+	itemsList.push_back(&i);
+	itemsList.push_back(&ch);
+	itemsList.push_back(&ch2);
+
+
+	ch.getSprite().setScale(0.6,0.6);
+	ch.setPosition(100,300);
+	ch2.getSprite().setScale(0.6,0.6);
+	ch2.setPosition(300,200);
+//	i.setPosition(300,200);
+	i.getSprite().setScale(0.6,0.6);
+	i.setIsLoaded(false);
+
 	window.setView(view);
 	std::cout << "Loading texture...\n";
 	image.loadFromFile("img//maze.png");
@@ -16,8 +37,11 @@ int main()
 	tx2.loadFromFile("img//triangle.png");
 	spr.setTexture(texture);
 	spr.move(0, 0);
+
+
+
 	std::cout << "Creating Instances...\n";
-	Character::Human player = Character::Human();
+	Human player = Human();
 	bigMap maze = bigMap();
 	std::cout << player.getSprite().getPosition().x << std::endl;
 
@@ -43,6 +67,18 @@ int main()
 			if (event.type == sf::Event::KeyPressed) {
 				switch (event.key.code)
 				{
+				case sf::Keyboard::F:
+					player.inspect(itemsList);
+					break;
+				case sf::Keyboard::E:
+					player.react(itemsList);
+					break;
+				case sf::Keyboard::LShift:
+					if(player.getSpeed()==3)
+						player.setSpeed(10);
+					else
+						player.setSpeed(3);
+					break;
 				case sf::Keyboard::W:
 					if (checkAccess(player, 0, maze))
 						player.walk(0);
@@ -61,8 +97,8 @@ int main()
 					break;
 				default:
 					std::cout << player.getCoor().x << ' ' << player.getCoor().y << ' ' << player.getPos().x << ' ' << player.getPos().y << std::endl;
-					std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << endl;
-					std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << endl;
+					std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << std::endl;
+					std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << std::endl;
 
 					break;
 				}
@@ -79,18 +115,22 @@ int main()
 
 		window.clear(sf::Color::Green);
 
-		//        std::cout << "Drawing Maze...\n";        
-		window.draw(spr);
+		//        std::cout << "Drawing Maze...\n";
 
+		window.draw(spr);
+		ch.draw(window);
+		ch2.draw(window);
+		i.draw(window);
 		//        std::cout << "Drawing Shade...\n";
 		//for (int i = 0; i < 15; i++)
 		//    for (int j = 0; j < 15; j++)
 		//        window.draw(maze.getShade(i, j));
 
 		//        std::cout << "Drawing Player...\n";
+
 		window.draw(player.getSprite());
 		window.display();
-		int i = 0;
+//		int i = 0;
 		//    while (i < 500000000) { i++; }
 	}
 

@@ -19,7 +19,7 @@ sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
 	return sf::Vector2f(tx, ty);
 }
 
-bool checkAccess(Character::Human a, int dir, bigMap map) {
+bool checkAccess(Human a, int dir, bigMap map) {
 
 	// human is standing on 4 grids
 	if (int(a.getPos().x) % 80 >= 20 && int(a.getPos().y) % 80 >= 20)return true;
@@ -50,3 +50,5 @@ bool checkAccess(Character::Human a, int dir, bigMap map) {
 
 	return 1;
 }
+
+

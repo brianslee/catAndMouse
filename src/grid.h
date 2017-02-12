@@ -5,13 +5,15 @@
 
 class grid {
 private:
-	sf::RectangleShape shade = sf::RectangleShape(sf::Vector2f(80.0, 80.0));
+	sf::RectangleShape shade;
 	bool isWall;
 	//    int type; //preserved for later;
 public:
 	grid() {
 		isWall = true;
+		shade = sf::RectangleShape(sf::Vector2f(80.0, 80.0));
 		shade.setFillColor(sf::Color::Black);
+
 	}
 	void setShade(int num) {
 		switch (num)
@@ -35,12 +37,13 @@ public:
 };
 class bigMap {
 private:
-	int size = 15;
+	int size;
 	grid** Map;
 	int isDetected[14][14];
 	sf::Sprite background;
 public:
 	bigMap() {
+		size = 15;
 		Map = new grid*[15];
 		for (int i = 0; i < 15; i++)
 			Map[i] = new grid[15];

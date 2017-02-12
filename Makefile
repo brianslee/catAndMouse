@@ -22,13 +22,14 @@ else
 
     endif
 endif
-SRC=maze-map-collision$(PATHSEP2)maze-map-collision
-#SRC=src
+#SRC=maze-map-collision$(PATHSEP2)maze-map-collision
+SRC=src
 
 
-all: window
+all: linux
 
 %.o: $(SRC)$(PATHSEP2)%.cpp 
+	rm -rf *.o
 	$(CC) -c $< -o $@
 
 
@@ -46,6 +47,8 @@ linux: main.o
 	rm main.o
 	@echo "Success"
 
+run : linux
+	./$(PROJECTNAME)
 
 clean:
 	$(DELCOMMAND) $(PROJECTNAME)* $(SRC)$(PATHSEP2)main.o *.dll 1 main.o

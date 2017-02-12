@@ -1,10 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <utility>
+#include <vector>
+#include <cmath>
+#include <typeinfo>
+#include "Interactable.h"
+#include "Chest.h"
 
-using namespace std;
 
-namespace Character {
-	class Human {
+class Human {
 	private:
 		sf::Vector2i position;
 		sf::Sprite sprite;
@@ -21,10 +24,15 @@ namespace Character {
 		int getSpeed() { return speed; }
 		int getSight() { return sight; }
 		sf::Vector2f getPos() { return sprite.getPosition(); }
-		void setCoor(sf::Vector2i coor) { position = coor; sprite.setPosition(80 * coor.x + 40, 80 * coor.y + 40); }
+		void setCoor(sf::Vector2i coor) {
+			position = coor;
+			sprite.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
+		}
 		void setSpeed(int v) { speed = v; }
 		void setSight(int s) { sight = s; }
-		void updateCoor() { position = sf::Vector2i(int((sprite.getPosition().x) / 80.0), int((sprite.getPosition().y) / 80.0)); }
+		void updateCoor() {
+			position = sf::Vector2i(int((sprite.getPosition().x) / 80.0), int((sprite.getPosition().y) / 80.0));
+		}
 		void walk(int dir) {
 			//map up/down/left/right to 0/1/2/3
 			updateCoor();
@@ -47,5 +55,32 @@ namespace Character {
 			}
 			updateCoor();
 		}
+
+		int distanceToInteractable(Interactable* item){
+				int x=item->getPos().x-this->getPos().x;
+				int y=item->getPos().y-this->getPos().y;
+				return sqrt(pow(x,2)+pow(y,2));
+			}
+
+		void inspect(std::vector<Interactable*> itemsList){
+			for(unsigned int i=0;i<itemsList.size();i++){
+				if(distanceToInteractable(itemsList[i])<80){
+					itemsList[i]->inspect();
+				}
+			}
+		}
+
+		void react(std::vector<Interactable*> itemsList){
+			for(unsigned int i=0;i<itemsList.size();i++){
+				if(distanceToInteractable(itemsList[i])<80){
+					if(itemsList[i]->getName()=="Chest"){
+						(dynamic_cast <Chest*> (itemsList[i]))->open();
+					}
+				}
+			}
+		}
+
+
+
 	};
-}
+
