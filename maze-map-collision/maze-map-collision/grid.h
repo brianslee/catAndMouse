@@ -62,7 +62,7 @@ public:
 				isDetected[i][j] = 0;
 				Map[i][j].getShade().setPosition(80 * (i - 1) - 2, 80 * (j - 1) - 2);
 
-				//std::cout << int(image.getPixel(i * 80, j * 80).r) << ' ' << int(image.getPixel(i * 80, j * 80).g) << ' ' << int(image.getPixel(i * 80, j * 80).b) << endl;
+//				std::cout << int(image.getPixel(i * 80, j * 80).r) << ' ' << int(image.getPixel(i * 80, j * 80).g) << ' ' << int(image.getPixel(i * 80, j * 80).b) << endl;
 				if (image.getPixel(i * 80, j * 80) == sf::Color(99, 64, 0, 255))
 					Map[i][j].setWall(1);
 				else Map[i][j].setWall(0);

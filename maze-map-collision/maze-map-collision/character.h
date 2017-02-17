@@ -15,6 +15,7 @@ namespace Character {
 			position = initPos;
 			speed = v;
 			sight = s;
+
 		}
 		sf::Sprite& getSprite() { return sprite; }
 		sf::Vector2i getCoor() { return position; }

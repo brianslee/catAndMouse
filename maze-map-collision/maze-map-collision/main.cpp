@@ -6,33 +6,51 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
 	sf::Texture texture, tx2;
+	sf::Texture marineTexture;
 	sf::Image image;
 	sf::Sprite spr;
 	sf::View view(sf::FloatRect(0, 0, 800, 800));
 	window.setView(view);
 	std::cout << "Loading texture...\n";
-	image.loadFromFile("img//maze.png");
+	if (!image.loadFromFile("img//maze.png")) {
+		image.loadFromFile("maze.png");
+	}
 	texture.loadFromImage(image);
-	tx2.loadFromFile("img//Triangle.png");
+	if (!tx2.loadFromFile("img//triangle.png")) {
+		tx2.loadFromFile("triangle.png");
+	}
+	if (!marineTexture.loadFromFile("img//Alien_1_Movement2.png")) {
+		marineTexture.loadFromFile("Alien_1_Movement2.png");
+	}
 	spr.setTexture(texture);
 	spr.move(0, 0);
 	std::cout << "Creating Instances...\n";
-	Character::Human player = Character::Human();
+	Character::Human player = Character::Human(sf::Vector2i(0,0),10,3);
 	bigMap maze = bigMap();
 	std::cout << player.getSprite().getPosition().x << std::endl;
 
 	std::cout << "Initializing...\n";
 	maze.load(image);
 	player.updateCoor();
-	player.getSprite().setTexture(tx2);
-	player.getSprite().setScale(0.6, 0.6);
-
+//	player.getSprite().setTexture(tx2);
+//	player.getSprite().setScale(0.6, 0.6);
+//	player.getSprite().setOrigin(sf::Vector2f(40, 40));
+//	player.getSprite().move(40, 40);
+//	updateSprite(player.getSprite(), marineTexture, window, 215, 215, 4);
 	//for (int i = 0; i < 15; i++)
 	//    for (int j = 0; j < 15; j++)
 	//        std::cout << i << ' ' << j << ' ' << maze.getWall(i, j) << std::endl;
+	int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
+	player.getSprite().setTexture(marineTexture);
+	player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
+	player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth));
+	sf::Clock clock;
+	player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
+	player.getSprite().move(40, 40);
 	while (window.isOpen())
 	{
 		//        std::cout << "Drawing...\n";
+		//updateSprite(player.getSprite(), marineTexture, window, 215, 215, 4);
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -69,9 +87,10 @@ int main()
 				view.setCenter(getCenter(player.getPos(), image.getSize()));
 				window.setView(view);
 			}
-			window.draw(player.getSprite());
-
-
+			spriteCounter = updateSprite(player.getSprite(), window, clock, spriteLength, spriteWidth, spriteNum, spriteCounter);
+			//window.draw(player.getSprite());
+		
+			updateRotation(player, view, window);
 
 		}
 
@@ -90,8 +109,6 @@ int main()
 		//        std::cout << "Drawing Player...\n";
 		window.draw(player.getSprite());
 		window.display();
-		int i = 0;
-		//    while (i < 500000000) { i++; }
 	}
 
 	return 0;
