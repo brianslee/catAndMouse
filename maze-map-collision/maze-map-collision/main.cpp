@@ -57,8 +57,8 @@ int main()
 	//for (int i = 0; i < 15; i++)
 	//    for (int j = 0; j < 15; j++)
 	//        std::cout << i << ' ' << j << ' ' << maze.getWall(i, j) << std::endl;
-	int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
-	player.getSprite().setTexture(alienTexture);
+	int spriteCounter = 0, spriteNum = 9, spriteLength = 196, spriteWidth = 118;
+	player.getSprite().setTexture(marineTexture);
 	player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
 	player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
 	sf::Clock clock;
