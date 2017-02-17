@@ -29,5 +29,8 @@
     <ClInclude Include="helper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="networking.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

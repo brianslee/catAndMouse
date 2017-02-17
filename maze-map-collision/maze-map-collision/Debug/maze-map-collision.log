@@ -1,10 +1,2 @@
-﻿  main.cpp
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\character.h(25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\grid.h(63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\helper.h(21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\helper.h(69): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\helper.h(77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\main.cpp(46): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\scottzhu\catandmouse\maze-map-collision\maze-map-collision\main.cpp(48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  maze-map-collision.vcxproj -> B:\scottzhu\catAndMouse\maze-map-collision\Debug\maze-map-collision.exe
+﻿  maze-map-collision.vcxproj -> B:\scottzhu\catAndMouse\maze-map-collision\Debug\maze-map-collision.exe
   maze-map-collision.vcxproj -> B:\scottzhu\catAndMouse\maze-map-collision\Debug\maze-map-collision.pdb (Full PDB)

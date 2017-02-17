@@ -3,8 +3,17 @@
 
 using namespace std;
 
-namespace Character {
 	class Human {
+
+
+		//sf::Vector2f shapeSize(TILE_SIZE, TILE_SIZE);
+		//sf::RectangleShape localShape(shapeSize);
+		//sf::RectangleShape remoteShape(shapeSize);
+
+		//localShape.setFillColor(sf::Color::Blue);
+		//remoteShape.setFillColor(sf::Color::Red);
+
+
 	private:
 		sf::Vector2i position;
 		sf::Sprite sprite;
@@ -23,6 +32,7 @@ namespace Character {
 		int getSight() { return sight; }
 		sf::Vector2f getPos() { return sprite.getPosition(); }
 		void setCoor(sf::Vector2i coor) { position = coor; sprite.setPosition(80 * coor.x + 40, 80 * coor.y + 40); }
+		void setPos(sf::Vector2f pos) { sprite.setPosition(pos); updateCoor(); }
 		void setSpeed(int v) { speed = v; }
 		void setSight(int s) { sight = s; }
 		void updateCoor() { position = sf::Vector2i(int((sprite.getPosition().x) / 80.0), int((sprite.getPosition().y) / 80.0)); }
@@ -49,4 +59,3 @@ namespace Character {
 			updateCoor();
 		}
 	};
-}
