@@ -13,16 +13,20 @@ class Human {
 		sf::Sprite sprite;
 		int speed;
 		int sight;
+		int hp;
 	public:
 		Human(sf::Vector2i initPos = sf::Vector2i(0, 0), int v = 3, int s = 3) {
 			position = initPos;
 			speed = v;
 			sight = s;
+			hp=100;
 		}
 		sf::Sprite& getSprite() { return sprite; }
 		sf::Vector2i getCoor() { return position; }
 		int getSpeed() { return speed; }
 		int getSight() { return sight; }
+		int getHp(){ return hp;}
+		void setHp(int h){hp=h;}
 		sf::Vector2f getPos() { return sprite.getPosition(); }
 		void setCoor(sf::Vector2i coor) {
 			position = coor;
@@ -73,9 +77,25 @@ class Human {
 		void react(std::vector<Interactable*> itemsList){
 			for(unsigned int i=0;i<itemsList.size();i++){
 				if(distanceToInteractable(itemsList[i])<80){
-					if(itemsList[i]->getName()=="Chest"){
-						(dynamic_cast <Chest*> (itemsList[i]))->open();
+					bool itemLoaded=itemsList[i]->getIsLoaded();
+					std::string type=itemsList[i]->getType();
+					if(type=="Chest"){
+						Chest* ch=dynamic_cast<Chest*>(itemsList[i]);
+						if(!ch->getIsOpen()){
+							std::cout<<"type==Chest\n";
+//							(dynamic_cast <Chest*> (itemsList[i]))->open();
+							ch->open();
+							break;
+						}
 					}
+					if(itemLoaded&&(type=="Item"||type=="DamageTrap")){
+						std::cout<<"type==Item\n";
+						//get Item
+						if(itemsList[i]->getIsLoaded())
+							itemsList[i]->setIsLoaded(false);
+						break;
+					}
+
 				}
 			}
 		}

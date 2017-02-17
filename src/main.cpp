@@ -3,6 +3,7 @@
 #include <vector>
 #include "helper.h"
 #include "Chest.h"
+#include "DamageTrap.h"
 
 int main()
 {
@@ -11,27 +12,36 @@ int main()
 	sf::Image image;
 	sf::Sprite spr;
 	sf::View view(sf::FloatRect(0, 0, 800, 800));
+	sf::Clock Clock;
+	sf::Time time=Clock.getElapsedTime();
+	Clock.restart();
 
-	Item item_test=Item("img/circle.png","Damage Trap","Item");
-	Item item_test2=Item("img/circle.png","Sword","Item");
+	//Item
+	Item item_test=Item("img/circle.png","Damage Trap");
+	Item item_test2=Item("img/circle.png","Sword");
 	Chest ch=Chest("It looks safe");
 	Chest ch2=Chest("It's a chest");
 	ch.setItem(&item_test2);
 	ch2.setItem(&item_test);
-	std::vector<Interactable*> itemsList;
+	DamageTrap dt1=DamageTrap("img/Spritesheets/landmine.png","Land Mine: 20 Damage",20);
 
+	std::vector<Interactable*> itemsList;
 	itemsList.push_back(&ch);
 	itemsList.push_back(&item_test2);
 	itemsList.push_back(&ch2);
 	itemsList.push_back(&item_test);
+	itemsList.push_back(&dt1);
 
-	for(unsigned i=0;i<itemsList.size();i++)
+	for(unsigned i=0;i<4;i++)
 		itemsList[i]->getSprite().setScale(0.6,0.6);
-
+	dt1.getSprite().setScale(2,2);
 	ch.setPosition(1000,300);
 	ch2.setPosition(300,200);
 	item_test.setIsLoaded(false);
 	item_test2.setIsLoaded(false);
+//	dt1.setPosition(0,0);
+	dt1.setIsLoaded(false);
+	//Item ends
 
 	window.setView(view);
 	std::cout << "Loading texture...\n";
@@ -64,12 +74,25 @@ int main()
 		while (window.pollEvent(event))
 		{
 
+
+			if(time.asSeconds()>=5.0)
+				dt1.setIsDepolyed(true);
+			if(dt1.getIsLoaded()&&dt1.getIsDepolyed()){
+				if(player.distanceToInteractable(&dt1)<20){
+					player.setHp(dt1.activate(player));
+//					itemsList.pop_back();
+				}
+			}
+
 			if (event.type == sf::Event::Closed)
 				window.close();
 
 			if (event.type == sf::Event::KeyPressed) {
 				switch (event.key.code)
 				{
+				case sf::Keyboard::Num1:
+					dt1.placeTrap(player);
+					break;
 				case sf::Keyboard::F:
 					player.inspect(itemsList);
 					break;
@@ -99,6 +122,7 @@ int main()
 						player.walk(3);
 					break;
 				default:
+					std::cout<< "HP: " <<player.getHp()<<std::endl;
 					std::cout << player.getCoor().x << ' ' << player.getCoor().y << ' ' << player.getPos().x << ' ' << player.getPos().y << std::endl;
 					std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << std::endl;
 					std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << std::endl;
@@ -109,9 +133,6 @@ int main()
 				window.setView(view);
 			}
 			window.draw(player.getSprite());
-
-
-
 		}
 
 		//        maze.updateShade(player.getCoor(), player.getSight());

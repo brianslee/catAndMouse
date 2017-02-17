@@ -29,6 +29,10 @@ public:
 			isOpen=false;
 	}
 
+	bool getIsOpen(){
+		return isOpen;
+	}
+
 	Item * getItem(){
 		if(isOpen){
 			Item * temp=i;

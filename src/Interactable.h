@@ -4,8 +4,8 @@
 class Interactable
 {
 public:
-	explicit Interactable(std::string img, std::string message,std::string name){
-		this->name=name;
+	explicit Interactable(std::string img, std::string message,std::string type){
+		this->type=type;
 		this->load(img);
 		this->message=message;
 		isLoaded=true;
@@ -14,8 +14,8 @@ public:
 
 	}
 
-	virtual std::string getName(){
-		return name;
+	virtual std::string getType(){
+		return type;
 	}
 
 	virtual void load(std::string filename){
@@ -30,6 +30,9 @@ public:
 	}
 	virtual void setPosition(float x, float y){
 		sprite.setPosition(x,y);
+	}
+	virtual void setPosition(sf::Vector2f pos){
+		sprite.setPosition(pos);
 	}
 	virtual sf::Vector2f getPos(){
 		return sprite.getPosition();
@@ -63,6 +66,6 @@ private:
 	sf::Sprite  sprite;
 	sf::Image image;
 	sf::Texture tx;
-	std::string name;
+	std::string type;
 
 };
