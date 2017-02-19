@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+/Debug/
+
+# Eclipse setting files
+/.settings/
+*.cproject
+*.project
