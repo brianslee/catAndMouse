@@ -29,19 +29,15 @@
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
 
 
-
-
 //setup player sprites
 void setupPlayer(Human & player, sf::Texture& texture){
     player.getSprite().setTexture(texture);
-player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
+    player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
     player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(40, 40);
 
 }
-
-
 
 
 int main()
@@ -60,9 +56,6 @@ int main()
     int counter4 = 0;
     int counter5 = 0;
 
-    
-    
-    
     sf::RenderWindow window(sf::VideoMode(800, 600), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture;
     sf::Image image;
@@ -81,7 +74,7 @@ int main()
     texture.loadFromImage(image);
     
     
-    if (!tx2.loadFromFile("img/Triangle.png")) {
+    if (!tx2.loadFromFile("img/triangle.png")) {
         return EXIT_FAILURE;
     }
     
