@@ -1,6 +1,6 @@
-LIB=-lsfml-graphics -lsfml-window -lsfml-system 
+LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 PROJECTNAME=catAndMouse
-
+CC=g++
 
 ifeq ($(OS),Windows_NT)
 	COPYCOMMAND=copy
@@ -25,7 +25,7 @@ endif
 #SRC=maze-map-collision$(PATHSEP2)maze-map-collision
 SRC=src
 
-OBJS= alienattack.o attack.o bigMap.o character.o entity.o grid.o helper.o main.o
+OBJS= alienattack.o attack.o bigMap.o character.o entity.o grid.o helper.o network.o main.o
 
 all: linux
 

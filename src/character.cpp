@@ -26,7 +26,12 @@ void Human::update()
 {
     sprite.setPosition(rect.getPosition());
 }
+ 
 
+void Human::setPos(const sf::Vector2f& pos)
+{
+	sprite_original.setPosition(pos);
+}
 
 sf::Sprite& Human::getSprite()
     {

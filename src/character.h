@@ -34,6 +34,10 @@ class Human:public entity{
         void updateCoor();
         void walk(int dir);
     
+	void setPos(const sf::Vector2f& pos);
+	
+
+
     private:
         sf::Vector2i position;
         sf::Sprite sprite_original;
