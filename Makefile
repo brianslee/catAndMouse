@@ -1,5 +1,6 @@
 LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 PROJECTNAME=catAndMouse
+SRC=src
 CC=g++
 
 ifeq ($(OS),Windows_NT)
@@ -22,17 +23,13 @@ else
 
     endif
 endif
-#SRC=maze-map-collision$(PATHSEP2)maze-map-collision
-SRC=src
 
 OBJS= alienattack.o attack.o bigMap.o character.o entity.o grid.o helper.o network.o main.o
 
 all: linux
 
-%.o: $(SRC)$(PATHSEP2)%.cpp 
-	
+%.o: $(SRC)$(PATHSEP2)%.cpp 	
 	$(CC) $(INCLUDE) -c $< -o $@ -std=c++11
-
 
 window:  $(OBJS)
 	
@@ -40,7 +37,6 @@ window:  $(OBJS)
 	$(COPYCOMMAND) $(LIBLOC)\*.dll .
 	$(DELCOMMAND) *-d-2.dll
 	@echo Success
-
 
 linux: $(OBJS)
 	@echo "Building the game"
