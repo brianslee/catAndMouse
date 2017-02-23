@@ -8,8 +8,6 @@ private:
 	bool isOpen;
 public:
 	explicit HidingPlace(std::string lockerImg,std::string message)
-	:Interactable(lockerImg,message,"Locker")
-	{
-		isOpen=false;
-	}
+	:Interactable(lockerImg,message,"Locker"),isOpen(false);
+	
 };

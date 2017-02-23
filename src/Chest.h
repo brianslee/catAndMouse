@@ -1,4 +1,8 @@
 #pragma once
+#ifndef SRC_CHEST_H_
+#define SRC_CHEST_H_
+
+#pragma once
 #include "Interactable.h"
 #include "Item.h"
 
@@ -11,46 +15,23 @@ private:
 	bool isOpen;
 public:
 	explicit Chest(std::string message)
-	:Interactable("img/square.png",message,"Chest")
-	{
-		isOpen=false;
-		i=NULL;
-	}
+	:Interactable("img/square.png",message,"Chest"),isOpen(false),i(NULL){}
+	
 	explicit Chest(std::string chestImg,std::string message)
-	:Interactable(chestImg,message,"Chest")
-	{
-		isOpen=false;
-		i=NULL;
-	}
-	explicit Chest(std::string chestImg, std::string message,Item * i)
-	:Interactable(chestImg,message,"Chest")
-	{
-			this->i=i;
-			isOpen=false;
-	}
+	:Interactable(chestImg,message,"Chest"),isOpen(false),i(NULL){}
+	
+	explicit Chest(std::string chestImg, std::string message,Item * item)
+	:Interactable(chestImg,message,"Chest"),i(item),isOpen(false){}
+	
+	bool getIsOpen();
 
-	bool getIsOpen(){
-		return isOpen;
-	}
+	Item * getItem();
 
-	Item * getItem(){
-		if(isOpen){
-			Item * temp=i;
-			i=0;
-			return temp;
-		}else
-			return 0;
+	void setItem(Item * i);
 
-	}
-	void setItem(Item * i){
-		this->i=i;
-	}
-	void open(){
-		isOpen=true;
-		if(i!=NULL){
-			i->setPosition(this->getSprite().getPosition().x,this->getSprite().getPosition().y);
-			i->setIsLoaded(true);
-		}
-	}
+	void open();
 
 };
+
+
+#endif /* SRC_CHEST_H_ */
