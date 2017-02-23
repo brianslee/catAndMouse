@@ -103,7 +103,7 @@ int main()
 	chest ch2=chest("It's a chest");
 	ch.setItem(&item_test2);
 	ch2.setItem(&item_test);
-	damageTrap dt1=damageTrap("img/Spritesheets/landmine.png","Land Mine: 20 Damage",20);
+	damageTrap dt1=damageTrap("Spritesheets/landmine.png","Land Mine: 20 Damage",20);
 
 	std::vector<interactable*> itemsList;
 	itemsList.push_back(&item_test2);

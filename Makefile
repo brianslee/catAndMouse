@@ -13,7 +13,7 @@ ifeq ($(OS),Windows_NT)
 	PATHSEP2=\\
 	LIBLOC=C:\bin\SFML\lib
 	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
-	NULLDIR=nul
+	NULLDIR=null
 
 else
     UNAME_S := $(shell uname -s)
@@ -33,12 +33,10 @@ endif
 
 OBJS= alienattack.o attack.o bigMap.o character.o chest.o damageTrap.o entity.o grid.o helper.o interactable.o network.o main.o trap.o   
 
-all: makedir moveback linux moveto
+all: linux
 
 %.o: $(SRC)$(PATHSEP2)%.cpp 	
 	$(CC) $(INCLUDE) -c $< -o $@ -std=c++11
-
-windows: makedir moveback window moveto
 
 window:  $(OBJS)
 	$(CC) -L $(LIBLOC) -o $(PROJECTNAME).exe $(OBJS) $(LIB)
@@ -46,9 +44,9 @@ window:  $(OBJS)
 	$(DELCMD) *-d-2.dll
 	@echo Success
 
+linux: makedir moveback linuxlink moveto
 
-linux: $(OBJS)
-	@echo "Building the game"
+linuxlink: $(OBJS)
 	$(CC) -o $(PROJECTNAME) $(OBJS) $(LIB)
 	@echo "Success"
 	
@@ -62,5 +60,5 @@ makedir:
 	if [ ! -d "$(BUILD)" ]; then mkdir $(BUILD); fi
 
 clean:
-	$(DELCMD) $(PROJECTNAME)* $(BUILD)$(PATHSEP2)*.o *.dll 1 *.o 2>$(NULLDIR)
+	$(DELCMD) $(PROJECTNAME)* $(BUILD)$(PATHSEP2)*.o *.dll 1 *.o
 
