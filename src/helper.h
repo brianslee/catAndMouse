@@ -1,16 +1,13 @@
-
-
-#ifndef helper_hpp
-#define helper_hpp
+#ifndef helper_h
+#define helper_h
 #pragma once
 #include "character.h"
 //#include "grid.hpp"
-#include "bigMap.hpp"
+#include "bigMap.h"
 #include <iostream>
 #include <cmath>
-#include "alienattack.hpp"
+#include "alienattack.h"
 #include <stdio.h>
-
 
 
 //Check if dir direction is accessible
@@ -25,4 +22,4 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
 
 
 
-#endif /* helper_hpp */
+#endif /* helper_h */

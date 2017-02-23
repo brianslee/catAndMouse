@@ -1,14 +1,13 @@
 //
-//  entity.hpp
+//  entity.h
 //  Attack_48
 //
 //  Created by James wang on 2/10/17.
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#ifndef entity_hpp
-#define entity_hpp
-
+#ifndef entity_h
+#define entity_h
 
 
 #include <stdio.h>
@@ -39,4 +38,4 @@ private:
 protected:
 };
 
-#endif /* entity_hpp */
+#endif /* entity_h */

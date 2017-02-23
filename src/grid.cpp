@@ -6,7 +6,7 @@
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#include "grid.hpp"
+#include "grid.h"
 
 
 grid::grid() {

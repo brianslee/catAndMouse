@@ -6,7 +6,7 @@
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#include "alienattack.hpp"
+#include "alienattack.h"
 
 projectile2::projectile2()
 {

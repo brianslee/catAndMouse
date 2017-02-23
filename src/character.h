@@ -1,13 +1,14 @@
-#ifndef STUDENT_H
-#define STUDENT_H
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
 #include <SFML/Graphics.hpp>
 #include <utility>
 #include <vector>
 #include <typeinfo>
-#include"entity.hpp"
-#include "Interactable.h"
-#include "Chest.h"
+
+#include "chest.h"
+#include "entity.h"
+#include "interactable.h"
 
 
 class Human:public entity{
@@ -42,9 +43,9 @@ class Human:public entity{
     void updateCoor();
     void walk(int dir);
     void setPos(const sf::Vector2f& pos);
-    int distanceToInteractable(Interactable* item);
-	void inspect(std::vector<Interactable*> itemsList);
-	void react(std::vector<Interactable*> itemsList);
+    int distanceToInteractable(interactable* item);
+	void inspect(std::vector<interactable*> itemsList);
+	void react(std::vector<interactable*> itemsList);
 
     
 };

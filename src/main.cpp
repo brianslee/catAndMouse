@@ -16,17 +16,16 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include "helper.hpp"
-//#include "ResourcePath.hpp"
 #include <SFML/Audio.hpp>
-#include "network.hpp"
-#include "attack.hpp"
-#include "entity.hpp"
-#include "alienattack.hpp"
-#include "Chest.h"
-#include "DamageTrap.h"
-
 #include <vector>
+
+#include "alienattack.h"
+#include "attack.h"
+#include "chest.h"
+#include "damageTrap.h"
+#include "entity.h"
+#include "helper.h"
+#include "network.h"
 
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
 
@@ -100,13 +99,13 @@ int main()
 	Item item_test=Item("img/circle.png","Damage Trap");
 	Item item_test2=Item("img/circle.png","Sword");
 	//Chest ch=Chest("It looks safe");
-	Chest ch=Chest("Spritesheets/Crate1.png","Testing");
-	Chest ch2=Chest("It's a chest");
+	chest ch=chest("Spritesheets/Crate1.png","Testing");
+	chest ch2=chest("It's a chest");
 	ch.setItem(&item_test2);
 	ch2.setItem(&item_test);
-	DamageTrap dt1=DamageTrap("img/Spritesheets/landmine.png","Land Mine: 20 Damage",20);
+	damageTrap dt1=damageTrap("img/Spritesheets/landmine.png","Land Mine: 20 Damage",20);
 
-	std::vector<Interactable*> itemsList;
+	std::vector<interactable*> itemsList;
 	itemsList.push_back(&item_test2);
 	itemsList.push_back(&ch2);
 	itemsList.push_back(&item_test);

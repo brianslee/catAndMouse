@@ -1,8 +1,8 @@
 #pragma once
 #ifndef SRC_INTERACTABLE_H_
 #define SRC_INTERACTABLE_H_
-#include "entity.hpp"
-class Interactable
+#include "entity.h"
+class interactable
 {
 private:
 	bool isLoaded;
@@ -13,9 +13,9 @@ private:
 	std::string type;
 
 public:
-	explicit Interactable(std::string img, std::string message,std::string type);
+	explicit interactable(std::string img, std::string message,std::string type);
 	virtual std::string getType();
-	virtual ~Interactable();
+	virtual ~interactable();
 	virtual void load(std::string filename);
 	virtual void draw(sf::RenderWindow & renderWindow);
 	virtual void setPosition(float x, float y);

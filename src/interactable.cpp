@@ -1,62 +1,62 @@
-#include "Interactable.h"
-Interactable::Interactable(std::string img, std::string message,std::string type){
+#include "interactable.h"
+interactable::interactable(std::string img, std::string message,std::string type){
 	this->type=type;
 	this->load(img);
 	this->message=message;
 	isLoaded=true;
 }
 
-std::string Interactable::getType(){
+std::string interactable::getType(){
 	return type;
 }
 
-Interactable::~Interactable(){
+interactable::~interactable(){
 
 	}
 
 
- void Interactable::load(std::string filename){
+ void interactable::load(std::string filename){
 	std::cout<<"Loading "+filename<<std::endl;
 	image.loadFromFile(filename);
 	tx.loadFromImage(image);
 	sprite.setTexture(tx);
 }
 
- void Interactable::draw(sf::RenderWindow & renderWindow){
+ void interactable::draw(sf::RenderWindow & renderWindow){
 	if(isLoaded)
 		renderWindow.draw(sprite);
 }
 
- void Interactable::setPosition(float x, float y){
+ void interactable::setPosition(float x, float y){
 	sprite.setPosition(x,y);
 }
 
- void Interactable::setPosition(sf::Vector2f pos){
+ void interactable::setPosition(sf::Vector2f pos){
 	sprite.setPosition(pos);
 }
 
- sf::Vector2f Interactable::getPos(){
+ sf::Vector2f interactable::getPos(){
 	return sprite.getPosition();
 }
 
- void Interactable::inspect(){
+ void interactable::inspect(){
 	if(isLoaded)
 		std::cout<<"Inspect around:" + message<<std::endl;
 }
 
- void Interactable::setMessage(std::string m){
+ void interactable::setMessage(std::string m){
 	this->message=m;
 }
 
- sf::Sprite& Interactable::getSprite(){
+ sf::Sprite& interactable::getSprite(){
 	return sprite;
 }
 
- bool Interactable::getIsLoaded(){
+ bool interactable::getIsLoaded(){
 	return isLoaded;
 }
 
- void Interactable::setIsLoaded(bool isLoaded){
+ void interactable::setIsLoaded(bool isLoaded){
 	this->isLoaded=isLoaded;
 }
 //	 float distanceToCharacter(Human a){

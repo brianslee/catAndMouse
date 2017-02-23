@@ -1,19 +1,20 @@
 //
-//  bigMap.hpp
+//  bigMap.h
 //  F48
 //
 //  Created by James wang on 2/18/17.
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#ifndef bigMap_hpp
-#define bigMap_hpp
+#ifndef bigMap_h
+#define bigMap_h
 
 
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "grid.hpp"
+
+#include "grid.h"
 
 class bigMap {
     public:
@@ -35,4 +36,4 @@ class bigMap {
 };
 
 
-#endif /* bigMap_hpp */
+#endif /* bigMap_h */

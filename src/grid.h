@@ -1,13 +1,13 @@
 //
-//  grid.hpp
+//  grid.h
 //  F48
 //
 //  Created by James wang on 2/18/17.
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#ifndef grid_hpp
-#define grid_hpp
+#ifndef grid_h
+#define grid_h
 
 #include <stdio.h>
 
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif /* grid_hpp */
+#endif /* grid_h */

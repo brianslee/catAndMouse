@@ -1,20 +1,20 @@
 
-#include "Trap.h"
+#include "trap.h"
 
 
-	 void Trap::activate(Human * a){
+	 void trap::activate(Human * a){
 		
 	}
 
-	bool Trap::getIsDepolyed(){
+	bool trap::getIsDepolyed(){
 		return isDepolyed;
 	}
 
-	void Trap::setIsDepolyed(bool isDepolyed){
+	void trap::setIsDepolyed(bool isDepolyed){
 		this->isDepolyed=isDepolyed;
 	}
 
-	void Trap::placeTrap(Human a){
+	void trap::placeTrap(Human a){
 		this->setPosition(a.getPos());
 		this->setIsLoaded(true);
 		//this->setIsDepolyed(true);

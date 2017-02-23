@@ -6,7 +6,7 @@
 //  Copyright © 2017 James wang. All rights reserved.
 //
 
-#include "helper.hpp"
+#include "helper.h"
 
 
 sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {

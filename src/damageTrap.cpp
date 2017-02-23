@@ -13,13 +13,13 @@
 	}
 */
 
-#include "DamageTrap.h"
+#include "damageTrap.h"
 
-	int DamageTrap::getDamagePoint(){
+	int damageTrap::getDamagePoint(){
 		return damagePoint;
 	}
 
-	void DamageTrap::activate(Human * a){
+	void damageTrap::activate(Human * a){
 		this->setIsDepolyed(false);
 		this->setIsLoaded(false);
 		a->hp=a->hp-damagePoint;

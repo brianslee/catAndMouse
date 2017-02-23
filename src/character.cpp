@@ -96,12 +96,12 @@ void Human::walk(int dir) {
     }
     updateCoor();
 }
-int Human::distanceToInteractable(Interactable* item){
+int Human::distanceToInteractable(interactable* item){
 	int x=item->getPos().x-getPos().x;
 	int y=item->getPos().y-getPos().y;
 	return sqrt(pow(x,2)+pow(y,2));
 }
-void Human::inspect(std::vector<Interactable*> itemsList){
+void Human::inspect(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
 		if(distanceToInteractable(itemsList[i])<80){
 			itemsList[i]->inspect();
@@ -110,13 +110,13 @@ void Human::inspect(std::vector<Interactable*> itemsList){
 }
 
 
-void Human::react(std::vector<Interactable*> itemsList){
+void Human::react(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
 		if(distanceToInteractable(itemsList[i])<80){
 			bool itemLoaded=itemsList[i]->getIsLoaded();
 			std::string type=itemsList[i]->getType();
 			if(type=="Chest"){
-				Chest* ch=dynamic_cast<Chest*>(itemsList[i]);
+				chest* ch=dynamic_cast<chest*>(itemsList[i]);
 				if(!ch->getIsOpen()){
 					ch->open();
 					break;

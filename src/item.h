@@ -1,15 +1,15 @@
 #pragma once
-#include "Interactable.h"
+#include "interactable.h"
 
 class Item:
-		public Interactable
+		public interactable
 {
 public:
 	explicit Item(std::string itemImg, std::string message)
-	:Interactable(itemImg,message,"Item"){}
+	:interactable(itemImg,message,"Item"){}
 
 	explicit Item(std::string itemImg, std::string message,std::string itemType)
-		:Interactable(itemImg,message,itemType){}
+		:interactable(itemImg,message,itemType){}
 
 	~Item(){}
 
