@@ -27,26 +27,54 @@ class Human:public entity{
     int hp = 5;
     bool alive = true;
     
+    // update the position of the sprite
     void update();
     //void updateMovement();
         
     Human(sf::Vector2i initPos, int v, int s);
     
+    // get the sprite
     sf::Sprite& getSprite();
+    
+    // get the coordinate of the character
     sf::Vector2i getCoor();
+    
+    // get the speed
     int getSpeed();
+    
+    // get the sight
     int getSight();
+    
+    // get current position of the sprite
     sf::Vector2f getPos();
+    
+    // set the coordinate of character
     void setCoor(sf::Vector2i coor);
+    
+    // set the speed
     void setSpeed(int v);
+    
+    // set the sight
     void setSight(int s);
-    void updateCoor();
-    void walk(int dir);
-    void setPos(const sf::Vector2f& pos);
-    int distanceToInteractable(interactable* item);  //get the distance between the interactables and the player
-	void inspect(std::vector<interactable*> itemsList); //Inspect the interactables that is closest to the player , which will gives a message about it
-	void react(std::vector<interactable*> itemsList); //React with the interactables that is closest to the player
 
+	//make the coordinate of character match with position of sprite
+    void updateCoor();
+
+    // move in dir direction
+	void walk(int dir);
+    
+    // set a new position (relative to the map)
+	void setPos(const sf::Vector2f& pos);
+	
+	//get the distance between the interactables and the player
+    int distanceToInteractable(interactable* item);  	
+	
+	//Inspect the interactables that is closest to the player , which will gives a message about it
+	void inspect(std::vector<interactable*> itemsList); 
+	
+	//React with the interactables that is closest to the player
+	void react(std::vector<interactable*> itemsList); 
+	
     
 };
 #endif
