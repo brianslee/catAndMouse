@@ -18,7 +18,7 @@
 
 class bigMap {
     public:
-        bigMap();
+        bigMap(int sz=15);
         int getSize();
         sf::Drawable& getSprite();
         sf::Drawable& getShade(int x, int y);
@@ -31,7 +31,7 @@ class bigMap {
     private:
         int size = 15;
         grid** Map;
-        int isDetected[14][14];
+        int** isDetected;
         sf::Sprite background;
 };
 

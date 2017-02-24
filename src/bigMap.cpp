@@ -11,10 +11,13 @@
 
 
 
-bigMap::bigMap() {
-    Map = new grid*[15];
-    for (int i = 0; i < 15; i++)
-        Map[i] = new grid[15];
+bigMap::bigMap(int size) {
+    Map = new grid*[size];
+    for (int i = 0; i < size; i++)
+        Map[i] = new grid[size];
+    isDetected = new int*[size];
+    for (int i = 0; i < size; i++)
+        isDetected[i] = new int[size];
 }
 int bigMap::getSize() { return size; }
 sf::Drawable& bigMap::getSprite() { return background; }
@@ -28,8 +31,8 @@ bool bigMap:: getWall(int x, int y) {
 void bigMap::load(sf::Image &image) {
     //        background.setTexture(texture);
     //        background.setTextureRect(sf::IntRect(0, 0, 15*80, 15*80));
-    for (int i = 0; i < 15; i++) {
-        for (int j = 0; j < 15; j++) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             isDetected[i][j] = 0;
             Map[i][j].getShade().setPosition(80 * (i - 1) - 2, 80 * (j - 1) - 2);
             
@@ -55,7 +58,7 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
     isDetected[pos.x][pos.y] = 2;
     for (int i = 0; i <= sight; i++) {
         for (int j = 0; j <= sight; j++) {
-            if ((pos.x + i) < 0 || (pos.x + i) > 15 || (pos.y + j) < 0 || (pos.y + j) > 15)continue;
+            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
             if (isDetected[pos.x + i][pos.y + j] == 2) isDetected[pos.x + i][pos.y + j] = 2;
             else if (((i*i + j*j) <= sight*sight)
                      //       && (isDetected[pos.x + i - 1][pos.y + j] == 2 || isDetected[pos.x + i][pos.y + j - 1] == 2)
@@ -63,7 +66,7 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
                      )
                 isDetected[pos.x + i][pos.y + j] = 2;
             
-            if ((pos.x + i) < 0 || (pos.x + i) > 15 || (pos.y - j) < 0 || (pos.y - j) > 15)continue;
+            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y - j) < 0 || (pos.y - j) > size)continue;
             if (isDetected[pos.x + i][pos.y - j] == 2) isDetected[pos.x + i][pos.y - j] = 2;
             else if (((i*i + j*j) <= sight*sight)
                      //&& (isDetected[pos.x + i - 1][pos.y - j] == 2 || isDetected[pos.x + i][pos.y - j + 1] == 2)
@@ -71,7 +74,7 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
                      )
                 isDetected[pos.x + i][pos.y + j] = 2;
             
-            if ((pos.x - i) < 0 || (pos.x - i) > 15 || (pos.y + j) < 0 || (pos.y + j) > 15)continue;
+            if ((pos.x - i) < 0 || (pos.x - i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
             if (isDetected[pos.x - i][pos.y + j] == 2) isDetected[pos.x - i][pos.y + j] = 2;
             else if (((i*i + j*j) <= sight*sight)
                      //&& (isDetected[pos.x - i + 1][pos.y + j] == 2 || isDetected[pos.x - i][pos.y + j - 1] == 2)
@@ -79,7 +82,7 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
                      )
                 isDetected[pos.x - i][pos.y + j] = 2;
             
-            if ((pos.x - i) < 0 || (pos.x - i) > 15 || (pos.y - j) < 0 || (pos.y - j) > 15)continue;
+            if ((pos.x - i) < 0 || (pos.x - i) > size || (pos.y - j) < 0 || (pos.y - j) > size)continue;
             if (isDetected[pos.x - i][pos.y - j] == 2) isDetected[pos.x - i][pos.y - j] = 2;
             else if (((i*i + j*j) <= sight*sight)
                      //&& (isDetected[pos.x - i + 1][pos.y - j] == 2 || isDetected[pos.x - i][pos.y - j + 1] == 2)
@@ -90,7 +93,7 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
     }
     for (int i = -sight; i <= sight; i++)
         for (int j = -sight; j <= sight; j++) {
-            if ((pos.x + i) < 0 || (pos.x + i) > 15 || (pos.y + j) < 0 || (pos.y + j) > 15)continue;
+            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
             Map[pos.x + i][pos.y + j].setShade(isDetected[pos.x + i][pos.y + j]);
         }
 }
