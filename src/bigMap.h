@@ -12,9 +12,10 @@
 
 class bigMap {
     public:
+
         bigMap(int sz=15);
         
-        // return size
+        //Get the size of the map
         int getSize();
         
         // return the map sprite
@@ -31,6 +32,7 @@ class bigMap {
         
         // update FoW with current char Position and char sight 
         void updateShade(sf::Vector2i pos, int sight);
+
 
     
     

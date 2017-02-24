@@ -10,8 +10,9 @@ class damageTrap:
 		public trap
 {
 private:
-	int damagePoint;
+	int damagePoint; //The damage point that deal to the player
 public:
+	//Constructor
 	explicit damageTrap(std::string trapImg,std::string message,int damagePoint)
 	:trap(trapImg,message,"DamageTrap"),damagePoint(damagePoint){}
 
@@ -21,9 +22,9 @@ public:
 
 	~damageTrap(){}
 
-	int getDamagePoint();
+	int getDamagePoint(); //Return the damage point of the trap
 
-	virtual void activate(Human * a);
+	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
 
 };
 

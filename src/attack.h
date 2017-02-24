@@ -15,16 +15,14 @@
 class projectile: public entity
 {
 public:
-    int movementSpeed = 10;
-    int attackDamage = 1;
-    int lifeTime = 300;
-    
-    int direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
-    bool destroy = false;
-    int counterLifetime = 0;
-    
-    projectile();
-    void update();
+    projectile(); //constructor 
+    void update(); //update the location and the exiting time of projectile
+    int movementSpeed;
+    int attackDamage;
+    int lifeTime; // preset the existing time of a projectile
+    int direction; // 1 - up, 2 - down, 3 - left, 4 - right
+    bool destroy; 
+    int counterLifetime; //existing time of a projectile
 };
 
 

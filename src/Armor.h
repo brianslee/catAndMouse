@@ -12,7 +12,11 @@
 #include <stdio.h>
 class armor{
 public:
+    
+    //Get the hit points of the armor and returns an integer
     int get_HP();
+    
+    //set the hit points fo the armor and returns void
     void set_HP(int Amount); // set extra HP to players
     
 private:

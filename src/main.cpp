@@ -166,11 +166,11 @@ int main()
         {
 			//Trap
 			if(time.asSeconds()>=5.0){
-				dt1.setIsDepolyed(true);
+				dt1.setIsDeployed(true);
 				std::cout<<"Trap depolyed"<<std::endl;
 			}
 
-			if(dt1.getIsLoaded()&&dt1.getIsDepolyed()){
+			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
 				if(player.distanceToInteractable(&dt1)<20){
 					dt1.activate(&player);
 					//player.hp=player.hp-dt1.getDamagePoint;

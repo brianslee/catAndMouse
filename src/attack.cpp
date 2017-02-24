@@ -11,9 +11,14 @@
 projectile::projectile()
 {
     rect.setSize(sf::Vector2f(10, 10));
-    rect.setPosition(0, 0);
     rect.setFillColor(sf::Color::Green);
-    //sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+     movementSpeed = 10;
+     attackDamage = 1;
+     lifeTime = 300;
+    
+     direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
+     destroy = false;
+     counterLifetime = 0;
 }
 
 void projectile::update()
