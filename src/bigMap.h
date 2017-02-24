@@ -1,10 +1,4 @@
-//
-//  bigMap.h
-//  F48
-//
-//  Created by James wang on 2/18/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
+
 
 #ifndef bigMap_h
 #define bigMap_h
@@ -18,30 +12,34 @@
 
 class bigMap {
     public:
-    
-    //Constructor 
-        bigMap();
-    
-    //Get the size of the map
+
+        bigMap(int sz=15);
+        
+        //Get the size of the map
         int getSize();
-    
-    //Get the map sprite and returns a Drawable object
+        
+        // return the map sprite
         sf::Drawable& getSprite();
-    //Get the shade of the map, which is used for Fog of War returns a Drawable object
+        
+        // return the shadow sprite at x,y coordinate
         sf::Drawable& getShade(int x, int y);
-    //Check if the wall is there
+        
+        // return if grid(x,y) is a wall
         bool getWall(int x, int y);
-    //Load the map
+        
+        // initialize the map with an image for locating everything
         void load(sf::Image &image);
-    //Update the fog of war, passing in position and the position to see it     
-    void updateShade(sf::Vector2i pos, int sight);
+        
+        // update FoW with current char Position and char sight 
+        void updateShade(sf::Vector2i pos, int sight);
+
 
     
     
     private:
         int size = 15;
         grid** Map;
-        int isDetected[14][14];
+        int** isDetected;
         sf::Sprite background;
 };
 

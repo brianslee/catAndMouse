@@ -1,10 +1,4 @@
-//
-//  grid.h
-//  F48
-//
-//  Created by James wang on 2/18/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
+
 
 #ifndef grid_h
 #define grid_h
@@ -17,10 +11,17 @@
 class grid {
 public:
     grid();
+    // set the shade level of the current grid
     void setShade(int num);
+    
+    // set if the grid is a wall
     void setWall(bool b);
+    
+    // get wall status of the grid
     bool getWall();
-    sf::RectangleShape& getShade();
+    
+	// get the sprite for the block
+	sf::RectangleShape& getShade();
     
     
     

@@ -34,3 +34,4 @@
 /.settings/
 *.cproject
 *.project
+*.suo

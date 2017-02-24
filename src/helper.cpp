@@ -68,24 +68,6 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
     
 }
 
-void updateRotation2(projectile2& shoot, sf::View& view, sf::RenderWindow& window) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f charPos = shoot.rect.getPosition();
-    sf::Vector2f windowPos = view.getCenter();
-    charPos.x += 30;
-    charPos.y += 30;
-    windowPos.x -= 400;
-    windowPos.y -= 400;
-    
-    //	std::cout << mousePos.x << ' ' << mousePos.y << std::endl;
-    //	std::cout << atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159 << std::endl;
-    sf::Transform transform;
-    
-    shoot.rect.setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
-    
-    
-}
-
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
         sprite.setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
