@@ -18,13 +18,23 @@
 
 class bigMap {
     public:
+    
+    //Constructor 
         bigMap();
+    
+    //Get the size of the map
         int getSize();
+    
+    //Get the map sprite and returns a Drawable object
         sf::Drawable& getSprite();
+    //Get the shade of the map, which is used for Fog of War returns a Drawable object
         sf::Drawable& getShade(int x, int y);
+    //Check if the wall is there
         bool getWall(int x, int y);
+    //Load the map
         void load(sf::Image &image);
-        void updateShade(sf::Vector2i pos, int sight);
+    //Update the fog of war, passing in position and the position to see it     
+    void updateShade(sf::Vector2i pos, int sight);
 
     
     
