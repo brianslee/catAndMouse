@@ -14,8 +14,8 @@ class Door{
 public:
     void open(); //set the status to open
     void close();  //set the status to close
-    bool is_open();  //check the status if it is open
-    bool is_closed();  //check the status if it is closed
+    bool is_open();  //check the status if it is open, returns boolean
+    bool is_closed();  //check the status if it is closed, returns boolean 
     
 private:
     bool status; //close or open
