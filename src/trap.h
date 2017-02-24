@@ -9,23 +9,24 @@ class trap:
 		public Item
 {
 private:
-	bool isDepolyed;
+	bool isDeployed; // if the trap is deployed on the map
 public:
+	//C
 	explicit trap(std::string trapImg,std::string message,std::string trapType)
-	:Item(trapImg,message,trapType),isDepolyed(false){}
+	:Item(trapImg,message,trapType),isDeployed(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType,bool depolyed)
-	:Item(trapImg,message,trapType),isDepolyed(depolyed){}
+	:Item(trapImg,message,trapType),isDeployed(depolyed){}
 		
 	~trap(){}
 
-	virtual void activate(Human * a);
+	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
 
-	bool getIsDepolyed();
+	bool getIsDeployed(); // return if the trap is deployed to the map
 
-	void setIsDepolyed(bool isDepolyed);
+	void setIsDeployed(bool isDeployed); // set the trap to be deployed
 
-	void placeTrap(Human a);
+	void placeTrap(Human a); // deployed the trap on the map
 
 };
 

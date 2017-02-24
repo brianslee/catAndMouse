@@ -43,9 +43,9 @@ class Human:public entity{
     void updateCoor();
     void walk(int dir);
     void setPos(const sf::Vector2f& pos);
-    int distanceToInteractable(interactable* item);
-	void inspect(std::vector<interactable*> itemsList);
-	void react(std::vector<interactable*> itemsList);
+    int distanceToInteractable(interactable* item);  //get the distance between the interactables and the player
+	void inspect(std::vector<interactable*> itemsList); //Inspect the interactables that is closest to the player , which will gives a message about it
+	void react(std::vector<interactable*> itemsList); //React with the interactables that is closest to the player
 
     
 };
