@@ -1,7 +1,0 @@
-﻿  main.cpp
-b:\scottzhu\catandmouse-collision-model\maze-map-collision\maze-map-collision\character.h(24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-b:\scottzhu\catandmouse-collision-model\maze-map-collision\maze-map-collision\grid.h(63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-b:\scottzhu\catandmouse-collision-model\maze-map-collision\maze-map-collision\helper.h(19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-b:\scottzhu\catandmouse-collision-model\maze-map-collision\maze-map-collision\main.cpp(32): warning C4305: 'argument': truncation from 'double' to 'float'
-  maze-map-collision.vcxproj -> B:\scottzhu\catAndMouse-collision-model\maze-map-collision\Debug\maze-map-collision.exe
-  maze-map-collision.vcxproj -> B:\scottzhu\catAndMouse-collision-model\maze-map-collision\Debug\maze-map-collision.pdb (Full PDB)
