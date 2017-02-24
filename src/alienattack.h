@@ -15,15 +15,14 @@
 class projectile2: public entity
 {
 public:
-    int movementSpeed = 10;
-    int attackDamage = 10;
-    float lifeTime = 50;
-    int direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
-    bool destroy = false;
-    int counterLifetime = 0;
-    
-    projectile2();
-    void update();
+    projectile2();//constructor 
+    void update(); // update the movement and exist time of the projectile
+    int movementSpeed; 
+    int attackDamage;
+    float lifeTime; //preset the existing time of a projectile
+    int direction; // 1 - up, 2 - down, 3 - left, 4 - right
+    bool destroy; 
+    int counterLifetime;// counting the existing time 
 };
 
 #endif /* alienattack_h */
