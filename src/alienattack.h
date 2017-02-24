@@ -17,7 +17,6 @@ class projectile2: public entity
 public:
     projectile2();//constructor 
     void update(); // update the movement and exist time of the projectile
-private:
     int movementSpeed; 
     int attackDamage;
     float lifeTime; //preset the existing time of a projectile

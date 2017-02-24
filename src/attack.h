@@ -17,7 +17,6 @@ class projectile: public entity
 public:
     projectile(); //constructor 
     void update(); //update the location and the exiting time of projectile
-private:
     int movementSpeed;
     int attackDamage;
     int lifeTime; // preset the existing time of a projectile
