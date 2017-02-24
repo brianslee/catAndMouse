@@ -7,7 +7,7 @@
 //
 
 #include "bigMap.h"
-
+#include <iostream>
 
 
 
@@ -34,7 +34,7 @@ void bigMap::load(sf::Image &image) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             isDetected[i][j] = 0;
-            Map[i][j].getShade().setPosition(80 * (i - 1) - 2, 80 * (j - 1) - 2);
+            Map[i][j].getShade().setPosition(80 * (i) , 80 * (j) );
             
             //				std::cout << int(image.getPixel(i * 80, j * 80).r) << ' ' << int(image.getPixel(i * 80, j * 80).g) << ' ' << int(image.getPixel(i * 80, j * 80).b) << endl;
             if (image.getPixel(i * 80, j * 80) == sf::Color(99, 64, 0, 255))
@@ -47,7 +47,7 @@ void bigMap::load(sf::Image &image) {
     }
 }
 void bigMap:: updateShade(sf::Vector2i pos, int sight) {
-    for (int i = 0; i < size; i++) {
+   for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             //                std::cout << i << ' ' << j << " " << isDetected[i][j] << std::endl;
             if (isDetected[i][j] == 2) {
@@ -58,43 +58,49 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
     isDetected[pos.x][pos.y] = 2;
     for (int i = 0; i <= sight; i++) {
         for (int j = 0; j <= sight; j++) {
-            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
-            if (isDetected[pos.x + i][pos.y + j] == 2) isDetected[pos.x + i][pos.y + j] = 2;
-            else if (((i*i + j*j) <= sight*sight)
+            if ((pos.x + i) < 0 || (pos.x + i) >= size || (pos.y + j) < 0 || (pos.y + j) >= size);
+            else if (isDetected[pos.x + i][pos.y + j] == 2) isDetected[pos.x + i][pos.y + j] = 2;
+            else if (((i*i + j*j) <= sight*sight + sight)
                      //       && (isDetected[pos.x + i - 1][pos.y + j] == 2 || isDetected[pos.x + i][pos.y + j - 1] == 2)
                      //       && !(Map[pos.x + i][pos.y + j - 1].getWall() && Map[pos.x + i - 1][pos.y + j].getWall())
-                     )
+                     ){
+            //    std::cout<<"lr"<<std::endl;
                 isDetected[pos.x + i][pos.y + j] = 2;
-            
-            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y - j) < 0 || (pos.y - j) > size)continue;
-            if (isDetected[pos.x + i][pos.y - j] == 2) isDetected[pos.x + i][pos.y - j] = 2;
-            else if (((i*i + j*j) <= sight*sight)
+			}
+            if ((pos.x + i) < 0 || (pos.x + i) >= size || (pos.y - j) < 0 || (pos.y - j) >= size);
+            else if (isDetected[pos.x + i][pos.y - j] == 2) isDetected[pos.x + i][pos.y - j] = 2;
+            else if (((i*i + j*j) <= sight*sight + sight)
+		
                      //&& (isDetected[pos.x + i - 1][pos.y - j] == 2 || isDetected[pos.x + i][pos.y - j + 1] == 2)
                      //&& !(Map[pos.x + i][pos.y - j + 1].getWall() && Map[pos.x + i - 1][pos.y - j].getWall())
-                     )
-                isDetected[pos.x + i][pos.y + j] = 2;
-            
-            if ((pos.x - i) < 0 || (pos.x - i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
-            if (isDetected[pos.x - i][pos.y + j] == 2) isDetected[pos.x - i][pos.y + j] = 2;
-            else if (((i*i + j*j) <= sight*sight)
+                     ){
+            //    std::cout<<"ur"<<std::endl;
+                isDetected[pos.x + i][pos.y - j] = 2;
+	        }
+            if ((pos.x - i) < 0 || (pos.x - i) >= size || (pos.y + j) < 0 || (pos.y + j) >= size);
+            else if (isDetected[pos.x - i][pos.y + j] == 2) isDetected[pos.x - i][pos.y + j] = 2;
+            else if (((i*i + j*j) <= sight*sight + sight)
                      //&& (isDetected[pos.x - i + 1][pos.y + j] == 2 || isDetected[pos.x - i][pos.y + j - 1] == 2)
                      //&& !(Map[pos.x - i][pos.y + j - 1].getWall() && Map[pos.x - i + 1][pos.y + j].getWall())
-                     )
+                     ){
+            //    std::cout<<"ll"<<std::endl;
                 isDetected[pos.x - i][pos.y + j] = 2;
+            }
             
-            if ((pos.x - i) < 0 || (pos.x - i) > size || (pos.y - j) < 0 || (pos.y - j) > size)continue;
-            if (isDetected[pos.x - i][pos.y - j] == 2) isDetected[pos.x - i][pos.y - j] = 2;
-            else if (((i*i + j*j) <= sight*sight)
+            if ((pos.x - i) < 0 || (pos.x - i) >= size || (pos.y - j) < 0 || (pos.y - j) >= size);
+            else if (isDetected[pos.x - i][pos.y - j] == 2) isDetected[pos.x - i][pos.y - j] = 2;
+            else if (((i*i + j*j) <= sight*sight + sight)
                      //&& (isDetected[pos.x - i + 1][pos.y - j] == 2 || isDetected[pos.x - i][pos.y - j + 1] == 2)
                      //&& !(Map[pos.x - i][pos.y - j + 1].getWall() && Map[pos.x - i][pos.y - j + 1].getWall())
-                     )
+                     ){
+            //    std::cout<<"ul"<<std::endl;
                 isDetected[pos.x - i][pos.y - j] = 2;
+			}
         }
     }
-    for (int i = -sight; i <= sight; i++)
-        for (int j = -sight; j <= sight; j++) {
-            if ((pos.x + i) < 0 || (pos.x + i) > size || (pos.y + j) < 0 || (pos.y + j) > size)continue;
-            Map[pos.x + i][pos.y + j].setShade(isDetected[pos.x + i][pos.y + j]);
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++) {
+            Map[i][j].setShade(isDetected[i][j]);
         }
 }
 

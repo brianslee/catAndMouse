@@ -230,7 +230,7 @@ int main()
             
         }
         
-        //		maze.updateShade(player.getCoor(), player.getSight());
+        maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
 
@@ -315,8 +315,7 @@ int main()
                 projectile2.rect.setPosition(player.getPos().x + player.rect.getSize().x/2 - projectile2.rect.getSize().x/2,player.getPos().y + player.rect.getSize().y/2 - projectile2.rect.getSize().y/2);
 
                 projectile2.direction = player.direction;
-                updateRotation2(projectile2, view, window);
-				projectileArray2.push_back(projectile2);
+                projectileArray2.push_back(projectile2);
             }
         }
 		
@@ -328,6 +327,10 @@ int main()
         window.draw(player.getSprite());
         window.draw(player2.getSprite());
         
+        for(int i=0;i<maze.getSize();i++){
+        	for(int j=0;j<maze.getSize();j++)
+	        	window.draw(maze.getShade(i,j));
+		}
         
         // Draw Projectiles
         counter = 0;
