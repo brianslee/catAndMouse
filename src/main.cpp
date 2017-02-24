@@ -250,12 +250,11 @@ int main()
     //receiving and setting player2 Data
         sf::Vector2f player2Pos = network.receiveData();
        
-	if(player2Pos.x != 0)
-{
-
- std::cout <<"Receiving Data: " << player2Pos.x << player2Pos.y << std::endl;
- player2.setPos(player2Pos); 
-}
+	if(player2Pos.x != 0){
+        std::cout <<"Receiving Data: " << player2Pos.x <<' '<< player2Pos.y << std::endl;
+        if(maze.getDetect(int(player2Pos.x)/80,int(player2Pos.y)/80)==2)
+ 	        player2.setPos(player2Pos); 
+   }
         
         
         // Projectile Collides with Enemy

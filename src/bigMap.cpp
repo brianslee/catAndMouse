@@ -104,3 +104,6 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
         }
 }
 
+int bigMap::getDetect(int x,int y){
+	return isDetected[x][y];
+}
