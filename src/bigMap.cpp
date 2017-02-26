@@ -11,7 +11,8 @@
 
 
 
-bigMap::bigMap(int size) {
+bigMap::bigMap(int sz) {
+	size=sz;
     Map = new grid*[size];
     for (int i = 0; i < size; i++)
         Map[i] = new grid[size];
@@ -34,10 +35,10 @@ void bigMap::load(sf::Image &image) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             isDetected[i][j] = 0;
-            Map[i][j].getShade().setPosition(80 * (i) , 80 * (j) );
+            Map[i][j].getShade().setPosition(80 * (i) -1, 80 * (j) +1);
             
             //				std::cout << int(image.getPixel(i * 80, j * 80).r) << ' ' << int(image.getPixel(i * 80, j * 80).g) << ' ' << int(image.getPixel(i * 80, j * 80).b) << endl;
-            if (image.getPixel(i * 80, j * 80) == sf::Color(99, 64, 0, 255))
+            if (image.getPixel(i * 80+1, j * 80+1) == sf::Color(99, 64, 0, 255))
                 Map[i][j].setWall(1);
             else Map[i][j].setWall(0);
             //std::cout << i << ' ' << j << ' ' << Map[i][j].getWall() << std::endl;
@@ -60,39 +61,26 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
         for (int j = 0; j <= sight; j++) {
             if ((pos.x + i) < 0 || (pos.x + i) >= size || (pos.y + j) < 0 || (pos.y + j) >= size);
             else if (isDetected[pos.x + i][pos.y + j] == 2) isDetected[pos.x + i][pos.y + j] = 2;
-            else if (((i*i + j*j) <= sight*sight + sight)
-                     //       && (isDetected[pos.x + i - 1][pos.y + j] == 2 || isDetected[pos.x + i][pos.y + j - 1] == 2)
-                     //       && !(Map[pos.x + i][pos.y + j - 1].getWall() && Map[pos.x + i - 1][pos.y + j].getWall())
-                     ){
+            else if (checkVisible(0,i,j,sight)){
             //    std::cout<<"lr"<<std::endl;
                 isDetected[pos.x + i][pos.y + j] = 2;
 			}
             if ((pos.x + i) < 0 || (pos.x + i) >= size || (pos.y - j) < 0 || (pos.y - j) >= size);
             else if (isDetected[pos.x + i][pos.y - j] == 2) isDetected[pos.x + i][pos.y - j] = 2;
-            else if (((i*i + j*j) <= sight*sight + sight)
-		
-                     //&& (isDetected[pos.x + i - 1][pos.y - j] == 2 || isDetected[pos.x + i][pos.y - j + 1] == 2)
-                     //&& !(Map[pos.x + i][pos.y - j + 1].getWall() && Map[pos.x + i - 1][pos.y - j].getWall())
-                     ){
+            else if (checkVisible(1,i,j,sight)){
             //    std::cout<<"ur"<<std::endl;
                 isDetected[pos.x + i][pos.y - j] = 2;
 	        }
             if ((pos.x - i) < 0 || (pos.x - i) >= size || (pos.y + j) < 0 || (pos.y + j) >= size);
             else if (isDetected[pos.x - i][pos.y + j] == 2) isDetected[pos.x - i][pos.y + j] = 2;
-            else if (((i*i + j*j) <= sight*sight + sight)
-                     //&& (isDetected[pos.x - i + 1][pos.y + j] == 2 || isDetected[pos.x - i][pos.y + j - 1] == 2)
-                     //&& !(Map[pos.x - i][pos.y + j - 1].getWall() && Map[pos.x - i + 1][pos.y + j].getWall())
-                     ){
+            else if (checkVisible(2,i,j,sight)){
             //    std::cout<<"ll"<<std::endl;
                 isDetected[pos.x - i][pos.y + j] = 2;
             }
             
             if ((pos.x - i) < 0 || (pos.x - i) >= size || (pos.y - j) < 0 || (pos.y - j) >= size);
             else if (isDetected[pos.x - i][pos.y - j] == 2) isDetected[pos.x - i][pos.y - j] = 2;
-            else if (((i*i + j*j) <= sight*sight + sight)
-                     //&& (isDetected[pos.x - i + 1][pos.y - j] == 2 || isDetected[pos.x - i][pos.y - j + 1] == 2)
-                     //&& !(Map[pos.x - i][pos.y - j + 1].getWall() && Map[pos.x - i][pos.y - j + 1].getWall())
-                     ){
+            else if (checkVisible(3,i,j,sight)){
             //    std::cout<<"ul"<<std::endl;
                 isDetected[pos.x - i][pos.y - j] = 2;
 			}
@@ -102,5 +90,30 @@ void bigMap:: updateShade(sf::Vector2i pos, int sight) {
         for (int j = 0; j < size; j++) {
             Map[i][j].setShade(isDetected[i][j]);
         }
+}
+
+int bigMap::getDetect(int x,int y){
+	return isDetected[x][y];
+}
+
+bool bigMap::checkVisible(int a,int i,int j,int sight){
+	bool ans=((i*i + j*j) <= sight*sight + sight);
+	switch(a){
+		case 0:
+			return ans;
+			break;
+		case 1:
+			return ans;
+			break;
+		case 2:
+			return ans;
+			break;
+		case 3:
+			return ans;
+			break;
+		default:
+			return false;
+			break;
+	}
 }
 

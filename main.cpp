@@ -28,7 +28,6 @@
 #include "network.h"
 
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
-    int mspriteCounter = 0, mspriteNum = 9, mspriteLength = 216, mspriteWidth = 216;
 
 
 //setup player sprites
@@ -39,15 +38,6 @@ void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(x,y);
 
-}
-
-void setupMarine(Human & player, sf::Texture& texture)
-{
-    player.getSprite().setTexture(texture);
-    //player.getSprite().setTextureRect(sf::IntRect(0, 0, 216, 216));
-    player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth));
-    player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
-    player.getSprite().move(120,120);
 }
 
 
@@ -71,13 +61,8 @@ int main()
 	
     
 
-<<<<<<< HEAD
-    sf::RenderWindow window(sf::VideoMode(700, 700), "Maze", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,alienTexture,marineTexture;
-=======
     sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture;
->>>>>>> 366ef9830b075b8f8bae9adcc5afbd16efe83f70
     sf::Image image;
     sf::Sprite spr, spr2;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
@@ -100,12 +85,7 @@ int main()
         return EXIT_FAILURE;
     }
     
-    if (!alienTexture.loadFromFile("img/alien.png")) {
-        return EXIT_FAILURE;
-    }
-
-    if(!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png"))
-    {
+    if (!marineTexture.loadFromFile("img/alien.png")) {
         return EXIT_FAILURE;
     }
     spr.setTexture(texture);
@@ -159,20 +139,13 @@ int main()
     setupPlayer(player, marineTexture, 280, 440);
     setupPlayer(player2, tx2, 1720, 2140);   
     player.updateCoor();
-<<<<<<< HEAD
-    player2.updateCoor();
-    //setupMarine(player, marineTexture);
-    setupPlayer(player, alienTexture)
-    setupPlayer(player2, tx2);    
-=======
     player2.updateCoor(); 
->>>>>>> 366ef9830b075b8f8bae9adcc5afbd16efe83f70
     
     //	player.getSprite().setTexture(tx2);
     //	player.getSprite().setScale(0.6, 0.6);
     //	player.getSprite().setOrigin(sf::Vector2f(40, 40));
     //	player.getSprite().move(40, 40);
-    //	updateSprite(player.getSprite(), alienTexture, window, 215, 215, 4);
+    //	updateSprite(player.getSprite(), marineTexture, window, 215, 215, 4);
     //for (int i = 0; i < 15; i++)
     //    for (int j = 0; j < 15; j++)
     //        std::cout << i << ' ' << j << ' ' << maze.getWall(i, j) << std::endl;
@@ -197,7 +170,7 @@ int main()
 			//Trap
 			if(time.asSeconds()>=5.0){
 				dt1.setIsDeployed(true);
-				std::cout<<"Trap deployed"<<std::endl;
+				std::cout<<"Trap depolyed"<<std::endl;
 			}
 
 			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
@@ -335,13 +308,13 @@ int main()
 
 
         // Fires Missle (Space bar)
-        if (elapsed1.asSeconds() >= 0.1)
+        if (elapsed1.asSeconds() >= 0.8)
         {
             clock.restart();
             
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                projectile2.rect.setPosition(player.getPos().x + player.rect.getSize().x/2 - projectile2.rect.getSize().x/2,player.getPos().y + player.rect.getSize().y/2 - projectile2.rect.getSize().y/2);
+                projectile2.rect.setPosition(player.getPos().x ,player.getPos().y);
 
                 projectile2.direction = player.direction;
                 projectileArray2.push_back(projectile2);
@@ -365,7 +338,7 @@ int main()
         counter = 0;
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
         {
-            projectileArray2[counter].update(); // Update Projectile
+            projectileArray2[counter].update(player,view,window); // Update Projectile
             window.draw(projectileArray2[counter].rect);
             
             counter++;

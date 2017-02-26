@@ -33,14 +33,15 @@ class bigMap {
         // update FoW with current char Position and char sight 
         void updateShade(sf::Vector2i pos, int sight);
 
-
-    
+		// get the detection status
+    	int getDetect(int x, int y);
     
     private:
-        int size = 15;
+        int size;
         grid** Map;
         int** isDetected;
         sf::Sprite background;
+        bool checkVisible(int Enum,int currentX,int currentY,int sight);
 };
 
 
