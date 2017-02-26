@@ -31,12 +31,12 @@
 
 
 //setup player sprites
-void setupPlayer(Human & player, sf::Texture& texture){
+void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
     player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
-    player.getSprite().move(120,120);
+    player.getSprite().move(x,y);
 
 }
 
@@ -48,6 +48,7 @@ int main()
     sf::Clock clock2;
     sf::Clock clock3;
     sf::Clock clock4;
+	sf::Clock packetSendClock;
     float playerMovementSpeed = 8;
     
     int counterWalking = 0;
@@ -60,7 +61,7 @@ int main()
 	
     
 
-    sf::RenderWindow window(sf::VideoMode(700, 700), "Maze", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture;
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -72,12 +73,14 @@ int main()
 
     std::cout << "Loading texture...\n";
     
-    if (!image.loadFromFile("img/map.png")) {
+    if (!image.loadFromFile("img/firstmap.png")) {
         return EXIT_FAILURE;
     }
-    texture.loadFromImage(image);
-    
-    
+
+    if (!texture.loadFromFile("img/mapspr.png")){
+    	return EXIT_FAILURE;
+	}
+
     if (!tx2.loadFromFile("img/triangle.png")) {
         return EXIT_FAILURE;
     }
@@ -93,7 +96,7 @@ int main()
     
     
     Human player2 = Human(sf::Vector2i(5,9),7,3);
-    bigMap maze = bigMap();
+    bigMap maze = bigMap(30);
 
 	//Item
 	Item item_test=Item("img/circle.png","Damage Trap");
@@ -133,10 +136,10 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
+    setupPlayer(player, marineTexture, 280, 440);
+    setupPlayer(player2, tx2, 1720, 2140);   
     player.updateCoor();
-    player2.updateCoor();
-    setupPlayer(player, marineTexture);
-    setupPlayer(player2, tx2);    
+    player2.updateCoor(); 
     
     //	player.getSprite().setTexture(tx2);
     //	player.getSprite().setScale(0.6, 0.6);
@@ -233,15 +236,14 @@ int main()
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
-
-	if(playerPos != player.getPos()){
+	if(playerPos != player.getPos()||packetSendClock.getElapsedTime().asMilliseconds()>150){
 
 
 	//sending data
-	network.sendData(player.getPos());
-	
+		network.sendData(player.getPos());
+		packetSendClock.restart();
 	}
-
+//	else std::cout<<packetSendClock.getElapsedTime().asMilliseconds()<<std::endl;
 	sf::Time elapsed1 = clock.getElapsedTime();
     sf::Time elapsed2 = clock2.getElapsedTime();
     sf::Time elapsed3 = clock3.getElapsedTime();
@@ -250,12 +252,12 @@ int main()
     //receiving and setting player2 Data
         sf::Vector2f player2Pos = network.receiveData();
        
-	if(player2Pos.x != 0)
-{
-
- std::cout <<"Receiving Data: " << player2Pos.x << player2Pos.y << std::endl;
- player2.setPos(player2Pos); 
-}
+	if(player2Pos.x != 0){
+        std::cout <<"Receiving Data: " << player2Pos.x <<' '<< player2Pos.y << std::endl;
+        if(maze.getDetect(int(player2Pos.x)/80,int(player2Pos.y)/80)==2)
+ 	        player2.setPos(player2Pos); 
+ 	    else player2.setPos(sf::Vector2f(2400,2400));
+   }
         
         
         // Projectile Collides with Enemy
