@@ -1,8 +1,10 @@
-LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
+
+
 PROJECTNAME=catAndMouse
 SRC=src
 BUILDPATH=build
 CC=g++
+
 
 
 ifeq ($(OS),Windows_NT)
@@ -13,6 +15,7 @@ ifeq ($(OS),Windows_NT)
 	PATHSEP2=\\
 	LIBLOC=C:\bin\SFML\lib
 	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
+	LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 	NULLDIR=null
 	BUILD=.\$(BUILDPATH)
 else
@@ -25,9 +28,12 @@ else
 
     ifeq ($(UNAME_S),Linux)
 	NULLDIR=/dev/null
+	LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
     endif
     ifeq ($(UNAME_S),Darwin)
-
+	INCLUDE=-F /Library/Frameworks
+	LIB=-framework sfml-graphics -framework sfml-window -framework sfml-system -framework sfml-network -framework sfml-audio
+	
     endif
 endif
 
@@ -68,6 +74,9 @@ linuxlink: $(OBJS)
 	@echo Moving objects files to $(BUILD)
 	$(MOVECMD) *.o $(BUILD)
 	@echo Build Success
+	
+osx:
+	
 	
 moveback:
 	if [ -f $(BUILD)/main.o ]; then $(MOVECMD) $(BUILD)/*.o . ; fi
