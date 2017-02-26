@@ -63,4 +63,4 @@ Attacking direction, only 4 direction attack, not following direction key.
 
 If connected both players can pick up items that was previously picked up.
 
-
+Fog of War, can see other players through the Fog of War
