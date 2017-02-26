@@ -31,12 +31,12 @@
 
 
 //setup player sprites
-void setupPlayer(Human & player, sf::Texture& texture){
+void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
     player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
-    player.getSprite().move(120,120);
+    player.getSprite().move(x,y);
 
 }
 
@@ -72,12 +72,14 @@ int main()
 
     std::cout << "Loading texture...\n";
     
-    if (!image.loadFromFile("img/map.png")) {
+    if (!image.loadFromFile("img/firstmap.png")) {
         return EXIT_FAILURE;
     }
-    texture.loadFromImage(image);
-    
-    
+
+    if (!texture.loadFromFile("img/mapspr.png")){
+    	return EXIT_FAILURE;
+	}
+
     if (!tx2.loadFromFile("img/triangle.png")) {
         return EXIT_FAILURE;
     }
@@ -93,7 +95,7 @@ int main()
     
     
     Human player2 = Human(sf::Vector2i(5,9),7,3);
-    bigMap maze = bigMap();
+    bigMap maze = bigMap(30);
 
 	//Item
 	Item item_test=Item("img/circle.png","Damage Trap");
@@ -133,10 +135,10 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
+    setupPlayer(player, marineTexture, 280, 440);
+    setupPlayer(player2, tx2, 1720, 2140);   
     player.updateCoor();
-    player2.updateCoor();
-    setupPlayer(player, marineTexture);
-    setupPlayer(player2, tx2);    
+    player2.updateCoor(); 
     
     //	player.getSprite().setTexture(tx2);
     //	player.getSprite().setScale(0.6, 0.6);

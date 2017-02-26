@@ -37,7 +37,7 @@ class bigMap {
     	int getDetect(int x, int y);
     
     private:
-        int size = 15;
+        int size;
         grid** Map;
         int** isDetected;
         sf::Sprite background;

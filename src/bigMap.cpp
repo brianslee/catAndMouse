@@ -11,7 +11,8 @@
 
 
 
-bigMap::bigMap(int size) {
+bigMap::bigMap(int sz) {
+	size=sz;
     Map = new grid*[size];
     for (int i = 0; i < size; i++)
         Map[i] = new grid[size];
@@ -34,10 +35,10 @@ void bigMap::load(sf::Image &image) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             isDetected[i][j] = 0;
-            Map[i][j].getShade().setPosition(80 * (i) , 80 * (j) );
+            Map[i][j].getShade().setPosition(80 * (i)+1 , 80 * (j)+1 );
             
             //				std::cout << int(image.getPixel(i * 80, j * 80).r) << ' ' << int(image.getPixel(i * 80, j * 80).g) << ' ' << int(image.getPixel(i * 80, j * 80).b) << endl;
-            if (image.getPixel(i * 80, j * 80) == sf::Color(99, 64, 0, 255))
+            if (image.getPixel(i * 80+1, j * 80+1) == sf::Color(99, 64, 0, 255))
                 Map[i][j].setWall(1);
             else Map[i][j].setWall(0);
             //std::cout << i << ' ' << j << ' ' << Map[i][j].getWall() << std::endl;
