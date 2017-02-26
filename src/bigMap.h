@@ -41,6 +41,7 @@ class bigMap {
         grid** Map;
         int** isDetected;
         sf::Sprite background;
+        bool checkVisible(int Enum,int currentX,int currentY,int sight);
 };
 
 

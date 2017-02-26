@@ -48,6 +48,7 @@ int main()
     sf::Clock clock2;
     sf::Clock clock3;
     sf::Clock clock4;
+	sf::Clock packetSendClock;
     float playerMovementSpeed = 8;
     
     int counterWalking = 0;
@@ -60,7 +61,7 @@ int main()
 	
     
 
-    sf::RenderWindow window(sf::VideoMode(700, 700), "Maze", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture;
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -235,15 +236,14 @@ int main()
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
-
-	if(playerPos != player.getPos()){
+	if(playerPos != player.getPos()||packetSendClock.getElapsedTime().asMilliseconds()>150){
 
 
 	//sending data
-	network.sendData(player.getPos());
-	
+		network.sendData(player.getPos());
+		packetSendClock.restart();
 	}
-
+//	else std::cout<<packetSendClock.getElapsedTime().asMilliseconds()<<std::endl;
 	sf::Time elapsed1 = clock.getElapsedTime();
     sf::Time elapsed2 = clock2.getElapsedTime();
     sf::Time elapsed3 = clock3.getElapsedTime();
@@ -256,6 +256,7 @@ int main()
         std::cout <<"Receiving Data: " << player2Pos.x <<' '<< player2Pos.y << std::endl;
         if(maze.getDetect(int(player2Pos.x)/80,int(player2Pos.y)/80)==2)
  	        player2.setPos(player2Pos); 
+ 	    else player2.setPos(sf::Vector2f(2400,2400));
    }
         
         
