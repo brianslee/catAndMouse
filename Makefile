@@ -1,10 +1,7 @@
-
-
 PROJECTNAME=catAndMouse
 SRC=src
 BUILDPATH=build
 CC=g++
-
 
 
 ifeq ($(OS),Windows_NT)
@@ -13,7 +10,7 @@ ifeq ($(OS),Windows_NT)
 	DELCMD=del
 	MOVECMD=move
 	PATHSEP2=\\
-	LIBLOC=C:\bin\SFML\lib
+	LIBLOC=C:\bin\SFML-2.4.1\lib
 	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
 	LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 	NULLDIR=null
@@ -73,6 +70,7 @@ linuxlink: $(OBJS)
 	@echo ==============================
 	@echo Moving objects files to $(BUILD)
 	$(MOVECMD) *.o $(BUILD)
+	@echo ==============================
 	@echo Build Success
 	
 osx:
@@ -94,5 +92,6 @@ clean:
 	@echo ==============================
 	@echo Cleaning directories
 	$(DELCMD) $(PROJECTNAME)* $(BUILD)$(PATHSEP2)*.o *.dll 1 *.o
+	@echo ==============================
 	@echo Done
 
