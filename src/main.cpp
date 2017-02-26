@@ -28,6 +28,7 @@
 #include "network.h"
 
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
+    int mspriteCounter = 0, mspriteNum = 9, mspriteLength = 216, mspriteWidth = 216;
 
 
 //setup player sprites
@@ -38,6 +39,15 @@ void setupPlayer(Human & player, sf::Texture& texture){
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(120,120);
 
+}
+
+void setupMarine(Human & player, sf::Texture& texture)
+{
+    player.getSprite().setTexture(texture);
+    //player.getSprite().setTextureRect(sf::IntRect(0, 0, 216, 216));
+    player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth));
+    player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
+    player.getSprite().move(120,120);
 }
 
 
@@ -61,7 +71,7 @@ int main()
     
 
     sf::RenderWindow window(sf::VideoMode(700, 700), "Maze", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,marineTexture;
+    sf::Texture texture,tx2,alienTexture,marineTexture;
     sf::Image image;
     sf::Sprite spr, spr2;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
@@ -82,7 +92,12 @@ int main()
         return EXIT_FAILURE;
     }
     
-    if (!marineTexture.loadFromFile("img/alien.png")) {
+    if (!alienTexture.loadFromFile("img/alien.png")) {
+        return EXIT_FAILURE;
+    }
+
+    if(!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png"))
+    {
         return EXIT_FAILURE;
     }
     spr.setTexture(texture);
@@ -135,14 +150,15 @@ int main()
     maze.load(image);
     player.updateCoor();
     player2.updateCoor();
-    setupPlayer(player, marineTexture);
+    //setupMarine(player, marineTexture);
+    setupPlayer(player, alienTexture)
     setupPlayer(player2, tx2);    
     
     //	player.getSprite().setTexture(tx2);
     //	player.getSprite().setScale(0.6, 0.6);
     //	player.getSprite().setOrigin(sf::Vector2f(40, 40));
     //	player.getSprite().move(40, 40);
-    //	updateSprite(player.getSprite(), marineTexture, window, 215, 215, 4);
+    //	updateSprite(player.getSprite(), alienTexture, window, 215, 215, 4);
     //for (int i = 0; i < 15; i++)
     //    for (int j = 0; j < 15; j++)
     //        std::cout << i << ' ' << j << ' ' << maze.getWall(i, j) << std::endl;
@@ -167,7 +183,7 @@ int main()
 			//Trap
 			if(time.asSeconds()>=5.0){
 				dt1.setIsDeployed(true);
-				std::cout<<"Trap depolyed"<<std::endl;
+				std::cout<<"Trap deployed"<<std::endl;
 			}
 
 			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){

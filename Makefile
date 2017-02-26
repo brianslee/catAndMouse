@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 	DELCMD=del
 	MOVECMD=move
 	PATHSEP2=\\
-	LIBLOC=C:\bin\SFML\lib
+	LIBLOC=C:\bin\SFML-2.4.1\lib
 	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
 	NULLDIR=null
 	BUILD=.\$(BUILDPATH)
