@@ -308,7 +308,7 @@ int main()
 
 
         // Fires Missle (Space bar)
-        if (elapsed1.asSeconds() >= 0.8)
+        if (elapsed1.asSeconds() >= 0.5)
         {
             clock.restart();
             
