@@ -15,9 +15,9 @@
 	}
 
 	void trap::placeTrap(Human a){
-		this->setPosition(a.getPos());
+		this->setPosition(a.getPos().x+50,a.getPos().y);
 		this->setIsLoaded(true);
-		//this->setIsDepolyed(true);
+		this->setIsDeployed(true);
 
 	}
 

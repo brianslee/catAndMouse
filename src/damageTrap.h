@@ -19,6 +19,12 @@ public:
 	explicit damageTrap(std::string trapImg,std::string message,int damagePoint,bool isDepolyed)
 	:trap(trapImg,message,"DamageTrap",isDepolyed),damagePoint(damagePoint){}
 	
+	explicit damageTrap(std::string trapImg,std::string message,float scale,int damagePoint)
+		:trap(trapImg,message,"DamageTrap",scale),damagePoint(damagePoint){}
+
+	explicit damageTrap(std::string trapImg,std::string message,float scale,int damagePoint,bool isDepolyed)
+		:trap(trapImg,message,"DamageTrap",scale,isDepolyed),damagePoint(damagePoint){}
+
 
 	~damageTrap(){}
 

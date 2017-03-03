@@ -102,24 +102,28 @@ int main()
 	Item item_test=Item("img/circle.png","Damage Trap");
 	Item item_test2=Item("img/circle.png","Sword");
 	//Chest ch=Chest("It looks safe");
-	chest ch=chest("Spritesheets/Crate1.png","Testing");
-	chest ch2=chest("It's a chest");
+	chest ch=chest("Spritesheets/Crate1.png","Testing",3);
+	chest ch2=chest("Spritesheets/Crate1.png","It's a chest",3);
 	ch.setItem(&item_test2);
 	ch2.setItem(&item_test);
-	damageTrap dt1=damageTrap("Spritesheets/landmine.png","Land Mine: 20 Damage",20);
+	damageTrap dt1=damageTrap("Spritesheets/landmine.png","Land Mine: 20 Damage",2.0,20);
 
 	std::vector<interactable*> itemsList;
-	itemsList.push_back(&item_test2);
 	itemsList.push_back(&ch2);
-	itemsList.push_back(&item_test);
 	itemsList.push_back(&dt1);
 	itemsList.push_back(&ch);
+	itemsList.push_back(&item_test2);
+	itemsList.push_back(&item_test);
 
-	for(unsigned i=0;i<3;i++)
-		itemsList[i]->getSprite().setScale(0.6,0.6);
-	ch.getSprite().setScale(2,2);
-	dt1.getSprite().setScale(2,2);
-	ch.setPosition(1000,700);
+//	for(unsigned i=0;i<3;i++)
+//		itemsList[i]->getSprite().setScale(0.6,0.6);
+//	ch.getSprite().setScale(3,3);
+	std::cout<<"Before setRect"<<std::endl;
+	ch.setRect(0,0,32,32);
+	ch2.setRect(0,0,32,32);
+	dt1.setRect(0,0,32,32);
+//	dt1.getSprite().setScale(2,2);
+	ch.setPosition(1000,1000);
 	ch2.setPosition(300,200);
 	item_test.setIsLoaded(false);
 	item_test2.setIsLoaded(false);
@@ -168,13 +172,8 @@ int main()
         while (window.pollEvent(event))
         {
 			//Trap
-			if(time.asSeconds()>=5.0){
-				dt1.setIsDeployed(true);
-				std::cout<<"Trap depolyed"<<std::endl;
-			}
-
 			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
-				if(player.distanceToInteractable(&dt1)<20){
+				if(player.distanceToInteractable(&dt1)<10){
 					dt1.activate(&player);
 					//player.hp=player.hp-dt1.getDamagePoint;
 //					itemsList.pop_back();
@@ -216,8 +215,11 @@ int main()
                         if (checkAccess(player, 3, maze))
                             player.walk(3);
                         break;
-                    default:
+                    case sf::Keyboard::H:
 						std::cout<< "HP: " <<player.hp<<std::endl;
+						break;
+                    default:
+
                        // std::cout << player.getCoor().x << ' ' << player.getCoor().y << ' ' << player.getPos().x << ' ' << player.getPos().y << std::endl;
                       //  std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << std::endl;
                      //   std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << std::endl;
