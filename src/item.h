@@ -5,6 +5,7 @@ class Item:
 		public interactable
 {
 public:
+	//Constructor
 	explicit Item(std::string itemImg, std::string message)
 	:interactable(itemImg,message,"Item"){}
 

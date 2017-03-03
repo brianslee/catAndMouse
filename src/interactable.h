@@ -5,27 +5,27 @@
 class interactable
 {
 private:
-	bool isLoaded;
-	std::string message;
-	sf::Sprite  sprite;
-	sf::Image image;
-	sf::Texture tx;
-	std::string type;
+	bool isLoaded; // if the items should loaded up on the windows
+	std::string message; //message for inspect function in character
+	sf::Sprite  sprite; // sprite of the interactable
+	sf::Image image; // image of the interactable
+	sf::Texture tx; // texture of the interactable
+	std::string type; // type of the interactable (e.g. chest/item/trap...)
 
 public:
-	explicit interactable(std::string img, std::string message,std::string type);
-	virtual std::string getType();
+	explicit interactable(std::string img, std::string message,std::string type); //constructor
+	virtual std::string getType(); // return the type of the interactable
 	virtual ~interactable();
-	virtual void load(std::string filename);
-	virtual void draw(sf::RenderWindow & renderWindow);
-	virtual void setPosition(float x, float y);
-	virtual void setPosition(sf::Vector2f pos);
-	virtual sf::Vector2f getPos();
-	virtual void inspect();
-	virtual void setMessage(std::string m);
-	virtual sf::Sprite& getSprite();
-	virtual bool getIsLoaded();
-	virtual void setIsLoaded(bool isLoaded);
+	virtual void load(std::string filename); // load the image
+	virtual void draw(sf::RenderWindow & renderWindow); // draw the sprite to the window
+	virtual void setPosition(float x, float y); //set position of the interactable args: float
+	virtual void setPosition(sf::Vector2f pos); //set position of the interactable args: sf::Vector2f
+	virtual sf::Vector2f getPos(); //return the position of the interactable
+	virtual void inspect(); // inspect the interactable, which will gives a message
+	virtual void setMessage(std::string m); //set the message
+	virtual sf::Sprite& getSprite(); //return the sprite of the interactable
+	virtual bool getIsLoaded(); // return the boolean of the interactable is loaded or not
+	virtual void setIsLoaded(bool isLoaded); // set the interactable is loaded or not
 };
 
 

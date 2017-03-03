@@ -11,14 +11,52 @@
 projectile2::projectile2()
 {
     rect.setSize(sf::Vector2f(6, 6));
-    //rect.setPosition(0, 0);
     rect.setFillColor(sf::Color::Black);
+    movementSpeed = 10;
+     attackDamage = 10;
+     lifeTime = 50;
+     direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
+     destroy = false;
+     counterLifetime = 0;
    
 }
 
-void projectile2::update()
+
+void projectile2::update(Human& player, sf::View& view, sf::RenderWindow& window)
 {
-    if (direction == 1) // Up
+    //sf::Vector2f loc(sf::Mouse::getPosition());
+   //rect.move(direction.x,direction.y);
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f charPos = player.getPos();
+    sf::Vector2f windowPos = view.getCenter();
+    charPos.x += 30;
+    charPos.y += 30;
+    windowPos.x -= 400;
+    windowPos.y -= 400;
+    
+    /*
+    sf::Vector2i p = player.getCoor();
+    sf::Vector2i m = sf::Mouse::getPosition();
+    
+    double slope = (m.y - p.y) / (m.x - p.x);
+    sf:: Vector2f d(cos(slope), sin(slope));
+    */
+    
+    
+    float angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
+    
+    rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
+    
+    
+    
+    //rect.move(0, -movementSpeed);
+    
+    
+   // direction.x = static_cast<float>(cos(3.1415 * player.getRotation() / 180) * movementSpeed);
+  //  direction.y = static_cast<float>(sin(3.1415 * player.GetRotation() / 180) * movementSpeed);
+    
+
+   /* if (direction == 1) // Up
     {
         rect.move(0, -movementSpeed);
     }
@@ -34,6 +72,9 @@ void projectile2::update()
     {
         rect.move(movementSpeed, 0);
     }
+
+    */
+    
     
     counterLifetime++;
     if (counterLifetime >= lifeTime)

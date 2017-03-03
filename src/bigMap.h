@@ -1,10 +1,4 @@
-//
-//  bigMap.h
-//  F48
-//
-//  Created by James wang on 2/18/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
+
 
 #ifndef bigMap_h
 #define bigMap_h
@@ -18,21 +12,36 @@
 
 class bigMap {
     public:
-        bigMap();
+
+        bigMap(int sz=15);
+        
+        //Get the size of the map
         int getSize();
+        
+        // return the map sprite
         sf::Drawable& getSprite();
+        
+        // return the shadow sprite at x,y coordinate
         sf::Drawable& getShade(int x, int y);
+        
+        // return if grid(x,y) is a wall
         bool getWall(int x, int y);
+        
+        // initialize the map with an image for locating everything
         void load(sf::Image &image);
+        
+        // update FoW with current char Position and char sight 
         void updateShade(sf::Vector2i pos, int sight);
 
-    
+		// get the detection status
+    	int getDetect(int x, int y);
     
     private:
-        int size = 15;
+        int size;
         grid** Map;
-        int isDetected[14][14];
+        int** isDetected;
         sf::Sprite background;
+        bool checkVisible(int Enum,int currentX,int currentY,int sight);
 };
 
 

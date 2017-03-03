@@ -6,12 +6,12 @@
 		
 	}
 
-	bool trap::getIsDepolyed(){
-		return isDepolyed;
+	bool trap::getIsDeployed(){
+		return isDeployed;
 	}
 
-	void trap::setIsDepolyed(bool isDepolyed){
-		this->isDepolyed=isDepolyed;
+	void trap::setIsDeployed(bool isDeployed){
+		this->isDeployed=isDeployed;
 	}
 
 	void trap::placeTrap(Human a){
