@@ -4,7 +4,7 @@ locker::locker(std::string img, std::string message,float scale, int visibility)
 :hidingPlace(img,message,"Locker",scale,visibility),doorOpen(false){}
 
 locker::locker(int visibility)
-:hidingPlace("Spritesheets/lockerA.png","Looks safe","Locker",0.35,visibility),doorOpen(false)
+:hidingPlace("Spritesheets/locker_combined.png","Looks safe","Locker",0.35,visibility),doorOpen(false)
 {
 	this->setRect(0,0,648,648);
 	this->getSprite().setScale(scaleFactor,scaleFactor-0.07);

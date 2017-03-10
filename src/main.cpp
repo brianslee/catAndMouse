@@ -29,16 +29,26 @@
 #include "locker.h"
 
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
+    int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
 void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
     player.getSprite().setTexture(texture);
-    player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
-    player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth)); 
+    player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth,
+                                        ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
+    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(x,y);
+}
 
+void setupMarine(Human & player, sf::Texture& texture, int x, int y)
+{
+    player.getSprite().setTexture(texture);
+    player.getSprite().setTextureRect(sf::IntRect(0, 0, mSpriteLength, mSpriteWidth));
+    player.getSprite().setScale(78.0 / (double)(mSpriteLength), 78.0 / (double)(mSpriteWidth)); 
+    player.getSprite().setOrigin(sf::Vector2f(mSpriteLength/2, mSpriteWidth/2));
+    player.getSprite().move(x,y);
 }
 
 
@@ -59,11 +69,8 @@ int main()
     int counter4 = 0;
     int counter5 = 0;
 
-	
-    
-
     sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,marineTexture;
+    sf::Texture texture,tx2,marineTexture,alienTexture;
     sf::Image image;
     sf::Sprite spr, spr2;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
@@ -83,25 +90,26 @@ int main()
 	}
 
     
-    if (!marineTexture.loadFromFile("img/alien.png")) {
+    if (!alienTexture.loadFromFile("img/alien.png")) {
+        return EXIT_FAILURE;
+    }
+    if (!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png")) {
         return EXIT_FAILURE;
     }
     spr.setTexture(texture);
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
-    Human player = Human(sf::Vector2i(5,5),8,3);
-    
-    
-    Human player2 = Human(sf::Vector2i(5,9),8,3);
+    Human player = Human(sf::Vector2i(5,5),9,3);
+    Human player2 = Human(sf::Vector2i(5,9),9,3);
+
     bigMap maze = bigMap(30);
 
 	//Item
 	Item item_test=Item("img/circle.png","Testing");
-	Item rifle=Item("Spritesheets/rifle1.png","Rifle",3);
-	chest ch=chest();
-	chest ch2=chest(&rifle);
-//	ch.setItem(&rifle);
+	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
+	chest ch=chest(&rifle);
+	chest ch2=chest();
 	chest ch3=chest(&item_test);
 
 	damageTrap dt1=damageTrap(20);
@@ -138,9 +146,15 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
-    setupPlayer(player, marineTexture, 280, 440);
-    setupPlayer(player2, tx2, 1720, 2140);   
+    setupMarine(player, marineTexture, 280, 440);
+    setupPlayer(player2, alienTexture, 1720, 2140);   
     player.updateCoor();
+
+    //player2.updateCoor();
+    //setupMarine(player, marineTexture);
+    //setupPlayer(player, alienTexture);
+    //setupPlayer(player2, tx2);    
+    //player2.updateCoor();
     player2.updateCoor(); 
     
     //	player.getSprite().setTexture(tx2);
@@ -192,10 +206,10 @@ int main()
 						player.react(itemsList);
 						break;
 					case sf::Keyboard::LShift:
-						if(player.getSpeed()==8)
+						if(player.getSpeed()==9)
 							player.setSpeed(15);
 						else
-							player.setSpeed(8);
+							player.setSpeed(9);
 						break;
                     case sf::Keyboard::W:
                         if (checkAccess(player, 0, maze))
@@ -241,7 +255,8 @@ int main()
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
-            spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            //spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             //window.draw(player.getSprite());
             
             updateRotation(player, view, window);
@@ -308,13 +323,14 @@ int main()
         
         counter++;
         */
-        // Delete Projectile
+      // Delete Projectile
         counter = 0;
+ 	
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
         {
             if (projectileArray2[counter].destroy == true)
             {
-//                projectileArray2.erase(projectileArray2[counter]);
+                projectileArray2.erase(projectileArray2.begin() + counter);
                 break;
             }
             
@@ -322,19 +338,20 @@ int main()
         }
 
 
-        // Fires Missle (Space bar)
-        if (elapsed1.asSeconds() >= 0.5)
-        {
-            clock.restart();
+       // Fires Missle (left click)
             
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
+                if (elapsed1.asSeconds() >= 0.8)
+                {
+                    clock.restart();
                 projectile2.rect.setPosition(player.getPos().x ,player.getPos().y);
 
-                projectile2.direction = player.direction;
+                //projectile2.direction = player.direction;
                 projectileArray2.push_back(projectile2);
             }
         }
+		
 		
 		//Draw All In Game Objects
         window.draw(spr);
@@ -355,8 +372,9 @@ int main()
         counter = 0;
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
         {
+             window.draw(projectileArray2[counter].rect);
             projectileArray2[counter].update(player,view,window); // Update Projectile
-            window.draw(projectileArray2[counter].rect);
+           
             
             counter++;
         }
