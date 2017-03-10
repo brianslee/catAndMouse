@@ -16,10 +16,10 @@ Human::Human(sf::Vector2i initPos, int v, int s)
     //initPos = sf::Vector2i(0, 0);
     v = 8;
     s = 3;
-        position = initPos;
-		updateCoor();
-        speed = v;
-        sight = s;
+    position = initPos;
+	updateCoor();
+	speed = v;
+    sight = s;
     
 }
 

@@ -3,7 +3,7 @@
 //  addfiles
 //
 //  Created by James wang on 2/22/17.
-//  Copyright © 2017 James wang. All rights reserved.
 //
+//  Modified by Zeyu Zhu on 2017-3-9
 
 #include "Inventory.h"
