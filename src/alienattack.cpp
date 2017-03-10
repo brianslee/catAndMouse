@@ -11,7 +11,7 @@
 projectile2::projectile2()
 {
     rect.setSize(sf::Vector2f(45, 45));
-    rect.setFillColor(sf::Color::Black);
+    //rect.setFillColor(sf::Color::Black);
     movementSpeed = 30;
      attackDamage = 10;
      lifeTime = 2;
