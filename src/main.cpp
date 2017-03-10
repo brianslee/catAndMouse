@@ -71,13 +71,10 @@ int main()
 	
     
 
-<<<<<<< HEAD
+
     sf::RenderWindow window(sf::VideoMode(700, 700), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,alienTexture,marineTexture;
-=======
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,marineTexture;
->>>>>>> 366ef9830b075b8f8bae9adcc5afbd16efe83f70
+
     sf::Image image;
     sf::Sprite spr, spr2;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
@@ -156,17 +153,14 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
-    setupPlayer(player, marineTexture, 280, 440);
+    setupPlayer(player, alienTexture, 280, 440);
     setupPlayer(player2, tx2, 1720, 2140);   
     player.updateCoor();
-<<<<<<< HEAD
     player2.updateCoor();
     //setupMarine(player, marineTexture);
-    setupPlayer(player, alienTexture)
-    setupPlayer(player2, tx2);    
-=======
-    player2.updateCoor(); 
->>>>>>> 366ef9830b075b8f8bae9adcc5afbd16efe83f70
+    //setupPlayer(player, alienTexture);
+    //setupPlayer(player2, tx2);    
+    //player2.updateCoor(); 
     
     //	player.getSprite().setTexture(tx2);
     //	player.getSprite().setScale(0.6, 0.6);
@@ -253,7 +247,7 @@ int main()
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
-            spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            //spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
             //window.draw(player.getSprite());
             
             updateRotation(player, view, window);
