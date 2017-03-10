@@ -6,7 +6,8 @@
 //  Copyright © 2017 James wang. All rights reserved.
 //
 #include "character.h"
-
+#include "trap.h"
+#include "locker.h"
 
 Human::Human(sf::Vector2i initPos, int v, int s)
 {
@@ -14,12 +15,13 @@ Human::Human(sf::Vector2i initPos, int v, int s)
     //rect.setPosition(400, 200);
     //rect.setFillColor(sf::Color::Blue);
     //initPos = sf::Vector2i(0, 0);
-    v = 8;
-    s = 3;
-        position = initPos;
-		updateCoor();
-        speed = v;
-        sight = s;
+	position = initPos;
+	updateCoor();
+	speed = v;
+	originalSpeed=speed;
+	sight = s;
+	isLoaded=true;
+	this->hp=100;
     
 }
 
@@ -62,6 +64,11 @@ void Human::setSpeed(int v)
 {
     speed = v;
 }
+
+void Human::setSpeedToOriginal(){
+	this->speed=this->originalSpeed;
+}
+
 void Human::setSight(int s)
 {
     sight = s;
@@ -96,14 +103,23 @@ void Human::walk(int dir) {
     }
     updateCoor();
 }
+
+int Human::getHP(){
+	return this->hp;
+}
+
+void Human::setHP(int hp){
+	this->hp=hp;
+}
+
 int Human::distanceToInteractable(interactable* item){
-	int x=item->getPos().x-getPos().x;
-	int y=item->getPos().y-getPos().y;
+	float x=item->getPos().x-getPos().x;
+	float y=item->getPos().y-getPos().y;
 	return sqrt(pow(x,2)+pow(y,2));
 }
 void Human::inspect(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
-		if(distanceToInteractable(itemsList[i])<80){
+		if(distanceToInteractable(itemsList[i])<dis){
 			itemsList[i]->inspect();
 		}
 	}
@@ -112,25 +128,50 @@ void Human::inspect(std::vector<interactable*> itemsList){
 
 void Human::react(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
-		if(distanceToInteractable(itemsList[i])<80){
+		if(distanceToInteractable(itemsList[i])<dis){
 			bool itemLoaded=itemsList[i]->getIsLoaded();
 			std::string type=itemsList[i]->getType();
+			if(!itemLoaded)
+				break;
 			if(type=="Chest"){
 				chest* ch=dynamic_cast<chest*>(itemsList[i]);
 				if(!ch->getIsOpen()){
 					ch->open();
 					break;
-				}//end if
-			}//end if (type chest)
-			if(itemLoaded&&(type=="Item"||type=="DamageTrap")){
+				}
+			}//end if  chest
+			if(type=="Item"){
 				//get Item
-				if(itemsList[i]->getIsLoaded())
-					itemsList[i]->setIsLoaded(false);
+				itemsList[i]->setIsLoaded(false);
 				break;
-			}//end if
+			}//end if item
+			if(type=="DamageTrap"){
+				trap* dt=dynamic_cast<trap*>(itemsList[i]);
+				if(!dt->getIsDeployed()){
+					itemsList[i]->setIsLoaded(false);
+					break;
+				}
+			}//end if damage trap
+			if(type=="Locker"){
+				locker* lo=dynamic_cast<locker*>(itemsList[i]);
+				if(!lo->getDoorOpen())
+					lo->open(this);
+				else
+					lo->close(this);
+			}
 		}//end if (distance <80)
 	}//end for loop
 }//end of react
+
+bool Human::isIsLoaded()  {
+	return isLoaded;
+}
+
+void Human::setIsLoaded(bool isLoaded) {
+	this->isLoaded = isLoaded;
+}
+
+
 
 
 

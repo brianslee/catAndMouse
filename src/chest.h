@@ -15,14 +15,13 @@ private:
 	bool isOpen; //if the chest open or not
 public:
 	//constructor
-	explicit chest(std::string message)
-	:interactable("img/square.png",message,"Chest"),isOpen(false),i(NULL){}
+	explicit chest();
 	
-	explicit chest(std::string chestImg,std::string message)
-	:interactable(chestImg,message,"Chest"),isOpen(false),i(NULL){}
+	explicit chest(Item * item);
+
+	explicit chest(std::string chestImg,std::string message,int scale);
 	
-	explicit chest(std::string chestImg, std::string message,Item * item)
-	:interactable(chestImg,message,"Chest"),i(item),isOpen(false){}
+	explicit chest(std::string chestImg, std::string message,Item * item,float scale);
 	
 	bool getIsOpen(); //return if the chest is open
 
