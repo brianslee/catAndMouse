@@ -17,6 +17,7 @@ class Human:public entity{
  	sf::Sprite sprite_original;
  	int speed;
  	int sight;
+ 	const static int dis=70;
        
  public:
     int movementSpeed = 4 ;
@@ -24,9 +25,10 @@ class Human:public entity{
     int counterWalking = 0;
     int direction = 0;
     int counter = 0;
-    int hp = 5;
+    int hp = 100;
     bool alive = true;
     
+
     // update the position of the sprite
     void update();
     //void updateMovement();

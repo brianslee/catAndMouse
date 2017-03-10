@@ -19,9 +19,15 @@
 	void chest::open(){
 		isOpen=true;
 		if(i!=NULL){
-			i->setPosition(this->getSprite().getPosition().x,this->getSprite().getPosition().y);
+			i->setPosition(
+					this->getSprite().getPosition().x+this->spriteX,
+					this->getSprite().getPosition().y+this->spriteY);
 			i->setIsLoaded(true);
 		}
+		if(spriteX!=0)
+			this->updateSprite(0,1);
 	}
+
+
 
 

@@ -103,7 +103,7 @@ int Human::distanceToInteractable(interactable* item){
 }
 void Human::inspect(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
-		if(distanceToInteractable(itemsList[i])<80){
+		if(distanceToInteractable(itemsList[i])<dis){
 			itemsList[i]->inspect();
 		}
 	}
@@ -112,7 +112,7 @@ void Human::inspect(std::vector<interactable*> itemsList){
 
 void Human::react(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
-		if(distanceToInteractable(itemsList[i])<80){
+		if(distanceToInteractable(itemsList[i])<dis){
 			bool itemLoaded=itemsList[i]->getIsLoaded();
 			std::string type=itemsList[i]->getType();
 			if(type=="Chest"){

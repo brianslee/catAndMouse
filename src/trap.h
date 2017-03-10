@@ -15,8 +15,14 @@ public:
 	explicit trap(std::string trapImg,std::string message,std::string trapType)
 	:Item(trapImg,message,trapType),isDeployed(false){}
 
+	explicit trap(std::string trapImg,std::string message,std::string trapType,float scale)
+		:Item(trapImg,message,trapType,scale),isDeployed(false){}
+
 	explicit trap(std::string trapImg,std::string message,std::string trapType,bool depolyed)
 	:Item(trapImg,message,trapType),isDeployed(depolyed){}
+
+	explicit trap(std::string trapImg,std::string message,std::string trapType, float scale ,bool depolyed)
+		:Item(trapImg,message,trapType,scale),isDeployed(depolyed){}
 		
 	~trap(){}
 

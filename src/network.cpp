@@ -9,7 +9,7 @@ void Network::setup(){
          
 	std:: cout <<"Enter IP address of your opponent: ";
 	std::cin >> IPAddress;
-       //  IPAddress = "172.16.57.133";
+
 		
         std::cout << "Enter 'm' for Marine or 'a' for Alien: ";
         std::cin >> playerSelection;
@@ -22,15 +22,20 @@ void Network::setup(){
 
                 socket.bind(45000);
                 sendPort = 45001;
+		marine = true;
+		
 
         }
         else
         {
                 socket.bind(45001);
                 sendPort = 45000;
+		marine = false;
 
 
         }
+
+
 
         socket.setBlocking(false);
 
@@ -38,33 +43,88 @@ void Network::setup(){
 
 
 
-sf::Vector2f Network::receiveData(){
+void Network::receiveData(sf::Vector2f& playerPos, float& rotation){
 
- sf::Vector2f pos;
+ //sf::Vector2f pos;
         if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
-        packet >> pos.x >> pos.y;
+        packet >> playerPos.x >> playerPos.y >> rotation;
 }
-
-return pos;
-
 }
 
 
-void Network::sendData(sf::Vector2f movement){
+void Network::sendData(sf::Vector2f movement, float rotation){
 
         sf::Packet packet;
 
-        packet << movement.x << movement.y;
+        packet << movement.x << movement.y << rotation;
 
         if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
 
         return;
 }
+}
 
+bool Network::isAttack() {
+
+	return attacked;
+
+}
+
+void Network::sendAttack(sf::Vector2f projectilePos, int direction, float angle)
+{
+	sf::Packet packet;
+
+	packet << projectilePos.x << projectilePos.y << direction << angle;
+
+	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
+        return;
+}
+
+}
+
+
+//Send everything and set to data
+void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle){
+
+ sf::Packet packet;
+
+        packet << playerPos.x << playerPos.y << projectilePos.x << projectilePos.y << direction << angle;
+
+	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
+        return;
+}
 
 
 }
+
+void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle){
+
+         if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
+
+        packet >> playerPos.x >> playerPos.y >> projectilePos.x >> projectilePos.y >> direction >> angle;
+
+        }
+
+
+}
+
+
+
+void Network::receiveAttack(sf::Vector2f& projectilePos, int& direction, float &angle)
+{
+
+	 if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
+
+	packet >> projectilePos.x >> projectilePos.y >> direction >> angle;
+	
+	}
+
+}
+
+
+
+
 
 
 

@@ -1,9 +1,24 @@
 #include "interactable.h"
 interactable::interactable(std::string img, std::string message,std::string type){
 	this->type=type;
+	scaleFactor=1;
 	this->load(img);
 	this->message=message;
 	isLoaded=true;
+	spriteX=0;
+	spriteY=0;
+
+}
+
+interactable::interactable(std::string img, std::string message,std::string type,float scale){
+	this->type=type;
+	scaleFactor=scale;
+	this->load(img);
+	this->message=message;
+	isLoaded=true;
+	spriteX=0;
+	spriteY=0;
+
 }
 
 std::string interactable::getType(){
@@ -15,17 +30,39 @@ interactable::~interactable(){
 	}
 
 
+
  void interactable::load(std::string filename){
 	std::cout<<"Loading "+filename<<std::endl;
 	image.loadFromFile(filename);
 	tx.loadFromImage(image);
 	sprite.setTexture(tx);
+	sprite.setScale(scaleFactor,scaleFactor);
 }
+
+ void interactable::setRect(int left, int top, int width, int height){
+ 	spriteX=width;
+ 	spriteY=height;
+ 	sf::IntRect intRect(left,top,width,height);
+ 	rect=intRect;
+ 	sprite.setTextureRect(rect);
+ }
 
  void interactable::draw(sf::RenderWindow & renderWindow){
 	if(isLoaded)
 		renderWindow.draw(sprite);
 }
+
+ void interactable::updateSprite(int gridX,int gridY){
+	if(gridX==0)
+		 rect.left=0;
+	if(gridY==0)
+		 rect.top=0;
+	for(int i=0;i<gridX;i++)
+		rect.left+=spriteX;
+	for(int i=0;i<gridY;i++)
+		rect.top+=spriteY;
+	sprite.setTextureRect(rect);
+ }
 
  void interactable::setPosition(float x, float y){
 	sprite.setPosition(x,y);
@@ -36,7 +73,10 @@ interactable::~interactable(){
 }
 
  sf::Vector2f interactable::getPos(){
-	return sprite.getPosition();
+	 //get the center point of the sprite.
+	sf::Vector2f vect(sprite.getPosition().x+this->spriteX*scaleFactor/2,
+			sprite.getPosition().y+this->spriteY*scaleFactor/2);
+	return vect;
 }
 
  void interactable::inspect(){
