@@ -12,11 +12,12 @@
 #include <stdio.h>
 
 #include "entity.h"
+#include "character.h"
 class projectile: public entity
 {
 public:
     projectile(); //constructor 
-    void update(); //update the location and the exiting time of projectile
+    void update(Human& player, sf::View& view, sf::RenderWindow& window);  //update the location and the exiting time of projectile
     int movementSpeed;
     int attackDamage;
     int lifeTime; // preset the existing time of a projectile
