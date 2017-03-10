@@ -1,22 +1,29 @@
-//
-//  Locker.hpp
-//  addfiles
-//
-//  Created by James wang on 2/22/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
-
 #ifndef Locker_hpp
 #define Locker_hpp
 
-#include <stdio.h>
-class Locker{
-public:
-    void setdoorclose(); //set the status to close
-    bool is_door_close(); // check if the status is closed
-    
+#include "hidingPlace.h"
+#include "character.h"
+
+class locker:
+		public hidingPlace
+{
 private:
-    bool status; //open or closed
+    bool doorOpen; //open or closed
+    const int dis=31;
+public:
+    //Constructor
+    explicit locker(std::string img, std::string message,float scale, int visibility);
+    
+    explicit locker(int visibility);
+
+    bool getDoorOpen();
+
+    void open(Human * a);
+
+    void close(Human * a);
+
+    sf::Vector2f getPos();
+
 };
 
 #endif /* Locker_hpp */
