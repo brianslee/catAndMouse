@@ -310,13 +310,14 @@ int main()
         
         counter++;
         */
-        // Delete Projectile
+      // Delete Projectile
         counter = 0;
+ 	
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
         {
             if (projectileArray2[counter].destroy == true)
             {
-//                projectileArray2.erase(projectileArray2[counter]);
+                projectileArray2.erase(projectileArray2.begin() + counter);
                 break;
             }
             
@@ -324,19 +325,20 @@ int main()
         }
 
 
-        // Fires Missle (Space bar)
-        if (elapsed1.asSeconds() >= 0.5)
-        {
-            clock.restart();
+       // Fires Missle (left click)
             
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
+                if (elapsed1.asSeconds() >= 0.8)
+                {
+                    clock.restart();
                 projectile2.rect.setPosition(player.getPos().x ,player.getPos().y);
 
-                projectile2.direction = player.direction;
+                //projectile2.direction = player.direction;
                 projectileArray2.push_back(projectile2);
             }
         }
+		
 		
 		//Draw All In Game Objects
         window.draw(spr);
@@ -355,8 +357,9 @@ int main()
         counter = 0;
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
         {
+             window.draw(projectileArray2[counter].rect);
             projectileArray2[counter].update(player,view,window); // Update Projectile
-            window.draw(projectileArray2[counter].rect);
+           
             
             counter++;
         }
