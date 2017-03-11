@@ -13,11 +13,8 @@ private:
 	int damagePoint; //The damage point that deal to the player
 public:
 	//Constructor
-	explicit damageTrap(int damagePoint)
-		:trap("Spritesheets/landmine.png","Land Mine: 20 Damage","DamageTrap",2.f),damagePoint(damagePoint){}
-
-	explicit damageTrap(int damagePoint,bool isDepolyed)
-		:trap("Spritesheets/landmine.png","Land Mine: 20 Damage","DamageTrap",2.0,isDepolyed),damagePoint(damagePoint){}
+	explicit damageTrap(std::string trapImg,std::string message,int damagePoint)
+	:trap(trapImg,message,"DamageTrap"),damagePoint(damagePoint){}
 
 	explicit damageTrap(std::string trapImg,std::string message,int damagePoint,bool isDepolyed)
 	:trap(trapImg,message,"DamageTrap",isDepolyed),damagePoint(damagePoint){}
@@ -33,7 +30,7 @@ public:
 
 	int getDamagePoint(); //Return the damage point of the trap
 
-	 void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
+	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
 
 };
 

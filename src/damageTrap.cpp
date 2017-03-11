@@ -20,9 +20,16 @@
 	}
 
 	void damageTrap::activate(Human * a){
-		trap::activate(a);
-		a->hp-=damagePoint;
+		this->setIsDeployed(false);
+		this->setIsLoaded(false);
+		a->hp=a->hp-damagePoint;
+//		std::cout<<"Damage Point:"<<damagePoint<<std::endl;
 		std::cout<<"Activited, player HP:"<<a->hp<<std::endl;
+		
+		
+
+
+
 	}
 
 
