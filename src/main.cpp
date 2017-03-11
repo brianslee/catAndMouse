@@ -33,8 +33,9 @@ angle, player position, projectile position, item position
 #include "helper.h"
 #include "network.h"
 #include "locker.h"
+#include "Table.h"
 
-	int movementSpeed=10; //projectiles movement speed?
+	int projectilesMovementSpeed=10;
 	
 	// Should not be at here
 	// Should be in some seperate class
@@ -132,7 +133,7 @@ int rpRot, rbDir;
 
     bigMap maze = bigMap(30);
 
-	//Item
+	//Interactable
 	Item item_test=Item("img/circle.png","Testing");
 	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
 	chest ch=chest(&rifle);
@@ -144,10 +145,12 @@ int rpRot, rbDir;
 	ch2.setItem(&dt2);
 
 	locker lo1=locker(1);
+	Table ta1=Table(2);
 
 	std::vector<interactable*> itemsList;
 
 	itemsList.push_back(&lo1);
+	itemsList.push_back(&ta1);
 	itemsList.push_back(&ch);
 	itemsList.push_back(&ch2);
 	itemsList.push_back(&ch3);
@@ -158,6 +161,8 @@ int rpRot, rbDir;
 	itemsList.push_back(&dt2);
 
 	lo1.setPosition(320,1050);
+	ta1.setPosition(1485,590);
+//	ta1.setPosition(1717,1985);
 	ch.setPosition(1000,1000);
 	ch2.setPosition(300,200);
 	ch3.setPosition(400,2000);
@@ -278,8 +283,6 @@ int rpRot, rbDir;
             	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
-            //window.draw(player.getSprite());
-            
             updateRotation(player, view, window);
             
         }
@@ -486,6 +489,7 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
       for(int j=0;j<maze.getSize();j++)
 	      window.draw(maze.getShade(i,j));
 		}
+
  
   //Draw my projectiles
  	int counter = 0;
@@ -508,8 +512,8 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
                     player2.alive = false;
                 }  
 	  */
-			}
-    window.draw(myBullets[counter].rect);
+		}
+		window.draw(myBullets[counter].rect);
 		counter++;
 	} 
 
@@ -518,7 +522,7 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 	for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)	
 	{
 		float angle = bulletAngles[counter];
-		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
+		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
 		window.draw(enemyBullets[counter].rect);
 		counter++;
 	}

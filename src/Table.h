@@ -1,19 +1,22 @@
-//
-//  Table.hpp
-//  addfiles
-//
-//  Created by James wang on 2/22/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
+#include "hidingPlace.h"
+#include "character.h"
 
-#ifndef Table_hpp
-#define Table_hpp
-
-#include <stdio.h>
-class Table{
+class Table:
+		public hidingPlace
+{
+private:
+	const int dis=43;
 public:
-    void setSprite(); // set the sprite to the door
-    
+	//Constructor
+	explicit Table(int visibility);
+	explicit Table(std::string img, std::string message, float scale, int visibility);
+
+	//To hide under table
+	void hide(Human * a);
+
+	//Overridden getPos method to calculate the correct position for table sprite(size:648,scaleX:0.35,scaleY:0.4)
+	sf::Vector2f getPos();
+
 };
 
-#endif /* Table_hpp */
+
