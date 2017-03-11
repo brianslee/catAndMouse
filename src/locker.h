@@ -13,15 +13,18 @@ private:
 public:
     //Constructor
     explicit locker(std::string img, std::string message,float scale, int visibility);
-    
     explicit locker(int visibility);
 
+    //get the state of the locker's door
     bool getDoorOpen();
 
+    //Open the locker's door
     void open(Human * a);
 
+    //close the locker's door
     void close(Human * a);
 
+    //Overridden getPos method to calculate the correct position for locker sprite(size:648,scaleX:0.35,scaleY:0.28)
     sf::Vector2f getPos();
 
 };

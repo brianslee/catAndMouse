@@ -8,6 +8,7 @@
 #include "character.h"
 #include "trap.h"
 #include "locker.h"
+#include "Table.h"
 
 Human::Human(sf::Vector2i initPos, int v, int s)
 {
@@ -158,6 +159,10 @@ void Human::react(std::vector<interactable*> itemsList){
 					lo->open(this);
 				else
 					lo->close(this);
+			}
+			if(type=="Table"){
+				Table* ta=dynamic_cast<Table*>(itemsList[i]);
+				ta->hide(this);
 			}
 		}//end if (distance <80)
 	}//end for loop

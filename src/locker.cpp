@@ -35,9 +35,7 @@ void locker::close(Human* a){
 		a->setSpeed(0);
 	}else{
 		this->setIsOccupied(false);
-//		a->setSight(3);
 		this->updateSprite(0,0);
-
 	}
 }
 

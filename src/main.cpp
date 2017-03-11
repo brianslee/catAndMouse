@@ -33,8 +33,9 @@ angle, player position, projectile position, item position
 #include "helper.h"
 #include "network.h"
 #include "locker.h"
+#include "Table.h"
 
-	int movementSpeed=10; //projectiles movement speed?
+	int projectilesMovementSpeed=10; //projectiles movement speed?
 	
 	// Should not be at here
 	// Should be in some seperate class
@@ -116,7 +117,7 @@ int main()
 
     bigMap maze = bigMap(30);
 
-	//Item
+	//Interactable
 	Item item_test=Item("img/circle.png","Testing");
 	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
 	chest ch=chest(&rifle);
@@ -128,10 +129,12 @@ int main()
 	ch2.setItem(&dt2);
 
 	locker lo1=locker(1);
+	Table ta1=Table(2);
 
 	std::vector<interactable*> itemsList;
 
 	itemsList.push_back(&lo1);
+	itemsList.push_back(&ta1);
 	itemsList.push_back(&ch);
 	itemsList.push_back(&ch2);
 	itemsList.push_back(&ch3);
@@ -142,6 +145,8 @@ int main()
 	itemsList.push_back(&dt2);
 
 	lo1.setPosition(320,1050);
+	ta1.setPosition(1485,590);
+//	ta1.setPosition(1717,1985);
 	ch.setPosition(1000,1000);
 	ch2.setPosition(300,200);
 	ch3.setPosition(400,2000);
@@ -265,8 +270,6 @@ int main()
             	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
-            //window.draw(player.getSprite());
-            
             updateRotation(player, view, window);
             
         }
@@ -445,7 +448,7 @@ int main()
 			}else{
 				//draw the projectiles for the alien player's screen
 				float angle = angleArray[counter];
-				projectileArray2[counter].rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
+				projectileArray2[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
 			}
            window.draw(projectileArray2[counter].rect);
 
