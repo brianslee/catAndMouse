@@ -21,7 +21,13 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window);
 // Update character sprite for animations
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
 
+<<<<<<< HEAD
+// Update marine sprite animation
+// Why do we need two identical func?
+//int updateMarineSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
+=======
 int updateMarineSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
+>>>>>>> origin/master
 
 
 #endif /* helper_h */
