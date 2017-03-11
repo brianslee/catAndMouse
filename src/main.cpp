@@ -137,7 +137,7 @@ int main()
 
 	//Item ends
     
-   
+
     std::vector<projectile2>::const_iterator iter2;
     std::vector<projectile2> projectileArray2;
     
@@ -146,8 +146,13 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
-    setupMarine(player, marineTexture, 280, 440);
-    setupPlayer(player2, alienTexture, 1720, 2140);   
+    if(network.getPlayerSelection()=="m"){
+		setupMarine(player, marineTexture, 280, 440);
+		setupPlayer(player2, alienTexture, 1720, 2140);
+    }else{
+    	setupPlayer(player, alienTexture, 1720, 2140);
+    	setupMarine(player2, alienTexture, 280, 440);
+    }
     player.updateCoor();
 
     //player2.updateCoor();
@@ -255,8 +260,14 @@ int main()
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
-            //spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
-            mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            if(network.getPlayerSelection()=="m"){
+            	spriteCounter = updateSprite(player2.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            	mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            }else{
+            	spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            	mSpriteCounter = updateMarineSprite(player2.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            }
+
             //window.draw(player.getSprite());
             
             updateRotation(player, view, window);

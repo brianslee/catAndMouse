@@ -20,16 +20,17 @@ public:
 	//Sends a vector2f object, which is the x and y position of the player 
 	void sendData(sf::Vector2f movement);
 
+	std::string getPlayerSelection();
 
 private:
 	
 	sf::UdpSocket socket;
 	sf::IpAddress remoteIP;
-        sf::Packet packet;
+    sf::Packet packet;
 	unsigned short remotePort;
 	unsigned short sendPort;
-        std::string playerSelection;
-        std::string IPAddress;
+    std::string playerSelection;
+    std::string IPAddress;
 
 };
 

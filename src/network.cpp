@@ -68,9 +68,9 @@ void Network::sendData(sf::Vector2f movement){
 
 
 
-
-
-
+std::string Network::getPlayerSelection() {
+		return playerSelection;
+	}
 
 
 
