@@ -22,6 +22,4 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window);
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
 
 
-
-
 #endif /* helper_h */

@@ -70,7 +70,7 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
 
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
-        sprite.setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
+        sprite.setTextureRect(sf::IntRect(0, spriteCounter*spriteWidth, spriteLength, spriteWidth));
         sprite.setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
         window.draw(sprite);
         clock.restart();
@@ -78,3 +78,4 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
     }
     return spriteCounter;
 }
+

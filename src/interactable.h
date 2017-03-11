@@ -4,7 +4,7 @@
 #include "entity.h"
 class interactable
 {
-private:
+protected:
 	bool isLoaded; // if the items should loaded up on the windows
 	std::string message; //message for inspect function in character
 	sf::Sprite  sprite; // sprite of the interactable

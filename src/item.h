@@ -6,14 +6,14 @@ class Item:
 {
 public:
 	//Constructor
-	explicit Item(std::string itemImg, std::string message)
-	:interactable(itemImg,message,"Item",0.6){}
+	explicit Item(std::string itemImg, std::string message);
 
-	explicit Item(std::string itemImg, std::string message,std::string itemType)
-		:interactable(itemImg,message,itemType){}
+	explicit Item(std::string itemImg, std::string message,float scale);
 
-	explicit Item(std::string itemImg, std::string message,std::string itemType,float scale)
-			:interactable(itemImg,message,itemType,scale){}
+	explicit Item(std::string itemImg, std::string message,std::string itemType);
+
+	explicit Item(std::string itemImg, std::string message,std::string itemType,float scale);
+
 
 	~Item(){}
 
