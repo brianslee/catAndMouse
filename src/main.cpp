@@ -26,6 +26,7 @@
 #include "entity.h"
 #include "helper.h"
 #include "network.h"
+#include "locker.h"
 
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
@@ -88,9 +89,6 @@ int main()
     	return EXIT_FAILURE;
 	}
 
-    if (!tx2.loadFromFile("img/triangle.png")) {
-        return EXIT_FAILURE;
-    }
     
     if (!alienTexture.loadFromFile("img/alien.png")) {
         return EXIT_FAILURE;
@@ -103,41 +101,43 @@ int main()
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
     Human player = Human(sf::Vector2i(5,5),9,3);
-    
-    
     Human player2 = Human(sf::Vector2i(5,9),9,3);
+
     bigMap maze = bigMap(30);
 
 	//Item
-	Item item_test=Item("img/circle.png","Damage Trap");
-	Item item_test2=Item("img/circle.png","Sword");
-	//Chest ch=Chest("It looks safe");
-	chest ch=chest("Spritesheets/Crate1.png","Testing");
-	chest ch2=chest("It's a chest");
-	ch.setItem(&item_test2);
-	ch2.setItem(&item_test);
-	damageTrap dt1=damageTrap("Spritesheets/landmine.png","Land Mine: 20 Damage",20);
+	Item item_test=Item("img/circle.png","Testing");
+	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
+	chest ch=chest(&rifle);
+	chest ch2=chest();
+	chest ch3=chest(&item_test);
+
+	damageTrap dt1=damageTrap(20);
+	damageTrap dt2=damageTrap(20);
+	ch2.setItem(&dt2);
+
+	locker lo1=locker(1);
 
 	std::vector<interactable*> itemsList;
-	itemsList.push_back(&item_test2);
-	itemsList.push_back(&ch2);
-	itemsList.push_back(&item_test);
-	itemsList.push_back(&dt1);
-	itemsList.push_back(&ch);
 
-	for(unsigned i=0;i<3;i++)
-		itemsList[i]->getSprite().setScale(0.6,0.6);
-	ch.getSprite().setScale(2,2);
-	dt1.getSprite().setScale(2,2);
-	ch.setPosition(1000,700);
+	itemsList.push_back(&lo1);
+	itemsList.push_back(&ch);
+	itemsList.push_back(&ch2);
+	itemsList.push_back(&ch3);
+	itemsList.push_back(&item_test);
+	itemsList.push_back(&rifle);
+
+	itemsList.push_back(&dt1);
+	itemsList.push_back(&dt2);
+
+	lo1.setPosition(320,1050);
+	ch.setPosition(1000,1000);
 	ch2.setPosition(300,200);
-	item_test.setIsLoaded(false);
-	item_test2.setIsLoaded(false);
-//	dt1.setPosition(0,0);
-	dt1.setIsLoaded(false);
+	ch3.setPosition(400,2000);
+
 	//Item ends
     
-   
+
     std::vector<projectile2>::const_iterator iter2;
     std::vector<projectile2> projectileArray2;
     
@@ -146,8 +146,13 @@ int main()
     
     std::cout << "Initializing...\n";
     maze.load(image);
-    setupMarine(player, marineTexture, 280, 440);
-    setupPlayer(player2, alienTexture, 1720, 2140);   
+    if(network.getPlayerSelection()=="m"){
+		setupMarine(player, marineTexture, 280, 440);
+		setupPlayer(player2, alienTexture, 1720, 2140);
+    }else{
+    	setupPlayer(player, alienTexture, 1720, 2140);
+    	setupMarine(player2, alienTexture, 280, 440);
+    }
     player.updateCoor();
 
     //player2.updateCoor();
@@ -184,13 +189,8 @@ int main()
         while (window.pollEvent(event))
         {
 			//Trap
-			if(time.asSeconds()>=5.0){
-				dt1.setIsDeployed(true);
-				std::cout<<"Trap depolyed"<<std::endl;
-			}
-
 			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
-				if(player.distanceToInteractable(&dt1)<20){
+				if(player.distanceToInteractable(&dt1)<25){
 					dt1.activate(&player);
 					//player.hp=player.hp-dt1.getDamagePoint;
 //					itemsList.pop_back();
@@ -232,8 +232,26 @@ int main()
                         if (checkAccess(player, 3, maze))
                             player.walk(3);
                         break;
-                    default:
+              //For Debug
+                    case sf::Keyboard::H:
 						std::cout<< "HP: " <<player.hp<<std::endl;
+						break;
+                    case sf::Keyboard::J:
+                    	for(int i=0;i<itemsList.size();i++){
+                    		int distance=player.distanceToInteractable(itemsList[i]);
+                    		std::cout<<itemsList[i]->getType()<<" "<<distance<<std::endl;
+                    	}
+                    	std::cout<<"\n"<<std::endl;
+                    	break;
+                    case sf::Keyboard::P:
+                    	for(int i=0; i<itemsList.size();i++){
+                    		std::cout<<itemsList[i]->getType()<<" "<<itemsList[i]->getIsLoaded()<<std::endl;
+                    	}
+                    	break;
+                 //End for debug
+
+                    default:
+
                        // std::cout << player.getCoor().x << ' ' << player.getCoor().y << ' ' << player.getPos().x << ' ' << player.getPos().y << std::endl;
                       //  std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << std::endl;
                      //   std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << std::endl;
@@ -242,8 +260,14 @@ int main()
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
-            //spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
-            mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            if(network.getPlayerSelection()=="m"){
+            	spriteCounter = updateSprite(player2.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            	mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            }else{
+            	spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
+            	mSpriteCounter = updateMarineSprite(player2.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            }
+
             //window.draw(player.getSprite());
             
             updateRotation(player, view, window);
@@ -345,8 +369,10 @@ int main()
 		for(unsigned int i=0;i<itemsList.size();i++){
 			itemsList[i]->draw(window);
 		}
-        window.draw(player.getSprite());
-        window.draw(player2.getSprite());
+		if(player.isIsLoaded())
+			window.draw(player.getSprite());
+        if(player2.isIsLoaded())
+		window.draw(player2.getSprite());
         
         for(int i=0;i<maze.getSize();i++){
         	for(int j=0;j<maze.getSize();j++)

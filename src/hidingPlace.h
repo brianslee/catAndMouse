@@ -5,9 +5,21 @@ class hidingPlace:
 		public interactable
 {
 private:
-	bool isOpen;
+	int visibility;
+	bool isOccupied;
 public:
-	explicit hidingPlace(std::string lockerImg,std::string message)
-	:interactable(lockerImg,message,"Locker"),isOpen(false){}
+//	explicit hidingPlace(std::string img,std::string message,float scale,int visibility);
+
+	explicit hidingPlace(std::string img,std::string message,std::string type,float scale,int visibility);
+
+	int getVisibility();
+
+	bool getIsOccupied();
+
+	void setIsOccupied(bool io);
+
+
+
+
 	
 };
