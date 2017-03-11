@@ -69,7 +69,7 @@ int main()
     int counter4 = 0;
     int counter5 = 0;
 
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Maze", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture,alienTexture;
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -237,6 +237,7 @@ int main()
 						std::cout<< "HP: " <<player.hp<<std::endl;
 						break;
                     case sf::Keyboard::J:
+                    	//distance to all the interactable on map
                     	for(int i=0;i<itemsList.size();i++){
                     		int distance=player.distanceToInteractable(itemsList[i]);
                     		std::cout<<itemsList[i]->getType()<<" "<<distance<<std::endl;
@@ -244,6 +245,7 @@ int main()
                     	std::cout<<"\n"<<std::endl;
                     	break;
                     case sf::Keyboard::P:
+                    	//check if the interactable is loaded
                     	for(int i=0; i<itemsList.size();i++){
                     		std::cout<<itemsList[i]->getType()<<" "<<itemsList[i]->getIsLoaded()<<std::endl;
                     	}
@@ -251,10 +253,6 @@ int main()
                  //End for debug
 
                     default:
-
-                       // std::cout << player.getCoor().x << ' ' << player.getCoor().y << ' ' << player.getPos().x << ' ' << player.getPos().y << std::endl;
-                      //  std::cout << int(player.getPos().x) % 80 << ' ' << int(player.getPos().y) % 80 << std::endl;
-                     //   std::cout << maze.getWall(player.getCoor().x, player.getCoor().y) << std::endl;
                         break;
                 }//end switch
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
@@ -372,7 +370,7 @@ int main()
 		if(player.isIsLoaded())
 			window.draw(player.getSprite());
         if(player2.isIsLoaded())
-		window.draw(player2.getSprite());
+        	window.draw(player2.getSprite());
         
         for(int i=0;i<maze.getSize();i++){
         	for(int j=0;j<maze.getSize();j++)
