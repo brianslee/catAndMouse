@@ -35,26 +35,21 @@ angle, player position, projectile position, item position
 #include "locker.h"
 
 	int movementSpeed=10; //projectiles movement speed?
-    int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
+	
+	// Should not be at here
+	// Should be in some seperate class
+    int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
-void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
-    player.getSprite().setTexture(texture);
-    player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth,
-                                        ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
-    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
-    player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
-    player.getSprite().move(x,y);
-}
 
-void setupMarine(Human & player, sf::Texture& texture, int x, int y)
+void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);
-    player.getSprite().setTextureRect(sf::IntRect(0, 0, mSpriteLength, mSpriteWidth));
-    player.getSprite().setScale(78.0 / (double)(mSpriteLength), 78.0 / (double)(mSpriteWidth));
-    player.getSprite().setOrigin(sf::Vector2f(mSpriteLength/2, mSpriteWidth/2));
+    player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
+    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
+    player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(x,y);
 }
 
@@ -67,6 +62,11 @@ int main()
     sf::Clock clock3;
     sf::Clock clock4;
 	sf::Clock packetSendClock;
+	
+	// clock for marine and alien animation; 
+	// replace clock_original
+	sf::Clock alienClock,marineClock;
+	
     float playerMovementSpeed = 8;
     
     int counterWalking = 0;
@@ -101,7 +101,7 @@ int main()
     	return EXIT_FAILURE;
 	}
     
-    if (!alienTexture.loadFromFile("img/alien.png")) {
+    if (!alienTexture.loadFromFile("Spritesheets/Alien_1_Movement2-1.png")) {
         return EXIT_FAILURE;
     }
     if (!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png")) {
@@ -160,16 +160,19 @@ int main()
     std::cout << "Initializing...\n";
     maze.load(image);
     if(network.isMarine()){
-		setupMarine(player, marineTexture, 280, 440);
-		setupPlayer(player2, alienTexture, 1720, 2140);
+		setupPlayer(player, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
+		setupPlayer(player2, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
     }else{
-    	setupPlayer(player, alienTexture, 1720, 2140);
-    	setupMarine(player2, alienTexture, 280, 440);
+    	setupPlayer(player, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
+    	setupPlayer(player2, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
     }
     player.updateCoor();
     player2.updateCoor(); 
+    
+	// Fix the viewpoint bug
+	view.setCenter(getCenter(player.getPos(), image.getSize()));
+    window.setView(view);
   
-    sf::Clock clock_original;
     sf::Vector2f oldMovement = player.getPos();
 
     while (window.isOpen())
@@ -254,11 +257,12 @@ int main()
                 window.setView(view);
             }//end if (keypressed)
             if(network.isMarine()){
-            	spriteCounter = updateSprite(player2.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
-            	mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
-            }else{
-            	spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
-            	mSpriteCounter = updateMarineSprite(player2.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            	aSpriteCounter = updateSprite(player2.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            }
+			else{
+            	aSpriteCounter = updateSprite(player.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
             //window.draw(player.getSprite());
