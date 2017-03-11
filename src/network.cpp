@@ -45,10 +45,14 @@ void Network::setup(){
 
 void Network::receiveData(sf::Vector2f& playerPos, float& rotation){
 
- //sf::Vector2f pos;
+
+	sf::Packet packet;
+ 	
         if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
         packet >> playerPos.x >> playerPos.y >> rotation;
+
+	packet.clear();
 }
 }
 
@@ -85,11 +89,11 @@ void Network::sendAttack(sf::Vector2f projectilePos, int direction, float angle)
 
 
 //Send everything and set to data
-void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle){
 
- sf::Packet packet;
+void Network::sendAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+sf::Packet packet;
 
-        packet << playerPos.x << playerPos.y << projectilePos.x << projectilePos.y << direction << angle;
+        packet << playerPos.x << playerPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
 
 	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
         return;
@@ -98,11 +102,14 @@ void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, 
 
 }
 
-void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle){
+void Network::receiveAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+
+
+	sf::Packet packet;
 
          if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
-        packet >> playerPos.x >> playerPos.y >> projectilePos.x >> projectilePos.y >> direction >> angle;
+        packet >> playerPos.x >> playerPos.y >> projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot;
 
         }
 
@@ -114,10 +121,12 @@ void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePo
 void Network::receiveAttack(sf::Vector2f& projectilePos, int& direction, float &angle)
 {
 
+	sf::Packet packet;	
+
 	 if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
 	packet >> projectilePos.x >> projectilePos.y >> direction >> angle;
-	
+		packet.clear();
 	}
 
 }

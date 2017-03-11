@@ -34,18 +34,25 @@ public:
 	void receiveAttack(sf::Vector2f& projectilePos, int & direction, float& angle); 
 	
 	//Send all data
-	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float& angle);
+	void sendAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 	
 	//receive all data
-	void receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle);
 
-	std::string getPlayerSelection();
+	void receiveAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+
+	//void receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle);
+
+	//std::string getPlayerSelection();
+
 
 private:
 	
 	sf::UdpSocket socket;
-	sf::IpAddress remoteIP;
-    sf::Packet packet;
+
+	sf::IpAddress remoteIP; 
+
+	
+    //sf::Packet packet;
 	unsigned short remotePort;
 	unsigned short sendPort;
     std::string playerSelection;

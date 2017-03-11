@@ -80,8 +80,24 @@ int main()
 	sf::Vector2f playerPosition, projectilePosition;
 	int projectileDirection;
 
+
+// Data to send; s = sent, b = bullet, p = player
+float sbRot;
+sf::Vector2f spPos, sbPos;
+int spRot, sbDir;	
+
+//Data to receive
+//Player: rpPos, rpRot
+//Projectile: rbPos, rbRot, rbDir
+float rbRot;
+sf::Vector2f rpPos, rbPos;
+int rpRot, rbDir;   
+
+
+
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture,alienTexture;
+
     sf::Image image;
     sf::Sprite spr, spr2;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
@@ -145,17 +161,15 @@ int main()
 	ch.setPosition(1000,1000);
 	ch2.setPosition(300,200);
 	ch3.setPosition(400,2000);
-
 	//Item ends
     
-
-    std::vector<projectile2>::const_iterator iter2;
-    std::vector<projectile2> projectileArray2;
-	std::vector<float>angleArray;
-
+   
+    std::vector<projectile2>::const_iterator iter, iter2;
+    std::vector<projectile2> myBullets, enemyBullets;
+    std::vector<float>bulletAngles;
     // Projectile Object
-    class projectile2 projectile2;
-	float angle;
+    class projectile2 myBullet, enemyBullet;
+    float bulletAngle;
 
     std::cout << "Initializing...\n";
     maze.load(image);
@@ -249,7 +263,6 @@ int main()
                     	}
                     	break;
                  //End for debug
-
                     default:
                         break;
                 }//end switch
@@ -274,48 +287,90 @@ int main()
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
+
+
+
+
+	//getting player position and rotation
+
+		float playerDirection = player.getSprite().getRotation();		
+		spPos = player.getPos();
+		spRot = playerDirection;
+
+
+    sf::Time elapsed1 = clock.getElapsedTime();
+
 	//if(playerPos != player.getPos()||packetSendClock.getElapsedTime().asMilliseconds()>150){
 
-
+/*
 	//sending data
 		float sendRotation = player.getSprite().getRotation();
 		network.sendData(player.getPos(), sendRotation);
 		packetSendClock.restart();
+  */
 	//}
 //	else std::cout<<packetSendClock.getElapsedTime().asMilliseconds()<<std::endl;
-	sf::Time elapsed1 = clock.getElapsedTime();
+
     sf::Time elapsed2 = clock2.getElapsedTime();
     sf::Time elapsed3 = clock3.getElapsedTime();
     sf::Time elapsed4 = clock4.getElapsedTime();
 
-    //receiving and setting player2 Data
+ //receiving and setting player2 Data
 		//sf::Vector2f player2Pos = network.receiveData();
+
 	sf::Vector2f player2Pos;
-	float gotRotation;
-	network.receiveData(player2Pos, gotRotation);
-	player2.getSprite().setRotation(gotRotation);
+	int player2Dir;
+	
+if(packetSendClock.getElapsedTime().asMilliseconds()>200){
+
+
+	network.sendAllData(spPos, spRot, sbPos, sbDir, sbRot);
+	packetSendClock.restart();
+}
+
+	//reset attack positions after send
+	sbPos = sf::Vector2f(0,0);
+        sbDir = 0;
+        sbRot = 0.0;
+
+
+
+      network.receiveAllData(rpPos, rpRot, rbPos, rbDir, rbRot);
+
+	//set new received positions
+      player2Pos = rpPos;
+      player2Dir = rpRot;
+
+
+	player2.getSprite().setRotation(player2Dir);
 	if(player2Pos.x != 0){ 
 		if(player2Pos.x != oldMovement.x || player2Pos.y != oldMovement.y){
 			if(maze.getDetect(int(player2Pos.x)/80,int(player2Pos.y)/80)==2)
 				player2.setPos(player2Pos);
 			else
 				player2.setPos(sf::Vector2f(2400,2400));
-	   }
+	  }
 		oldMovement = player2Pos;
 	}
 
-
- // Fires Missle 
-        if (elapsed1.asSeconds() >= 0.5)
-        {
-            clock.restart();
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                if(network.isMarine()){
+   if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+   {
+              //  if(network.isMarine()){
                 //only do projectile attack if is Marine
-                projectile2.rect.setPosition(player.getPos().x ,player.getPos().y);
+		  myBullet.rect.setPosition(player.getPos().x,player.getPos().y);
+      myBullet.direction = player.direction;
+      myBullets.push_back(myBullet);
+		  bulletAngle = myBullet.getAngle(player,view,window);
+      // store bullet values to be sent
+      sbPos = myBullet.rect.getPosition();
+      sbDir = myBullet.direction;
+      sbRot = bulletAngle;
 
+    }
+
+
+
+	/* from master
                 projectile2.direction = player.direction;
                 projectileArray2.push_back(projectile2);
 				angle = projectile2.getAngle(player,view,window);
@@ -335,32 +390,37 @@ int main()
 			}
 			oldMovement = player2Pos;
 		}
+*/
+
+//Receive attacking info
+
+       // if(!network.isMarine())
+        //{
+
+   sf::Vector2f attackPos = sf::Vector2f(0,0);
+	 int direction;
+	 float angle;
+        
+
+		//values for the bullets
+	attackPos = rbPos;
+	direction = rbDir;
+	angle = rbRot;
+
+	if(attackPos.x != 0){
+		enemyBullet.rect.setPosition(attackPos.x, attackPos.y);
+		enemyBullet.direction = direction;	
+		enemyBullets.push_back(enemyBullet);
+		bulletAngles.push_back(angle);
+	}
+       
 
 
-
-
-     //Receive attacking info
-        if(!network.isMarine())
-        {
-        	sf::Vector2f attackPos;
-        	int direction;
-        	float angle;
-        	network.receiveAttack(attackPos, direction, angle);
-
-        	if(attackPos.x != 0){
-				std::cout <<"Projectile: " << attackPos.x << ","<< attackPos.y << std::endl;
-
-				projectile2.rect.setPosition(attackPos.x, attackPos.y);
-				projectile2.direction = direction;
-				projectileArray2.push_back(projectile2);
-				angleArray.push_back(angle);
-
-            }
-        }
-
-        // Projectile Collides with Enemy
+        //}
+/*
+        // Bullet hit Enemy
         counter = 0;
-        for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
+        for (iter = projectileArray2.begin(); iter != projectileArray.end(); iter++)
         {
             counter2 = 0;
 
@@ -378,7 +438,7 @@ int main()
             counter++;
         }
        
-
+*/
 
       /*  // Delete Dead Enemy
         counter = 0;
@@ -391,7 +451,11 @@ int main()
         
         counter++;
         */
-      // Delete Projectile
+
+        // Delete Projectile
+
+/*
+
         counter = 0;
 
         for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
@@ -405,21 +469,8 @@ int main()
             counter++;
         }
 
-	/*  Old fires Missle
-       // Fires Missle (left click)
+*/
 
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                if (elapsed1.asSeconds() >= 0.8)
-                {
-                    clock.restart();
-                projectile2.rect.setPosition(player.getPos().x ,player.getPos().y);
-
-                //projectile2.direction = player.direction;
-                projectileArray2.push_back(projectile2);
-            }
-        }
-	*/
 		
 		//Draw All In Game Objects
         window.draw(spr);
@@ -428,32 +479,51 @@ int main()
 		}
 		if(player.isIsLoaded())
 			window.draw(player.getSprite());
-        if(player2.isIsLoaded())
-        	window.draw(player2.getSprite());
+    if(player2.isIsLoaded())
+      window.draw(player2.getSprite());
         
-        for(int i=0;i<maze.getSize();i++){
-        	for(int j=0;j<maze.getSize();j++)
-	        	window.draw(maze.getShade(i,j));
+   for(int i=0;i<maze.getSize();i++){
+      for(int j=0;j<maze.getSize();j++)
+	      window.draw(maze.getShade(i,j));
 		}
+ 
+  //Draw my projectiles
+ 	int counter = 0;
+ 	for (iter = myBullets.begin(); iter != myBullets.end(); iter++)
+  {
+		myBullets[counter].update(player,view,window); // Update Projectile     
 
-        // Draw Projectiles
-        counter = 0;
-        for (iter2 = projectileArray2.begin(); iter2 != projectileArray2.end(); iter2++)
-        {
-            if(network.isMarine()){
-				projectileArray2[counter].update(player,view,window); // Update Projectile
-			}else{
-				//draw the projectiles for the alien player's screen
-				float angle = angleArray[counter];
-				projectileArray2[counter].rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
+    //       window.draw(myBullets[counter].rect);
+
+	//check if bullet hit enemy
+
+		if (myBullets[counter].rect.getGlobalBounds().intersects(player2.rect.getGlobalBounds()))
+ 		 {
+			myBullets[counter].destroy = true;
+			std::cout <<"Player hit" << std::endl; 
+         //       player2.hp -= projectileArray2[counter].attackDamage;
+           /*    
+	    if (player2.hp <= 0)
+                {
+                    player2.alive = false;
+                }  
+	  */
 			}
-           window.draw(projectileArray2[counter].rect);
+    window.draw(myBullets[counter].rect);
+		counter++;
+	} 
 
-           counter++;
-        }
+	//Draw enemy projectiles
+	counter = 0;	
+	for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)	
+	{
+		float angle = bulletAngles[counter];
+		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
+		window.draw(enemyBullets[counter].rect);
+		counter++;
+	}
         player.update();
         player2.update();
-        
         window.display();
     }
     
