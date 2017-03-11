@@ -34,21 +34,30 @@ angle, player position, projectile position, item position
 #include "network.h"
 #include "locker.h"
 
+<<<<<<< HEAD
+    int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
+=======
 	int movementSpeed=10; //projectiles movement speed?
     int spriteCounter = 0, spriteNum = 4, spriteLength = 215, spriteWidth = 215;
+>>>>>>> origin/master
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
-void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
+void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteCounter, int spriteLength, int spriteWidth){
     player.getSprite().setTexture(texture);
+<<<<<<< HEAD
+    player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
+    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth)); 
+=======
     player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth,
                                         ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
     player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
+>>>>>>> origin/master
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(x,y);
 }
-
+/*
 void setupMarine(Human & player, sf::Texture& texture, int x, int y)
 {
     player.getSprite().setTexture(texture);
@@ -57,7 +66,7 @@ void setupMarine(Human & player, sf::Texture& texture, int x, int y)
     player.getSprite().setOrigin(sf::Vector2f(mSpriteLength/2, mSpriteWidth/2));
     player.getSprite().move(x,y);
 }
-
+*/
 
 int main()
 {
@@ -67,11 +76,18 @@ int main()
     sf::Clock clock3;
     sf::Clock clock4;
 	sf::Clock packetSendClock;
+	
+	// seperate clock for alien and marine sprite
+	sf::Clock alienClock;
+	sf::Clock marineClock;
+	
     float playerMovementSpeed = 8;
     
     int counterWalking = 0;
     int counter = 0;
     int counter2 = 0;
+<<<<<<< HEAD
+=======
     int counter3 = 0;
     int counter4 = 0;
     int counter5 = 0;
@@ -79,6 +95,7 @@ int main()
 	float projectileAngle;
 	sf::Vector2f playerPosition, projectilePosition;
 	int projectileDirection;
+>>>>>>> origin/master
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
     sf::Texture texture,tx2,marineTexture,alienTexture;
@@ -101,7 +118,7 @@ int main()
     	return EXIT_FAILURE;
 	}
     
-    if (!alienTexture.loadFromFile("img/alien.png")) {
+    if (!alienTexture.loadFromFile("Spritesheets/Alien_1_Movement2-1.png")) {
         return EXIT_FAILURE;
     }
     if (!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png")) {
@@ -159,6 +176,32 @@ int main()
 
     std::cout << "Initializing...\n";
     maze.load(image);
+<<<<<<< HEAD
+    if(network.getPlayerSelection()=="m"){
+		setupPlayer(player, marineTexture, 280, 440, mSpriteCounter, mSpriteLength, mSpriteWidth);
+		setupPlayer(player2, alienTexture, 1720, 2140, aSpriteCounter, aSpriteLength, aSpriteWidth);
+    }
+	else{
+    	setupPlayer(player, alienTexture, 1720, 2140, aSpriteCounter, aSpriteLength, aSpriteWidth);
+    	setupPlayer(player2, marineTexture, 280, 440, mSpriteCounter, mSpriteLength, mSpriteWidth);
+    }
+    player.updateCoor();
+    player2.updateCoor(); 
+    view.setCenter(getCenter(player.getPos(), image.getSize()));
+    window.setView(view);
+    
+    //	player.getSprite().setTexture(tx2);
+    //	player.getSprite().setScale(0.6, 0.6);
+    //	player.getSprite().setOrigin(sf::Vector2f(40, 40));
+    //	player.getSprite().move(40, 40);
+    //	updateSprite(player.getSprite(), marineTexture, window, 215, 215, 4);
+    //for (int i = 0; i < 15; i++)
+    //    for (int j = 0; j < 15; j++)
+    //        std::cout << i << ' ' << j << ' ' << maze.getWall(i, j) << std::endl;
+ 
+  
+
+=======
     if(network.isMarine()){
 		setupMarine(player, marineTexture, 280, 440);
 		setupPlayer(player2, alienTexture, 1720, 2140);
@@ -171,6 +214,7 @@ int main()
   
     sf::Clock clock_original;
     sf::Vector2f oldMovement = player.getPos();
+>>>>>>> origin/master
 
     while (window.isOpen())
     {
@@ -228,6 +272,9 @@ int main()
                             player.walk(3);
                         break;
               //For Debug
+                    case sf::Keyboard::T:
+						std::cout<< "Position: " <<player.getPos().x<<' '<<player.getPos().y<<std::endl;
+						break;
                     case sf::Keyboard::H:
 						std::cout<< "HP: " <<player.hp<<std::endl;
 						break;
@@ -253,12 +300,18 @@ int main()
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
+<<<<<<< HEAD
+            if(network.getPlayerSelection()=="m"){
+            	aSpriteCounter = updateSprite(player2.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+=======
             if(network.isMarine()){
             	spriteCounter = updateSprite(player2.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
             	mSpriteCounter = updateMarineSprite(player.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+>>>>>>> origin/master
             }else{
-            	spriteCounter = updateSprite(player.getSprite(), window, clock_original, spriteLength, spriteWidth, spriteNum, spriteCounter);
-            	mSpriteCounter = updateMarineSprite(player2.getSprite(), window, clock_original, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+            	aSpriteCounter = updateSprite(player.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
             //window.draw(player.getSprite());

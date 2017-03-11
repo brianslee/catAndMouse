@@ -61,7 +61,7 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
     
     //	std::cout << mousePos.x << ' ' << mousePos.y << std::endl;
     //	std::cout << atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159 << std::endl;
-    sf::Transform transform;
+    //sf::Transform transform;
     
     player.getSprite().setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
     
@@ -70,7 +70,7 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
 
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
-        sprite.setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth, ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
+        sprite.setTextureRect(sf::IntRect(sf::IntRect(0, (spriteCounter) * spriteLength, spriteLength, spriteWidth)));
         sprite.setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
         window.draw(sprite);
         clock.restart();
@@ -79,6 +79,7 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
     return spriteCounter;
 }
 
+/* 
 int updateMarineSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter)
 {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
@@ -90,4 +91,8 @@ int updateMarineSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& 
     }
     return spriteCounter;
 }
+<<<<<<< HEAD
+*/ 
+=======
 
+>>>>>>> origin/master
