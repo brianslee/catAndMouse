@@ -79,15 +79,3 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
     return spriteCounter;
 }
 
-int updateMarineSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter)
-{
-    if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
-        sprite.setTextureRect(sf::IntRect(sf::IntRect(0, (spriteCounter) * spriteLength, spriteLength, spriteWidth)));
-        sprite.setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
-        window.draw(sprite);
-        clock.restart();
-        spriteCounter = (spriteCounter + 1) % spriteNum;
-    }
-    return spriteCounter;
-}
-
