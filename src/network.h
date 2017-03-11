@@ -39,16 +39,17 @@ public:
 	//receive all data
 	void receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle);
 
+	std::string getPlayerSelection();
 
 private:
 	
 	sf::UdpSocket socket;
 	sf::IpAddress remoteIP;
-        sf::Packet packet;
+    sf::Packet packet;
 	unsigned short remotePort;
 	unsigned short sendPort;
-        std::string playerSelection;
-        std::string IPAddress;
+    std::string playerSelection;
+    std::string IPAddress;
 	bool attacked, marine;
 	sf::Vector2f playerPos, projectilePos;
 	float angle;

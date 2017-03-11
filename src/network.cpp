@@ -128,9 +128,9 @@ void Network::receiveAttack(sf::Vector2f& projectilePos, int& direction, float &
 
 
 
-
-
-
+std::string Network::getPlayerSelection() {
+		return playerSelection;
+	}
 
 
 

@@ -53,10 +53,8 @@ interactable::~interactable(){
 }
 
  void interactable::updateSprite(int gridX,int gridY){
-	if(gridX==0)
-		 rect.left=0;
-	if(gridY==0)
-		 rect.top=0;
+	rect.left=0;
+	rect.top=0;
 	for(int i=0;i<gridX;i++)
 		rect.left+=spriteX;
 	for(int i=0;i<gridY;i++)
@@ -99,11 +97,6 @@ interactable::~interactable(){
  void interactable::setIsLoaded(bool isLoaded){
 	this->isLoaded=isLoaded;
 }
-//	 float distanceToCharacter(Human a){
-//		float x=a.getPos().x-this->getPos().x;
-//		float y=a.getPos().y-this->getPos().y;
-//		return sqrt(pow(x,2)+pow(y,2));
-////		return 0;
-//	}
+
 
 
