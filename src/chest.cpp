@@ -1,5 +1,29 @@
 #include "chest.h"
 
+	chest::chest()
+	:interactable("Spritesheets/Crate1.png","A chest","Chest",3),isOpen(false),i(NULL)
+	{
+		this->setRect(0,0,32,32);
+	}
+
+	chest::chest(Item * item)
+	:interactable("Spritesheets/Crate1.png","A chest","Chest",3),isOpen(false),i(item)
+	{
+		this->setRect(0,0,32,32);
+	}
+
+	chest::chest(std::string chestImg,std::string message,int scale)
+	:interactable(chestImg,message,"Chest",scale),isOpen(false),i(NULL)
+	{
+		this->setRect(0,0,32,32);
+	}
+
+	chest::chest(std::string chestImg, std::string message,Item * item,float scale)
+	:interactable(chestImg,message,"Chest",scale),i(item),isOpen(false)
+	{
+		this->setRect(0,0,32,32);
+	}
+
 	bool chest::getIsOpen(){
 		return isOpen;
 	}
