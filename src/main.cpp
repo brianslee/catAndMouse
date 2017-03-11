@@ -36,7 +36,7 @@ void setupPlayer(Human & player, sf::Texture& texture, int x, int y){
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(((spriteCounter) % 2)*spriteLength, (spriteCounter / 2)*spriteWidth,
                                         ((spriteCounter) % 2 + 1)*spriteLength, (spriteCounter / 2 + 1)*spriteWidth));
-    player.getSprite().setScale(60.0 / (double)(spriteLength), 60.0 / (double)(spriteWidth)); 
+    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
     player.getSprite().move(x,y);
 }
@@ -45,7 +45,7 @@ void setupMarine(Human & player, sf::Texture& texture, int x, int y)
 {
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(0, 0, mSpriteLength, mSpriteWidth));
-    player.getSprite().setScale(60.0 / (double)(mSpriteLength), 60.0 / (double)(mSpriteWidth)); 
+    player.getSprite().setScale(78.0 / (double)(mSpriteLength), 78.0 / (double)(mSpriteWidth)); 
     player.getSprite().setOrigin(sf::Vector2f(mSpriteLength/2, mSpriteWidth/2));
     player.getSprite().move(x,y);
 }
@@ -102,10 +102,10 @@ int main()
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
-    Human player = Human(sf::Vector2i(5,5),7,3);
+    Human player = Human(sf::Vector2i(5,5),9,3);
     
     
-    Human player2 = Human(sf::Vector2i(5,9),7,3);
+    Human player2 = Human(sf::Vector2i(5,9),9,3);
     bigMap maze = bigMap(30);
 
 	//Item
@@ -211,10 +211,10 @@ int main()
 						player.react(itemsList);
 						break;
 					case sf::Keyboard::LShift:
-						if(player.getSpeed()==8)
+						if(player.getSpeed()==9)
 							player.setSpeed(15);
 						else
-							player.setSpeed(8);
+							player.setSpeed(9);
 						break;
                     case sf::Keyboard::W:
                         if (checkAccess(player, 0, maze))
