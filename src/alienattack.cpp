@@ -3,7 +3,7 @@
 //  Attack_48
 //
 //  Created by James wang on 2/12/17.
-//  Copyright © 2017 James wang. All rights reserved.
+//  Copyright 2017 James wang. All rights reserved.
 //
 
 #include "alienattack.h"
@@ -12,17 +12,18 @@ projectile2::projectile2()
 {
     rect.setSize(sf::Vector2f(6, 6));
     rect.setFillColor(sf::Color::Red);
-    movementSpeed = 30;
+    movementSpeed = 2;
      attackDamage = 10;
-     lifeTime = 10;
+     lifeTime = 500;
      direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
      destroy = false;
      counterLifetime = 0;
+     angle=0;
    
 }
 
 
-float projectile2::getAngle(Human& player, sf::View& view, sf::RenderWindow& window){
+float projectile2::getPlayerAngle(Human& player, sf::View& view, sf::RenderWindow& window){
 
 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f charPos = player.getPos();
@@ -41,7 +42,7 @@ sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     */
 
 
-    float angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
+    angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
 return angle;
 }
 
@@ -49,7 +50,7 @@ return angle;
 void projectile2::update(Human& player, sf::View& view, sf::RenderWindow& window)
 {
     
-    float angle = getAngle(player, view, window);
+//    float angle = getAngle(player, view, window);
       
     rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
     

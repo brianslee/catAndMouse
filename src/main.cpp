@@ -35,7 +35,7 @@ angle, player position, projectile position, item position
 #include "locker.h"
 #include "Table.h"
 
-	int projectilesMovementSpeed=10;
+	int projectilesMovementSpeed=5;
 	
 	// Should not be at here
 	// Should be in some seperate class
@@ -303,18 +303,6 @@ int rpRot, rbDir;
 
 
     sf::Time elapsed1 = clock.getElapsedTime();
-
-	//if(playerPos != player.getPos()||packetSendClock.getElapsedTime().asMilliseconds()>150){
-
-/*
-	//sending data
-		float sendRotation = player.getSprite().getRotation();
-		network.sendData(player.getPos(), sendRotation);
-		packetSendClock.restart();
-  */
-	//}
-//	else std::cout<<packetSendClock.getElapsedTime().asMilliseconds()<<std::endl;
-
     sf::Time elapsed2 = clock2.getElapsedTime();
     sf::Time elapsed3 = clock3.getElapsedTime();
     sf::Time elapsed4 = clock4.getElapsedTime();
@@ -336,8 +324,6 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 	sbPos = sf::Vector2f(0,0);
         sbDir = 0;
         sbRot = 0.0;
-
-
 
       network.receiveAllData(rpPos, rpRot, rbPos, rbDir, rbRot);
 
@@ -365,9 +351,10 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
               //  if(network.isMarine()){
                 //only do projectile attack if is Marine
 		  myBullet.rect.setPosition(player.getPos().x,player.getPos().y);
-      myBullet.direction = player.direction;
-      myBullets.push_back(myBullet);
-		  bulletAngle = myBullet.getAngle(player,view,window);
+		  myBullet.direction = player.direction;
+		  bulletAngle = myBullet.getPlayerAngle(player,view,window);
+		  myBullets.push_back(myBullet);
+
 }
       // store bullet values to be sent
       sbPos = myBullet.rect.getPosition();
@@ -390,29 +377,6 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
             counter++;
         }
 
-
-
-	/* from master
-                projectile2.direction = player.direction;
-                projectileArray2.push_back(projectile2);
-				angle = projectile2.getAngle(player,view,window);
-				network.sendAttack(player.getPos(), projectile2.direction, angle);
-				}
-			}
-       }
-
-        if(player2Pos.x != 0){
-			if(player2Pos.x != oldMovement.x || player2Pos.y != oldMovement.y){
-
-       // std::cout <<"Receiving Data: " << playerPosition.x <<' '<< playerPosition.y << std::endl;
-				if(maze.getDetect(int(player2Pos.x)/80,int(player2Pos.y)/80)==2)
-					player2.setPos(player2Pos);
-				else
-					player2.setPos(sf::Vector2f(2400,2400));
-			}
-			oldMovement = player2Pos;
-		}
-*/
 
 //Receive attacking info
 
@@ -531,41 +495,41 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 		}
 
  
-  //Draw my projectiles
- 	int counter = 0;
- 	for (iter = myBullets.begin(); iter != myBullets.end(); iter++)
-  {
-		myBullets[counter].update(player,view,window); // Update Projectile     
+	  //Draw my projectiles
+		int counter = 0;
+		for (iter = myBullets.begin(); iter != myBullets.end(); iter++)
+	  {
+			myBullets[counter].update(player,view,window); // Update Projectile
 
-           window.draw(myBullets[counter].rect);
+			   window.draw(myBullets[counter].rect);
 
-	//check if bullet hit enemy
+		//check if bullet hit enemy
 
-		if (myBullets[counter].rect.getGlobalBounds().intersects(player2.rect.getGlobalBounds()))
- 		 {
-			myBullets[counter].destroy = true;
-			std::cout <<"Player hit" << std::endl; 
-                player2.hp -= myBullets[counter].attackDamage;
-               
-	    if (player2.hp <= 0)
-                {
-                    player2.alive = false;
-                }  
-	  
+			if (myBullets[counter].rect.getGlobalBounds().intersects(player2.rect.getGlobalBounds()))
+			 {
+				myBullets[counter].destroy = true;
+				std::cout <<"Player hit" << std::endl;
+					player2.hp -= myBullets[counter].attackDamage;
+
+			if (player2.hp <= 0)
+					{
+						player2.alive = false;
+					}
+
+			}
+			window.draw(myBullets[counter].rect);
+			counter++;
 		}
-		window.draw(myBullets[counter].rect);
-		counter++;
-	} 
 
-	//Draw enemy projectiles
-	counter = 0;	
-	for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)	
-	{
-		float angle = bulletAngles[counter];
-		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
-		window.draw(enemyBullets[counter].rect);
-		counter++;
-	}
+		//Draw enemy projectiles
+		counter = 0;
+		for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)
+		{
+			float angle = bulletAngles[counter];
+			enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
+			window.draw(enemyBullets[counter].rect);
+			counter++;
+		}
         player.update();
         player2.update();
         window.display();
