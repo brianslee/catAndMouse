@@ -22,9 +22,6 @@ angle, player position, projectile position, item position
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include <SFML/Audio.hpp>
-#include <vector>
-
 #include "alienattack.h"
 #include "attack.h"
 #include "chest.h"
@@ -34,6 +31,8 @@ angle, player position, projectile position, item position
 #include "network.h"
 #include "locker.h"
 #include "Table.h"
+#include "Audio.h"
+
 
 	int projectilesMovementSpeed=10;
 	
@@ -94,6 +93,8 @@ float rbRot;
 sf::Vector2f rpPos, rbPos;
 int rpRot, rbDir;   
 
+//Save previous movement
+sf::Vector2f oldMove;
 
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
@@ -104,9 +105,14 @@ int rpRot, rbDir;
     sf::View view(sf::FloatRect(0, 0, 800, 800));
     window.setView(view);
     
+
+	//Starts up network, prompts user for IP address and player choice.
     Network network;  
     network.setup();
 
+	//Start up audio, play background music.
+    Audio audio;
+    audio.playBackground();
 
     std::cout << "Loading texture...\n";
     
@@ -181,10 +187,15 @@ int rpRot, rbDir;
     if(network.isMarine()){
 		setupPlayer(player, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
 		setupPlayer(player2, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
+
+		audio.playMarineIntro();
+
     }else{
     	setupPlayer(player, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
     	setupPlayer(player2, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
-    }
+   
+	audio.playAlienIntro();
+ }
     player.updateCoor();
     player2.updateCoor(); 
     
@@ -199,9 +210,7 @@ int rpRot, rbDir;
         //		std::cout << "Drawing...\n";
        
 	sf::Vector2f playerPos = player.getPos();
-
-
-	 sf::Event event;
+	sf::Event event;
 	sf::Time time=clock.getElapsedTime();
 	
 		
@@ -222,7 +231,9 @@ int rpRot, rbDir;
                 {
 					case sf::Keyboard::Num1:
 						dt1.placeTrap(player);
-						
+						//send over the network that the trap is placed	
+							
+	
 						break;
 					case sf::Keyboard::E:
 						player.react(itemsList);
@@ -291,6 +302,19 @@ int rpRot, rbDir;
         
         window.clear();
 
+
+
+
+if(oldMove != player.getPos())
+{
+	if(network.isMarine())
+		audio.playMarineWalk();
+	else
+		audio.playAlienWalk();	
+
+}
+oldMove = player.getPos();
+	
 
 
 
@@ -368,6 +392,14 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
       sbPos = myBullet.rect.getPosition();
       sbDir = myBullet.direction;
       sbRot = bulletAngle;
+
+
+	if(network.isMarine())
+		audio.playMarineAttack();
+	else
+		audio.playAlienAttack();
+
+
 
     }
 
