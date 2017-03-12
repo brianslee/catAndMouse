@@ -12,9 +12,9 @@
 
 Human::Human(sf::Vector2i initPos, int v, int s)
 {
-    //rect.setSize(sf::Vector2f(300, 300));
-    //rect.setPosition(400, 200);
-    //rect.setFillColor(sf::Color::Blue);
+    rect.setSize(sf::Vector2f(40, 40));
+    //rect.setPosition(280, 440);
+    rect.setFillColor(sf::Color::Blue);
     //initPos = sf::Vector2i(0, 0);
 	position = initPos;
 	updateCoor();
@@ -85,18 +85,22 @@ void Human::walk(int dir) {
     {
         case 0:
             sprite_original.move(0.0, (float(speed)*(-1)));
+            rect.move(0.0, (float(speed)*(-1)));
             direction = 1;
             break;
         case 1:
             sprite_original.move(0.0, (float(speed)*(1)));
+            rect.move(0.0, (float(speed)*(1)));
             direction = 2;
             break;
         case 2:
             sprite_original.move(float(speed)*(-1), 0.0);
+            rect.move(float(speed)*(-1), 0.0);
             direction = 3;
             break;
         case 3:
             sprite_original.move(float(speed)*(1), 0.0);
+            rect.move(float(speed)*(1), 0.0);
             direction = 4;
             break;
         default:
@@ -104,7 +108,6 @@ void Human::walk(int dir) {
     }
     updateCoor();
 }
-
 int Human::getHP(){
 	return this->hp;
 }

@@ -51,6 +51,7 @@ void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteL
     player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
     player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
+ player.rect.move(x,y);
     player.getSprite().move(x,y);
 }
 
@@ -358,18 +359,36 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 
    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
    {
+        if (elapsed1.asSeconds() >= 0.8)
+           {
+                clock.restart();
               //  if(network.isMarine()){
                 //only do projectile attack if is Marine
 		  myBullet.rect.setPosition(player.getPos().x,player.getPos().y);
       myBullet.direction = player.direction;
       myBullets.push_back(myBullet);
 		  bulletAngle = myBullet.getAngle(player,view,window);
+}
       // store bullet values to be sent
       sbPos = myBullet.rect.getPosition();
       sbDir = myBullet.direction;
       sbRot = bulletAngle;
 
     }
+
+//To delete mybullets if it destroyed
+
+        counter = 0;
+        for (iter = myBullets.begin(); iter != myBullets.end(); iter++)
+        {
+            if (myBullets[counter].destroy == true)
+            {
+                myBullets.erase(myBullets.begin() + counter);
+                break;
+            }
+            
+            counter++;
+        }
 
 
 
@@ -416,8 +435,29 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 		enemyBullets.push_back(enemyBullet);
 		bulletAngles.push_back(angle);
 	}
-       
 
+       
+  // Delete Dead Enemy
+        counter = 0;
+        
+        if (player.alive == false)
+        {
+            std::cout << "You Lose" << std::endl;
+            return 0;
+        }
+        
+        counter++;
+        
+
+        counter = 0;
+        
+        if (player2.alive == false)
+        {
+            std::cout << "You win" <<std::endl;
+            return 0;
+        }
+        
+        counter2++;
 
         //}
 /*
@@ -497,7 +537,7 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
   {
 		myBullets[counter].update(player,view,window); // Update Projectile     
 
-    //       window.draw(myBullets[counter].rect);
+           window.draw(myBullets[counter].rect);
 
 	//check if bullet hit enemy
 
@@ -505,13 +545,13 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
  		 {
 			myBullets[counter].destroy = true;
 			std::cout <<"Player hit" << std::endl; 
-         //       player2.hp -= projectileArray2[counter].attackDamage;
-           /*    
+                player2.hp -= myBullets[counter].attackDamage;
+               
 	    if (player2.hp <= 0)
                 {
                     player2.alive = false;
                 }  
-	  */
+	  
 		}
 		window.draw(myBullets[counter].rect);
 		counter++;
