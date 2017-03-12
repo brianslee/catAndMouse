@@ -22,7 +22,6 @@ Human::Human(sf::Vector2i initPos, int v, int s)
 	originalSpeed=speed;
 	sight = s;
 	isLoaded=true;
-	this->hp=100;
     
 }
 
@@ -105,13 +104,22 @@ void Human::walk(int dir) {
     updateCoor();
 }
 
+HealthBar* Human::getHPBar(){
+	return &(this->hp);
+}
+
 int Human::getHP(){
-	return this->hp;
+	return this->hp.getHP();
 }
 
 void Human::setHP(int hp){
+	this->hp.setHP(hp);
+}
+
+void Human::setHP(HealthBar hp){
 	this->hp=hp;
 }
+
 
 int Human::distanceToInteractable(interactable* item){
 	float x=item->getPos().x-getPos().x;
