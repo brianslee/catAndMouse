@@ -21,8 +21,8 @@
 
 	void damageTrap::activate(Human * a){
 		trap::activate(a);
-		a->hp-=damagePoint;
-		std::cout<<"Activited, player HP:"<<a->hp<<std::endl;
+		a->setHP(a->getHP()-damagePoint);
+		std::cout<<"Activited, player HP:"<<a->getHP()<<std::endl;
 	}
 
 

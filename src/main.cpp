@@ -98,7 +98,7 @@ sf::Vector2f oldMove;
 
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,marineTexture,alienTexture;
+    sf::Texture texture,tx2,marineTexture,alienTexture,hpBarTexture;
 
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -128,6 +128,9 @@ sf::Vector2f oldMove;
         return EXIT_FAILURE;
     }
     if (!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png")) {
+        return EXIT_FAILURE;
+    }
+    if (!hpBarTexture.loadFromFile("Spritesheets/Health_Bar.png")) {
         return EXIT_FAILURE;
     }
     spr.setTexture(texture);
@@ -199,17 +202,20 @@ sf::Vector2f oldMove;
     player.updateCoor();
     player2.updateCoor(); 
     
+    player.setHP(HealthBar(hpBarTexture,100,200,200,40));
+    player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x+200,getCenter(player.getPos(), image.getSize()).y+200);
+    	
 	// Fix the viewpoint bug
 	view.setCenter(getCenter(player.getPos(), image.getSize()));
     window.setView(view);
-  
+    
     sf::Vector2f oldMovement = player.getPos();
 
     while (window.isOpen())
     {
         //		std::cout << "Drawing...\n";
-       
-	sf::Vector2f playerPos = player.getPos();
+
+	//sf::Vector2f playerPos = player.getPos();
 	sf::Event event;
 	sf::Time time=clock.getElapsedTime();
 	
@@ -262,7 +268,7 @@ sf::Vector2f oldMove;
                         break;
               //For Debug
                     case sf::Keyboard::H:
-						std::cout<< "HP: " <<player.hp<<std::endl;
+						std::cout<< "HP: " <<player.getHP()<<std::endl;
 						break;
                     case sf::Keyboard::J:
                     	//distance to all the interactable on map
@@ -282,7 +288,9 @@ sf::Vector2f oldMove;
                     default:
                         break;
                 }//end switch
-                view.setCenter(getCenter(player.getPos(), image.getSize()));
+				player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x+200,getCenter(player.getPos(), image.getSize()).y+200);
+
+  				view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
             }//end if (keypressed)
             if(network.isMarine()){
@@ -296,6 +304,7 @@ sf::Vector2f oldMove;
 
             updateRotation(player, view, window);
             
+			window.draw(player.getHPBar()->getSprite());
         }
         
         maze.updateShade(player.getCoor(), player.getSight());
@@ -521,6 +530,7 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
       for(int j=0;j<maze.getSize();j++)
 	      window.draw(maze.getShade(i,j));
 		}
+	    window.draw(player.getHPBar()->getSprite());
 
  
   //Draw my projectiles
