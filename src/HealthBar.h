@@ -2,6 +2,8 @@
 #define HPBAR_h
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
 
 class HealthBar{
 	private:
@@ -35,7 +37,7 @@ class HealthBar{
 		// set new HP, and update the sprite
 	    void setHP(int n){
 	    	HP=n;
-	    	std::cout<<HP<<std::endl;
+//	    	std::cout<<HP<<std::endl;
 	    	if(n<0)HP=0;
 	    	if(num!=0)updateSprite();
 		}
