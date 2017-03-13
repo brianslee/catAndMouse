@@ -36,7 +36,7 @@ endif
 
 
 
-OBJS= alienattack.o attack.o HealthBar.o bigMap.o character.o chest.o damageTrap.o entity.o grid.o helper.o hidingPlace.o interactable.o item.o locker.o network.o Table.o trap.o main.o
+OBJS= alienattack.o attack.o Audio.o HealthBar.o bigMap.o character.o chest.o damageTrap.o entity.o grid.o helper.o hidingPlace.o interactable.o item.o locker.o network.o Table.o trap.o main.o
 
 
 all: linux

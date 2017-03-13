@@ -222,6 +222,22 @@ sf::Vector2f oldMove;
 		
         while (window.pollEvent(event))
         {
+
+
+	if(oldMove != player.getPos())
+	{
+        if(network.isMarine())
+                audio.playMarineWalk();
+        else
+                audio.playAlienWalk();
+
+	}	
+	oldMove = player.getPos();
+
+
+
+
+
 			//Trap
 			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
 				if(player.distanceToInteractable(&dt1)<25){
@@ -311,19 +327,6 @@ sf::Vector2f oldMove;
         
         window.clear();
 
-
-
-
-if(oldMove != player.getPos())
-{
-	if(network.isMarine())
-		audio.playMarineWalk();
-	else
-		audio.playAlienWalk();	
-
-}
-oldMove = player.getPos();
-	
 
 
 
