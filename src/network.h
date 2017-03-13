@@ -40,6 +40,9 @@ public:
 
 	void receiveAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 
+
+
+
 	//void receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& projectilePos, int& direction, float &angle);
 
 	//std::string getPlayerSelection();
