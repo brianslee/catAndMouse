@@ -542,17 +542,31 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 		}
 
 //Draw enemy projectiles
-	counter = 0;	
+	counter3 = 0;	
 
 	for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)	
 	{
-		float angle = bulletAngles[counter];
-		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
+		float angle = bulletAngles[counter3];
+		enemyBullets[counter3].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
 
-		window.draw(enemyBullets[counter].rect);
-		counter++;
-	}
+		window.draw(enemyBullets[counter3].rect);
 
+if (enemyBullets[counter3].rect.getGlobalBounds().intersects(player.rect.getGlobalBounds()))
+			 {
+				enemyBullets[counter3].destroy = true;
+				std::cout <<"enemy hit" << std::endl;
+					player.hp -= enemyBullets[counter3].attackDamage;
+
+			if (player.hp <= 0)
+					{
+						player.alive = false;
+					}
+
+			}
+			window.draw(enemyBullets[counter3].rect);
+			counter3++;
+		
+}
 
         player.update();
         player2.update();
