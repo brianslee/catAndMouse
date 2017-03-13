@@ -10,6 +10,7 @@ ifeq ($(OS),Windows_NT)
 	DELCMD=del
 	MOVECMD=move
 	PATHSEP2=\\
+	BINLOC=C:\bin\SFML-2.4.1\bin
 	LIBLOC=C:\bin\SFML-2.4.1\lib
 	INCLUDE=-I "C:\bin\SFML-2.4.1\include"
 	LIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
@@ -53,7 +54,7 @@ windowlink:  $(OBJS)
 	@echo Linking target $@
 	$(CC) -L $(LIBLOC) -o $(PROJECTNAME).exe $(OBJS) $(LIB)
 	
-	@if NOT EXIST sfml-system-2.dll @echo ============================== & @echo Copying Libraries from SFML & @$(COPYCMD) $(LIBLOC)\*.dll . 
+	@if NOT EXIST sfml-system-2.dll @echo ============================== & @echo Copying Libraries from SFML & @$(COPYCMD) $(LIBLOC)\*.dll . & @$(COPYCMD) $(BINLOC)\openal32.dll .
 	
 	@if EXIST sfml-system-d-2.dll @echo ============================== & @echo Deleting Unnecessary Libraries & @$(DELCMD) *-d-2.dll 
 		
