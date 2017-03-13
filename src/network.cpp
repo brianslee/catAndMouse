@@ -43,14 +43,14 @@ void Network::setup(){
 
 
 
-void Network::receiveData(sf::Vector2f& playerPos, float& rotation){
+void Network::receiveData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, float& rotation){
 
 
 	sf::Packet packet;
  	
         if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
-        packet >> playerPos.x >> playerPos.y >> rotation;
+        packet >> playerPos.x >> playerPos.y >>rectPos.x>>rectPos.y>> rotation;
 
 	packet.clear();
 }
@@ -90,10 +90,10 @@ void Network::sendAttack(sf::Vector2f projectilePos, int direction, float angle)
 
 //Send everything and set to data
 
-void Network::sendAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
 sf::Packet packet;
 
-        packet << playerPos.x << playerPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
+        packet << playerPos.x << playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
 
 	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
         return;
@@ -102,14 +102,14 @@ sf::Packet packet;
 
 }
 
-void Network::receiveAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
 
 
 	sf::Packet packet;
 
          if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
 
-        packet >> playerPos.x >> playerPos.y >> projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot;
+        packet >> playerPos.x >> playerPos.y >>rectPos.x>>rectPos.y>> projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot;
 
         }
 

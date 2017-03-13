@@ -35,7 +35,7 @@ angle, player position, projectile position, item position
 #include "locker.h"
 #include "Table.h"
 
-	int projectilesMovementSpeed=5;
+	int projectilesMovementSpeed=30;
 	
 	// Should not be at here
 	// Should be in some seperate class
@@ -85,7 +85,7 @@ int main()
 
 // Data to send; s = sent, b = bullet, p = player
 float sbRot;
-sf::Vector2f spPos, sbPos;
+sf::Vector2f spPos, sbPos,rectPos;
 int spRot, sbDir;	
 
 //Data to receive
@@ -299,6 +299,7 @@ int rpRot, rbDir;
 
 		float playerDirection = player.getSprite().getRotation();		
 		spPos = player.getPos();
+rectPos = player.rect.getPosition();
 		spRot = playerDirection;
 
 
@@ -316,7 +317,7 @@ int rpRot, rbDir;
 if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 
 
-	network.sendAllData(spPos, spRot, sbPos, sbDir, sbRot);
+	network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot);
 	packetSendClock.restart();
 }
 
@@ -325,7 +326,7 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
         sbDir = 0;
         sbRot = 0.0;
 
-      network.receiveAllData(rpPos, rpRot, rbPos, rbDir, rbRot);
+      network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot);
 
 	//set new received positions
       player2Pos = rpPos;
@@ -394,11 +395,30 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 	angle = rbRot;
 
 	if(attackPos.x != 0){
+         if (elapsed2.asSeconds() >= 0.8)
+           {
+                clock2.restart();
 		enemyBullet.rect.setPosition(attackPos.x, attackPos.y);
 		enemyBullet.direction = direction;	
 		enemyBullets.push_back(enemyBullet);
 		bulletAngles.push_back(angle);
+}
 	}
+
+//To delete mybullets if it destroyed
+
+        counter = 0;
+        for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)
+        {
+            if (enemyBullets[counter].destroy == true)
+            {
+                enemyBullets.erase(myBullets.begin() + counter);
+                break;
+            }
+            
+            counter++;
+        }
+
 
        
   // Delete Dead Enemy
@@ -521,15 +541,19 @@ if(packetSendClock.getElapsedTime().asMilliseconds()>200){
 			counter++;
 		}
 
-		//Draw enemy projectiles
-		counter = 0;
-		for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)
-		{
-			float angle = bulletAngles[counter];
-			enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
-			window.draw(enemyBullets[counter].rect);
-			counter++;
-		}
+//Draw enemy projectiles
+	counter = 0;	
+
+	for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)	
+	{
+		float angle = bulletAngles[counter];
+		enemyBullets[counter].rect.move(cos((3.14159/180)*angle)* projectilesMovementSpeed, sin((3.14159/180)*angle)*projectilesMovementSpeed);
+
+		window.draw(enemyBullets[counter].rect);
+		counter++;
+	}
+
+
         player.update();
         player2.update();
         window.display();

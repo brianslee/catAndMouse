@@ -35,6 +35,7 @@ void Human::update()
 void Human::setPos(const sf::Vector2f& pos)
 {
 	sprite_original.setPosition(pos);
+    rect.setPosition(pos);
 }
 
 sf::Sprite& Human::getSprite()
@@ -60,6 +61,7 @@ sf::Vector2f Human::getPos()
 void Human::setCoor(sf::Vector2i coor)
 {
     position = coor; sprite_original.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
+rect.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
 }
 void Human::setSpeed(int v)
 {
