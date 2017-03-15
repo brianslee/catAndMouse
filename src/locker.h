@@ -27,6 +27,8 @@ public:
     //Overridden getPos method to calculate the correct position for locker sprite(size:648,scaleX:0.35,scaleY:0.28)
     sf::Vector2f getPos();
 
+    void animation();
+
 };
 
 #endif /* Locker_hpp */

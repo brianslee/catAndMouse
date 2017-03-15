@@ -12,11 +12,13 @@ protected:
 	sf::Texture tx; // texture of the interactable
 	std::string type; // type of the interactable (e.g. chest/item/trap...)
 	sf::IntRect rect;
+	sf::Clock clock;
 	float scaleFactor;
 
 
 public:
 	int spriteX,spriteY;
+	int curGridX,curGridY;
 	explicit interactable(std::string img, std::string message,std::string type); //constructor
 	explicit interactable(std::string img, std::string message,std::string type,float scale); //constructor
 	virtual std::string getType(); // return the type of the interactable
@@ -25,6 +27,7 @@ public:
 	virtual void setRect(int left,int top,int width,int height);
 	virtual void draw(sf::RenderWindow & renderWindow); // draw the sprite to the window
 	virtual void updateSprite(int gridX,int gridY);
+	virtual void animation(int startGridX,int endGridX,int startGridY, int endGridY,bool rowFirst,float freq);
 	virtual void setPosition(float x, float y); //set position of the interactable args: float
 	virtual void setPosition(sf::Vector2f pos); //set position of the interactable args: sf::Vector2f
 	virtual sf::Vector2f getPos(); //return the position of the interactable

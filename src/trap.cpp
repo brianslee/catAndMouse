@@ -30,4 +30,15 @@
 		this->setIsDeployed(true);
 	}
 
+	void trap::animation(){
+		int startY,endY;
+		if(curGridY==0){
+			startY=0;
+			endY=1;
+		}else{
+			startY=1;
+			endY=0;
+		}
+		interactable::animation(0,0,startY,endY,false,0.5);
+	}
 

@@ -241,7 +241,7 @@ int main()
            
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code)
                 {
@@ -252,6 +252,7 @@ int main()
 						break;
 					case sf::Keyboard::E:
 						player.react(itemsList);
+
 						break;
 					case sf::Keyboard::LShift:
 						if(player.getSpeed()==player.getOriginalSpeed())
@@ -280,6 +281,7 @@ int main()
 						std::cout<< "HP: " <<player.getHP()<<std::endl;
 						std::cout<<"Time:" <<mainGameTimer.getTimeAsSeconds()<<std::endl;
 						std::cout<<"Angle:"<<player.getAngle(view,window)<<std::endl;
+
 						break;
                     case sf::Keyboard::J:
                     	//distance to all the interactable on map
@@ -313,11 +315,17 @@ int main()
             	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
-            updateRotation(player, view, window);
+
+
+			updateRotation(player, view, window);
+
             
 			window.draw(player.getHPBar()->getSprite());
-        }
-        
+        }//end while event
+
+        lo1.animation();
+        dt1.animation();
+
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
@@ -544,7 +552,7 @@ int main()
         player.update();
         player2.update();
         window.display();
-    }
+    }// End while(window.isOpen)
     
     return 0;
 }

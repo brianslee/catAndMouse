@@ -35,6 +35,7 @@ public:
 
 	void placeTrap(Human * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
 
+	void animation();
 };
 
 
