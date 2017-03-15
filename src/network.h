@@ -14,7 +14,7 @@ public:
 	
 	//Only receives data for player movement (for now)
 	//Receives a vector2f object, which is the x and y position of the other player 
-	void receiveData(sf::Vector2f& playerPos, float& rotation);
+	void receiveData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, float& rotation);
 	
 	//Similarly only sends data for player movement (for now).
 	//Sends a vector2f object, which is the x and y position of the player 
@@ -34,11 +34,11 @@ public:
 	void receiveAttack(sf::Vector2f& projectilePos, int & direction, float& angle); 
 	
 	//Send all data
-	void sendAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 	
 	//receive all data
 
-	void receiveAllData(sf::Vector2f& playerPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 
 
 

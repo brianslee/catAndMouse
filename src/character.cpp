@@ -12,9 +12,9 @@
 
 Human::Human(sf::Vector2i initPos, int v, int s)
 {
-    //rect.setSize(sf::Vector2f(300, 300));
-    //rect.setPosition(400, 200);
-    //rect.setFillColor(sf::Color::Blue);
+    rect.setSize(sf::Vector2f(40, 40));
+    //rect.setPosition(280, 440);
+    rect.setFillColor(sf::Color::Blue);
     //initPos = sf::Vector2i(0, 0);
 	position = initPos;
 	updateCoor();
@@ -34,6 +34,7 @@ void Human::update()
 void Human::setPos(const sf::Vector2f& pos)
 {
 	sprite_original.setPosition(pos);
+    rect.setPosition(pos);
 }
 
 sf::Sprite& Human::getSprite()
@@ -44,9 +45,28 @@ sf::Vector2i Human::getCoor()
 {
     return position;
 }
+
+float Human::getAngle(sf::View& view, sf::RenderWindow& window){
+	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+	sf::Vector2f charPos = this->getPos();
+	sf::Vector2f windowPos = view.getCenter();
+	charPos.x += 30;
+	charPos.y += 30;
+	windowPos.x -= 400;
+	windowPos.y -= 400;
+
+	float angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
+	return angle;
+}
+
 int Human::getSpeed()
 {
     return speed;
+}
+
+int Human::getOriginalSpeed()
+{
+	return this->originalSpeed;
 }
 int Human::getSight()
 {
@@ -59,6 +79,7 @@ sf::Vector2f Human::getPos()
 void Human::setCoor(sf::Vector2i coor)
 {
     position = coor; sprite_original.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
+    rect.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
 }
 void Human::setSpeed(int v)
 {
@@ -84,18 +105,22 @@ void Human::walk(int dir) {
     {
         case 0:
             sprite_original.move(0.0, (float(speed)*(-1)));
+            rect.move(0.0, (float(speed)*(-1)));
             direction = 1;
             break;
         case 1:
             sprite_original.move(0.0, (float(speed)*(1)));
+            rect.move(0.0, (float(speed)*(1)));
             direction = 2;
             break;
         case 2:
             sprite_original.move(float(speed)*(-1), 0.0);
+            rect.move(float(speed)*(-1), 0.0);
             direction = 3;
             break;
         case 3:
             sprite_original.move(float(speed)*(1), 0.0);
+            rect.move(float(speed)*(1), 0.0);
             direction = 4;
             break;
         default:
@@ -103,6 +128,7 @@ void Human::walk(int dir) {
     }
     updateCoor();
 }
+
 
 HealthBar* Human::getHPBar(){
 	return &(this->hp);
@@ -116,7 +142,7 @@ void Human::setHP(int hp){
 	this->hp.setHP(hp);
 }
 
-void Human::setHP(HealthBar hp){
+void Human::setHPBar(HealthBar hp){
 	this->hp=hp;
 }
 

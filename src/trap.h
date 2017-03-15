@@ -10,6 +10,7 @@ class trap:
 {
 private:
 	bool isDeployed; // if the trap is deployed on the map
+
 public:
 	//C
 	explicit trap(std::string trapImg,std::string message,std::string trapType)
@@ -32,7 +33,7 @@ public:
 
 	void setIsDeployed(bool isDeployed); // set the trap to be deployed
 
-	void placeTrap(Human a); // deployed the trap on the map
+	void placeTrap(Human * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
 
 };
 

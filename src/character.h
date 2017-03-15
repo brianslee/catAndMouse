@@ -45,9 +45,15 @@ class Human:public entity{
     // get the coordinate of the character
     sf::Vector2i getCoor();
     
+    //get the aiming angle of the character
+    float getAngle(sf::View& view, sf::RenderWindow& window);
+
     // get the speed
     int getSpeed();
     
+    //get the original movement speed
+    int getOriginalSpeed();
+
     // get the sight
     int getSight();
     
@@ -81,7 +87,7 @@ class Human:public entity{
 	
 	void setHP(int hp);
 
-	void setHP(HealthBar hp);
+	void setHPBar(HealthBar hpb);
 
 
 	//get the distance between the interactables and the player

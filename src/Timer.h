@@ -1,31 +1,16 @@
-//
-//  Timer.hpp
-//  addfiles
-//
-//  Created by James wang on 2/22/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
-
-#ifndef Timer_hpp
-#define Timer_hpp
-
-#include <stdio.h>
-class Timer{
+#include <SFML/System.hpp>
+class Timer
+{
 private:
-    int minute;
-    int second;
+	sf::Clock clock;
     
 public:
-    
-    //get the minutes and returns int
-    int getminute();
-    //get the seconds and returns int
-    int getsecond();
-    //sets the minutes 
-    void setMinute(int New_Minute);
-    //sets the second 
-    void setSecond(int New_Second);
-    
-};
+    //Constructor
+    Timer();
 
-#endif /* Timer_hpp */
+    //Get the time passed and restart the timer;
+   	sf::Time restart();
+    
+    //Get the time passed.
+   	float getTimeAsSeconds();
+};
