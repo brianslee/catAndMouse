@@ -17,7 +17,7 @@ class projectile2: public entity
 {
 public:
     projectile2();//constructor 
-    void update(Human& player, sf::View& view, sf::RenderWindow& window); // update the movement and exist time of the projectile
+    void updateProjectile2(); // update the movement and exist time of the projectile
     
     float getPlayerAngle(Human& player, sf::View& view, sf::RenderWindow& window);
     float angle;

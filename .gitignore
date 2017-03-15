@@ -29,9 +29,12 @@
 *.out
 *.app
 /Debug/
+catAndMouse
 
 # Eclipse setting files
 /.settings/
 *.cproject
 *.project
+
+
 *.suo
