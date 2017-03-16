@@ -1,8 +1,7 @@
 #include "hidingPlace.h"
 #include "character.h"
 
-class Table:
-		public hidingPlace
+class Table:public hidingPlace
 {
 private:
 	const int dis=43;
