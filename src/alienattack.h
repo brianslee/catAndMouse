@@ -19,7 +19,7 @@ public:
     projectile2();//constructor 
     void updateProjectile2(); // update the movement and exist time of the projectile
     
-    float getPlayerAngle(Human& player, sf::View& view, sf::RenderWindow& window);
+    float getPlayerAngle(Character& player, sf::View& view, sf::RenderWindow& window);
     float angle;
 	int movementSpeed; 
     int attackDamage;

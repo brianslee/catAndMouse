@@ -2,7 +2,7 @@
 #include "trap.h"
 #include <math.h>
 
-	 void trap::activate(Human * a){
+	 void trap::activate(Character * a){
 		 this->setIsDeployed(false);
 		 this->setIsLoaded(false);
 	}
@@ -15,7 +15,7 @@
 		this->isDeployed=isDeployed;
 	}
 
-	void trap::placeTrap(Human * a,sf::View& view, sf::RenderWindow& window){
+	void trap::placeTrap(Character * a,sf::View& view, sf::RenderWindow& window){
 		float dis=45.f;
 		float angle=a->getAngle(view,window);
 		float distX=dis*cos((3.14159/180)*angle);

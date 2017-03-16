@@ -33,7 +33,7 @@ public:
 
 	int getDamagePoint(); //Return the damage point of the trap
 
-	 void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
+	 void activate(Character * a); // Make the traps activate, do damage to player, then set it disappear
 
 };
 

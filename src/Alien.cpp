@@ -30,7 +30,7 @@ bool Alien::isMarine()
 
 bool Alien::isAlien()
 {
-	return false;
+	return true;
 }
 
 int Alien::getSpriteCounter()

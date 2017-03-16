@@ -8,8 +8,8 @@ HealthBar::HealthBar(sf::Texture &spr,int hp,int len,int wid,int n){
 	updateSprite();
 }
 
-	HealthBar::HealthBar(int hp=100){
-			HP=hp;
+	HealthBar::HealthBar(){
+			HP=100;
 			num=0;}
 
 

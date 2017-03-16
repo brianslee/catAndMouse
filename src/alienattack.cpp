@@ -23,7 +23,7 @@ projectile2::projectile2()
 }
 
 
-float projectile2::getPlayerAngle(Human& player, sf::View& view, sf::RenderWindow& window){
+float projectile2::getPlayerAngle(Character& player, sf::View& view, sf::RenderWindow& window){
 	angle=player.getAngle(view,window);
 	return angle;
 }

@@ -10,7 +10,7 @@ Table::Table(int visibility)
 Table::Table(std::string img, std::string message,float scale, int visibility)
 :hidingPlace(img,message,"Table",scale,visibility){}
 
-void Table::hide(Human * a){
+void Table::hide(Character * a){
 	if(a->distanceToInteractable(this)<dis){
 		if(!this->getIsOccupied()){
 			this->setIsOccupied(true);
