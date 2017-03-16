@@ -23,10 +23,7 @@ class HealthBar{
 	    // update current sprite with hp
 		void updateSprite();
 		// default ctor
-		HealthBar(int hp=100){
-			HP=hp;
-			num=0;
-		}
+		HealthBar(int hp=100);
 		// ctor
 		HealthBar(sf::Texture &txr,int hp,int len,int wid,int n);
 		// get whole spritesheet
@@ -35,13 +32,7 @@ class HealthBar{
 	    // get solid hp value
 		int getHP(){return HP;}
 		// set new HP, and update the sprite
-	    void setHP(int n){
-	    	HP=n;
-//	    	std::cout<<HP<<std::endl;
-	    	if(n<0)HP=0;
-	    	if(num!=0)updateSprite();
-		}
-		void setPos(float x,float y);
+	    void setHP(int n);
 		
 };
 #endif
