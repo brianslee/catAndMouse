@@ -31,7 +31,7 @@
 	}
 
 	void trap::animation(){
-		if(!isLoaded)
+		if(!isLoaded||!isDeployed)
 			return ;
 		int startY,endY;
 		float freq;

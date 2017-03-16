@@ -3,32 +3,39 @@
 #ifndef INTERACTABLEMANAGER_H_
 #define INTERACTABLEMANAGER_H_
 #include <SFML/Graphics.hpp>
-//#include "interactable.h"
-#include "trap.h"
-#include "hidingPlace.h"
-#include "item.h"
+#include <typeinfo>
+
+#include "damageTrap.h"
+#include "stickyTrap.h"
+#include "chest.h"
+#include "locker.h"
+#include "Table.h"
 
 class InteractableManager {
 private:
-	std::map<std::string,interactable *> gameInteractable;
-	std::map<std::string,chest *> gameChests;
-	std::map<std::string,hidingPlace *> gameHidingPlaces;
-	std::map<std::string,Item *> gameItems;
-	std::map<std::string,trap *> gameTraps;
+	std::vector<interactable *> gameInteractable;
+	std::vector<chest *> gameChests;
+	std::vector<hidingPlace *> gameHidingPlaces;
+	std::vector<trap *> gameTraps;
+
 public:
 	InteractableManager(){}
 
-	void add(std::string name, interactable * mInteractable);
+	void add(interactable * mInteractable);
 
 	void notifyTrapsDeployed();
 
-	void remove(std::string name);
+	void remove(std::string type);
 
 	void drawAll(sf::RenderWindow& window);
 
-	std::map<std::string,interactable *> getIAList();
+	void startAnimation();
 
-	std::map<std::string,trap *> getTrapList();
+	void trapsDetection(Human * a,float currentTime);
+
+	std::vector<interactable *> getIAList();
+
+	std::vector<trap *> getTrapsList();
 
 
 };

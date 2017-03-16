@@ -24,16 +24,12 @@ angle, player position, projectile position, item position
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
-#include "chest.h"
-#include "damageTrap.h"
-#include "stickyTrap.h"
 #include "entity.h"
 #include "helper.h"
 #include "network.h"
-#include "locker.h"
-#include "Table.h"
 #include "Audio.h"
 #include "Timer.h"
+#include "InteractableManager.h"
 
 
 	int projectilesMovementSpeed=30;
@@ -145,40 +141,27 @@ int main()
     bigMap maze = bigMap(30);
 
 	//Interactable
-	Item item_test=Item("img/circle.png","Testing");
-	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
-	chest ch=chest(&rifle);
-	chest ch2=chest();
-	chest ch3=chest(&item_test);
+    InteractableManager manager=InteractableManager();
 
-	damageTrap dt1=damageTrap(20);
-	damageTrap dt2=damageTrap(20);
-	stickyTrap st1=stickyTrap(3);
-	ch2.setItem(&dt2);
+	Item * rifle=new Item("Spritesheets/rifle1.png","Rifle",2.f); manager.add(rifle);
 
-	locker lo1=locker(1);
-	Table ta1=Table(2);
+	damageTrap * dt1=new damageTrap(20); manager.add(dt1);
+	damageTrap * dt2=new damageTrap(20); manager.add(dt2);
+	stickyTrap * st1=new stickyTrap(3); manager.add(st1);
 
-	std::vector<interactable*> itemsList;
+	chest * ch=new chest(rifle); manager.add(ch);
+	chest * ch2=new chest(dt2); manager.add(ch2);
+	chest * ch3=new chest(st1); manager.add(ch3);
 
-	itemsList.push_back(&lo1);
-	itemsList.push_back(&ta1);
-	itemsList.push_back(&ch);
-	itemsList.push_back(&ch2);
-	itemsList.push_back(&ch3);
-	itemsList.push_back(&item_test);
-	itemsList.push_back(&rifle);
+	locker * lo1=new locker(1); manager.add(lo1);
+	Table * ta1=new Table(2); manager.add(ta1);
 
-	itemsList.push_back(&dt1);
-	itemsList.push_back(&dt2);
-	itemsList.push_back(&st1);
+	lo1->setPosition(320,1050);
+	ta1->setPosition(1485,590);
+	ch->setPosition(1000,1000);
+	ch2->setPosition(300,200);
+	ch3->setPosition(400,2000);
 
-	lo1.setPosition(320,1050);
-	ta1.setPosition(1485,590);
-//	ta1.setPosition(1717,1985);
-	ch.setPosition(1000,1000);
-	ch2.setPosition(300,200);
-	ch3.setPosition(400,2000);
 	//Item ends
     
    
@@ -236,16 +219,8 @@ int main()
 			oldMove = player.getPos();
 
 			//Trap
-			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
-				if(player.distanceToInteractable(&dt1)<25){
-					dt1.activate(&player);
-				}
-			}
-			if(st1.getIsLoaded()&&st1.getIsDeployed()){
-				if(player.distanceToInteractable(&st1)<25){
-					st1.activate(&player,mainGameTimer.getTimeAsSeconds());
-				}
-			}
+			manager.trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
+			//end Trap
            
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -254,15 +229,15 @@ int main()
                 switch (event.key.code)
                 {
 					case sf::Keyboard::Num1:
-						dt1.placeTrap(&player,view,window);
+						dt1->placeTrap(&player,view,window);
 						//send over the network that the trap is placed	
 	
 						break;
 					case sf::Keyboard::Num2:
-						st1.placeTrap(&player,view,window);
+						st1->placeTrap(&player,view,window);
 						break;
 					case sf::Keyboard::E:
-						player.react(itemsList);
+						player.react(manager.getIAList());
 
 						break;
 					case sf::Keyboard::LShift:
@@ -296,17 +271,11 @@ int main()
 						break;
                     case sf::Keyboard::J:
                     	//distance to all the interactable on map
-                    	for(int i=0;i<itemsList.size();i++){
-                    		int distance=player.distanceToInteractable(itemsList[i]);
-                    		std::cout<<itemsList[i]->getType()<<" "<<distance<<std::endl;
+                    	for(int i=0;i<manager.getIAList().size();i++){
+                    		int distance=player.distanceToInteractable(manager.getIAList()[i]);
+                    		std::cout<<manager.getIAList()[i]->getType()<<" "<<distance<<std::endl;
                     	}
                     	std::cout<<"\n"<<std::endl;
-                    	break;
-                    case sf::Keyboard::P:
-                    	//check if the interactable is loaded
-                    	for(int i=0; i<itemsList.size();i++){
-                    		std::cout<<itemsList[i]->getType()<<" "<<itemsList[i]->getIsLoaded()<<std::endl;
-                    	}
                     	break;
                  //End for debug
                     default:
@@ -334,15 +303,11 @@ int main()
 			window.draw(player.getHPBar()->getSprite());
         }//end while event
 
-        lo1.animation();
-        dt1.animation();
-        st1.animation();
+		manager.startAnimation();
 
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
-
-
 
 
 	//getting player position and rotation
@@ -498,9 +463,10 @@ int main()
 		
 		//Draw All In Game Objects
 		window.draw(spr);
-		for(unsigned int i=0;i<itemsList.size();i++){
-			itemsList[i]->draw(window);
-		}
+//		for(unsigned int i=0;i<itemsList.size();i++){
+//			itemsList[i]->draw(window);
+//		}
+		manager.drawAll(window);
 		if(player.isIsLoaded())
 			window.draw(player.getSprite());
 		if(player2.isIsLoaded())
