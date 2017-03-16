@@ -17,7 +17,7 @@ class projectile: public entity
 {
 public:
     projectile(); //constructor 
-    void updateProjectile(Character& player, sf::View& view, sf::RenderWindow& window);  //update the location and the exiting time of projectile
+    void updateProjectile(Human& player, sf::View& view, sf::RenderWindow& window);  //update the location and the exiting time of projectile
     int movementSpeed;
     int attackDamage;
     int lifeTime; // preset the existing time of a projectile

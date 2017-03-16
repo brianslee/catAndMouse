@@ -13,7 +13,7 @@
 #include "HealthBar.h"
 
 
-class Character:public entity{
+class Human:public entity{
  private:
  	sf::Vector2i position;
  	sf::Sprite sprite_original;
@@ -31,24 +31,13 @@ class Character:public entity{
     int direction = 0;
     int counter = 0;
     bool alive = true;
-
-    //BEGIN REFACTOR
-    /*
-    void setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth);
-
-    void updateRotation(sf::View& view, sf::RenderWindow& window);
-
-    bool checkAccess(int dir, bigMap& map);
-
-    int updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
-    */
-    //END REFACTOR
+    
 
     // update the position of the sprite
     void update();
     //void updateMovement();
         
-    Character(sf::Vector2i initPos, int v, int s);
+    Human(sf::Vector2i initPos, int v, int s);
     
     // get the sprite
     sf::Sprite& getSprite();
@@ -113,7 +102,6 @@ class Character:public entity{
 	bool isIsLoaded();
 
 	void setIsLoaded(bool isLoaded);
-
 
 
 };

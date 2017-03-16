@@ -34,12 +34,11 @@ public:
 	void receiveAttack(sf::Vector2f& projectilePos, int & direction, float& angle); 
 	
 	//Send all data
-	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, bool isPlayeralive, bool isPlayer2alive);
 	
 	//receive all data
 
-	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
-
+	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, bool isplayeralive, bool isplayer2alive);
 
 
 
@@ -60,7 +59,7 @@ private:
 	unsigned short sendPort;
     std::string playerSelection;
     std::string IPAddress;
-	bool attacked, marine;
+	bool attacked, marine,alive;
 	sf::Vector2f playerPos, projectilePos;
 	float angle;
 	int direction;

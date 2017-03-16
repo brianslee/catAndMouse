@@ -24,7 +24,6 @@ angle, player position, projectile position, item position
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
-#include "character.h"
 #include "chest.h"
 #include "damageTrap.h"
 #include "entity.h"
@@ -36,24 +35,23 @@ angle, player position, projectile position, item position
 #include "Timer.h"
 
 
-	int projectilesMovementSpeed=30;
+	int projectilesMovementSpeed=10;
 	
-	// Should not be at here
-	// Should be in some seperate class
-	//REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
+	// Networking drawing Projectiles
+
     int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
-//REFACTOR - PLACED INTO CHARACTER CLASS
-void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
+
+void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
     player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
- 	player.rect.move(x,y);
+ player.rect.move(x,y);
     player.getSprite().move(x,y);
 }
 
@@ -85,8 +83,10 @@ int main()
 	int projectileDirection;
 
 
-	// Data to send; s = sent, b = bullet, p = player
+	// Data to send; s = sent, b = bullet, p = player, 
 	float sbRot;
+    bool Playeralive = true;
+    bool Player2alive = true;
 	sf::Vector2f spPos, sbPos,rectPos;
 	int spRot, sbDir;
 
@@ -140,8 +140,8 @@ int main()
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
-    Character player = Character(sf::Vector2i(5,5),playerMovementSpeed,3);
-    Character player2 = Character(sf::Vector2i(5,9),playerMovementSpeed,3);
+    Human player = Human(sf::Vector2i(5,5),playerMovementSpeed,3);
+    Human player2 = Human(sf::Vector2i(5,9),playerMovementSpeed,3);
 
     bigMap maze = bigMap(30);
 
@@ -347,7 +347,7 @@ int main()
 		int player2Dir;
 
 		if(packetSendClock.getElapsedTime().asMilliseconds()>20){
-			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot);
+			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot, Playeralive, Player2alive);
 			packetSendClock.restart();
 		}
 
@@ -356,7 +356,7 @@ int main()
         sbDir = 0;
         sbRot = 0.0;
 
-        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot);
+        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot, Playeralive, Player2alive);
 
 	//set new received positions
         player2Pos = rpPos;
@@ -440,44 +440,59 @@ int main()
         	}
         }
 
-//To delete mybullets if it destroyed
+//To delete enemybullets if it destroyed
 
-        counter = 0;
+        counter3 = 0;
         for (iter2 = enemyBullets.begin(); iter2 != enemyBullets.end(); iter2++)
         {
-            if (enemyBullets[counter].destroy == true)
+            if (enemyBullets[counter3].destroy == true)
             {
-                enemyBullets.erase(myBullets.begin() + counter);
+                enemyBullets.erase(enemyBullets.begin() + counter3);
                 break;
             }
             
-            counter++;
+            counter3++;
         }
 
 
        
   // Delete Dead Enemy
-        counter = 0;
+ 
+      
+ 
+
+  
         
-        if (player.alive == false)
+/*
+       if (network.isMarine()){
+              if (player2.alive == false)
+                alienalive == false;
+                    
+              else if(player.alive == false)
+               marinealive == false;
+        
+
+    }
+    */    
+       
+   
+     if (Playeralive == false)
         {
+            player.alive == false;
+            
             std::cout << "You Lose" << std::endl;
+            player2.alive == false;
             return 0;
         }
         
-        counter++;
-        
-
-        counter = 0;
-        
-        if (player2.alive == false)
+    else if (Player2alive == false)
         {
-            std::cout << "You win" <<std::endl;
+            player2.alive == false;
+            std::cout << "You Win" << std::endl;
+            player.alive == false;
             return 0;
         }
-        
-        counter2++;
-
+            
 		
 		//Draw All In Game Objects
 		window.draw(spr);
@@ -513,7 +528,7 @@ int main()
 				player2.setHP(player2.getHP()-myBullets[counter].attackDamage);
 
 				if (player2.getHP()<= 0)
-					player2.alive = false;
+					Player2alive = false;
 
 			}
 			window.draw(myBullets[counter].rect);
@@ -537,11 +552,13 @@ int main()
 				player.setHP(player.getHP()-enemyBullets[counter3].attackDamage);
 
 				if (player.getHP() <= 0)
-					player.alive = false;
+					Playeralive = false;
 			}
 			window.draw(enemyBullets[counter3].rect);
-			counter3++;
+	
+		counter3++;
 		}
+
 
         player.update();
         player2.update();

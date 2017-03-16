@@ -27,13 +27,13 @@ public:
 		
 	~trap(){}
 
-	virtual void activate(Character * a); // Make the traps activate, do damage to player, then set it disappear
+	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
 
 	bool getIsDeployed(); // return if the trap is deployed to the map
 
 	void setIsDeployed(bool isDeployed); // set the trap to be deployed
 
-	void placeTrap(Character * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
+	void placeTrap(Human * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
 
 };
 

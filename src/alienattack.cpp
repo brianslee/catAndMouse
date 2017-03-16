@@ -14,7 +14,7 @@ projectile2::projectile2()
     rect.setFillColor(sf::Color::Red);
     movementSpeed = 9;
      attackDamage = 10;
-     lifeTime = 50;
+     lifeTime = 30;
      direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
      destroy = false;
      counterLifetime = 0;
@@ -23,7 +23,7 @@ projectile2::projectile2()
 }
 
 
-float projectile2::getPlayerAngle(Character& player, sf::View& view, sf::RenderWindow& window){
+float projectile2::getPlayerAngle(Human& player, sf::View& view, sf::RenderWindow& window){
 	angle=player.getAngle(view,window);
 	return angle;
 }

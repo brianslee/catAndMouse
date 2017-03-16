@@ -19,10 +19,10 @@ public:
     bool getDoorOpen();
 
     //Open the locker's door
-    void open(Character * a);
+    void open(Human * a);
 
     //close the locker's door
-    void close(Character * a);
+    void close(Human * a);
 
     //Overridden getPos method to calculate the correct position for locker sprite(size:648,scaleX:0.35,scaleY:0.28)
     sf::Vector2f getPos();

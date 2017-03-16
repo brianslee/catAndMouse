@@ -22,7 +22,7 @@ projectile::projectile()
 }
 
 
-void projectile::updateProjectile(Character& player, sf::View& view, sf::RenderWindow& window)
+void projectile::updateProjectile(Human& player, sf::View& view, sf::RenderWindow& window)
 {
     //sf::Vector2f loc(sf::Mouse::getPosition());
    //rect.move(direction.x,direction.y);
