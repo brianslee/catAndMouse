@@ -25,7 +25,7 @@ public:
 
 	void setActivatedTime(float activatedTime) ;
 
-	void activate(Human * a, float currentTime);
+	void activate(Character* a, float currentTime);
 
 
 };

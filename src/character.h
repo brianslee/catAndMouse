@@ -13,7 +13,7 @@
 #include "HealthBar.h"
 
 
-class Human:public entity{
+class Character:public entity{
  private:
  	sf::Vector2i position;
  	sf::Sprite sprite_original;
@@ -32,13 +32,24 @@ class Human:public entity{
     int direction = 0;
     int counter = 0;
     bool alive = true;
-    
+
+    //BEGIN REFACTOR
+    /*
+    void setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth);
+
+    void updateRotation(sf::View& view, sf::RenderWindow& window);
+
+    bool checkAccess(int dir, bigMap& map);
+
+    int updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
+    */
+    //END REFACTOR
 
     // update the position of the sprite
     void update();
     //void updateMovement();
         
-    Human(sf::Vector2i initPos, int v, int s);
+    Character(sf::Vector2i initPos, int v, int s);
     
     // get the sprite
     sf::Sprite& getSprite();
@@ -98,7 +109,7 @@ class Human:public entity{
 	void inspect(std::vector<interactable*> itemsList); 
 	
 	//React with the interactables that is closest to the player
-	void react(std::vector<interactable*> itemsList); 
+	std::string react(std::vector<interactable*> itemsList);
 
 	bool isIsLoaded();
 

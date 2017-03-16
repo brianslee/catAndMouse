@@ -15,7 +15,8 @@ bool locker::getDoorOpen(){
 	return this->doorOpen;
 }
 
-void locker::open(Human * a){
+
+void locker::open(Character* a){
 	doorOpen=true;
 
 	if(a->distanceToInteractable(this)<dis){
@@ -27,7 +28,7 @@ void locker::open(Human * a){
 	}
 }
 
-void locker::close(Human* a){
+void locker::close(Character* a){
 	doorOpen=false;
 	if(a->distanceToInteractable(this)<dis){
 		this->setIsOccupied(true);

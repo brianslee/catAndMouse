@@ -13,7 +13,7 @@
 		this->activatedTime = activatedTime;
 	}
 
-	void stickyTrap::activate(Human * a,float currentTime){
+	void stickyTrap::activate(Character* a,float currentTime){
 		this->activated=true;
 		if(activatedTime==-1)
 			activatedTime=currentTime;

@@ -4,7 +4,8 @@
 		return damagePoint;
 	}
 
-	void damageTrap::activate(Human * a){
+
+	void damageTrap::activate(Character * a){
 		this->activated=true;
 		a->setHP(a->getHP()-damagePoint);
 		trap::afterActivated();

@@ -20,13 +20,14 @@ angle, player position, projectile position, item position
 
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
 #include "entity.h"
 #include "helper.h"
-#include "network.h"
+//#include "network.h"
 #include "Audio.h"
 #include "Timer.h"
 #include "InteractableManager.h"
@@ -36,19 +37,20 @@ angle, player position, projectile position, item position
 	
 	// Should not be at here
 	// Should be in some seperate class
+	//REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
     int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
-
-void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
+//REFACTOR - PLACED INTO CHARACTER CLASS
+void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
     player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
- player.rect.move(x,y);
+ 	player.rect.move(x,y);
     player.getSprite().move(x,y);
 }
 
@@ -91,6 +93,7 @@ int main()
 	float rbRot;
 	sf::Vector2f rpPos, rbPos;
 	int rpRot, rbDir;
+	short interactableTypeChanged;//0=nothing,1=interactable,2=chest,3=trap,4=hidingPlace
 
 	//Save previous movement
 	sf::Vector2f oldMove;
@@ -135,8 +138,8 @@ int main()
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
-    Human player = Human(sf::Vector2i(5,5),playerMovementSpeed,3);
-    Human player2 = Human(sf::Vector2i(5,9),playerMovementSpeed,3);
+    Character player = Character(sf::Vector2i(5,5),playerMovementSpeed,3);
+    Character player2 = Character(sf::Vector2i(5,9),playerMovementSpeed,3);
 
     bigMap maze = bigMap(30);
 
@@ -205,16 +208,16 @@ int main()
 
 	//sf::Vector2f playerPos = player.getPos();
 	sf::Event event;
-		
+
         while (window.pollEvent(event))
         {
 
 			if(oldMove != player.getPos())
 			{
 				if(network.isMarine())
-						audio.playMarineWalk();
+					audio.playMarineWalk();
 				else
-						audio.playAlienWalk();
+					audio.playAlienWalk();
 			}
 			oldMove = player.getPos();
 
@@ -226,25 +229,12 @@ int main()
                 window.close();
 
             if (event.type == sf::Event::KeyPressed) {
+            	std::string reactedType;
                 switch (event.key.code)
                 {
-					case sf::Keyboard::Num1:
-						dt1->placeTrap(&player,view,window);
-						//send over the network that the trap is placed	
-	
-						break;
-					case sf::Keyboard::Num2:
-						st1->placeTrap(&player,view,window);
-						break;
-					case sf::Keyboard::E:
-						player.react(manager.getIAList());
 
-						break;
-					case sf::Keyboard::LShift:
-						if(player.getSpeed()==player.getOriginalSpeed())
-							player.setSpeed(15);
-						else
-							player.setSpeedToOriginal();
+					case sf::Keyboard::E:
+						reactedType=player.react(manager.getIAList());
 						break;
                     case sf::Keyboard::W:
                         if (checkAccess(player, 0, maze))
@@ -263,6 +253,20 @@ int main()
                             player.walk(3);
                         break;
               //For Debug
+					case sf::Keyboard::Num1:
+						dt1->placeTrap(&player,view,window);
+						//send over the network that the trap is placed
+
+						break;
+					case sf::Keyboard::Num2:
+						st1->placeTrap(&player,view,window);
+						break;
+					case sf::Keyboard::LShift:
+						if(player.getSpeed()==player.getOriginalSpeed())
+							player.setSpeed(15);
+						else
+							player.setSpeedToOriginal();
+						break;
                     case sf::Keyboard::H:
 						std::cout<< "HP: " <<player.getHP()<<std::endl;
 						std::cout<<"Time:" <<mainGameTimer.getTimeAsSeconds()<<std::endl;
@@ -304,6 +308,7 @@ int main()
         }//end while event
 
 		manager.startAnimation();
+//		manager.receiveNotificaton(&network);
 
         maze.updateShade(player.getCoor(), player.getSight());
         
@@ -366,7 +371,7 @@ int main()
                 //only do projectile attack if is Marine
 			  myBullet.rect.setPosition(player.getPos().x,player.getPos().y);
 			  myBullet.direction = player.direction;
-			  bulletAngle = myBullet.getPlayerAngle(player,view,window);
+			  bulletAngle = myBullet.getPlayerAngle(&player,view,window);
 			  myBullets.push_back(myBullet);
 
 			}

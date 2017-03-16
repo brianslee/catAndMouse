@@ -21,10 +21,6 @@ void InteractableManager::add(interactable * mInteractable){
 }
 
 
-void InteractableManager::notifyTrapsDeployed(){
-
-}
-
 void InteractableManager::remove(std::string name){
 
 }
@@ -54,7 +50,7 @@ void InteractableManager::startAnimation(){
 	}
 }
 
-void InteractableManager::trapsDetection(Human * a,float currentTime){
+void InteractableManager::trapsDetection(Character* a,float currentTime){
 	std::vector<trap*>::iterator trap_itr=gameTraps.begin();
 	while(trap_itr!=gameTraps.end()){
 		if((*trap_itr)->getIsLoaded()&&(*trap_itr)->getIsDeployed()){
@@ -72,13 +68,32 @@ void InteractableManager::trapsDetection(Human * a,float currentTime){
 	}
 }
 
+void InteractableManager::notifyTrapsDeployed(Network* network){
+
+}
+
+// Update the hiding place list through network
+void InteractableManager::notifyHidingPlacesActions(Network* network){
+
+}
+
+// Update the chest list through network
+void InteractableManager::notifyChestsOpen(Network* network){
+
+}
+
+void InteractableManager::receiveNotificaton(Network* network){
+	short typeChanged;
+	network->receiveIATypeChanged(typeChanged);
+}
+
 std::vector<interactable *> InteractableManager::getIAList(){
 	return gameInteractable;
 }
 
-std::vector<trap *> InteractableManager::getTrapsList(){
-	return gameTraps;
-}
+//std::vector<trap *> InteractableManager::getTrapsList(){
+//	return gameTraps;
+//}
 
 
 //std::map<std::string,interactable *> InteractableManager::getIAList(){
