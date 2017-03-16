@@ -17,13 +17,13 @@ bool locker::getDoorOpen(){
 
 void locker::open(Human * a){
 	doorOpen=true;
-//	if(spriteX!=0)
-//		this->animation(0,0,0,5,false);
-//		this->updateSprite(0,4);
+
 	if(a->distanceToInteractable(this)<dis){
 		a->setSight(3);
+		a->setCanAttack(true);
 		a->setIsLoaded(true);
 		a->setSpeedToOriginal();
+
 	}
 }
 
@@ -32,14 +32,12 @@ void locker::close(Human* a){
 	if(a->distanceToInteractable(this)<dis){
 		this->setIsOccupied(true);
 		a->setSight(this->getVisibility());
-
-//		this->updateSprite(0,6);
+		a->setCanAttack(false);
 		a->setIsLoaded(false);
 		a->setSpeed(0);
 	}else{
 		this->setIsOccupied(false);
-//		this->updateSprite(0,0);
-//		this->animation(0,0,5,0,false);
+
 	}
 }
 

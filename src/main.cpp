@@ -26,6 +26,7 @@ angle, player position, projectile position, item position
 #include "attack.h"
 #include "chest.h"
 #include "damageTrap.h"
+#include "stickyTrap.h"
 #include "entity.h"
 #include "helper.h"
 #include "network.h"
@@ -152,6 +153,7 @@ int main()
 
 	damageTrap dt1=damageTrap(20);
 	damageTrap dt2=damageTrap(20);
+	stickyTrap st1=stickyTrap(3);
 	ch2.setItem(&dt2);
 
 	locker lo1=locker(1);
@@ -169,6 +171,7 @@ int main()
 
 	itemsList.push_back(&dt1);
 	itemsList.push_back(&dt2);
+	itemsList.push_back(&st1);
 
 	lo1.setPosition(320,1050);
 	ta1.setPosition(1485,590);
@@ -238,6 +241,11 @@ int main()
 					dt1.activate(&player);
 				}
 			}
+			if(st1.getIsLoaded()&&st1.getIsDeployed()){
+				if(player.distanceToInteractable(&st1)<25){
+					st1.activate(&player,mainGameTimer.getTimeAsSeconds());
+				}
+			}
            
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -249,6 +257,9 @@ int main()
 						dt1.placeTrap(&player,view,window);
 						//send over the network that the trap is placed	
 	
+						break;
+					case sf::Keyboard::Num2:
+						st1.placeTrap(&player,view,window);
 						break;
 					case sf::Keyboard::E:
 						player.react(itemsList);
@@ -325,6 +336,7 @@ int main()
 
         lo1.animation();
         dt1.animation();
+        st1.animation();
 
         maze.updateShade(player.getCoor(), player.getSight());
         
@@ -380,7 +392,7 @@ int main()
 			oldMovement = player2Pos;
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&player.isCanAttack())
 		{
 			if (elapsed1.asSeconds() >= 0.5)
 			{
@@ -398,12 +410,11 @@ int main()
 			  sbDir = myBullet.direction;
 			  sbRot = bulletAngle;
 
-
 				if(network.isMarine())
 					audio.playMarineAttack();
 				else
 					audio.playAlienAttack();
-		}
+		}//end if button is pressed
 
 //To delete mybullets if it destroyed
 

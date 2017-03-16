@@ -23,6 +23,7 @@ class Human:public entity{
  	const static int dis=70;
  	bool isLoaded;
 	HealthBar hp;
+	bool canRotate,canAttack;
        
  public:
     int movementSpeed = 4 ;
@@ -103,7 +104,13 @@ class Human:public entity{
 
 	void setIsLoaded(bool isLoaded);
 
+	bool isCanAttack();
 
+	void setCanAttack(bool canAttack);
+
+	bool isCanRotate();
+
+	void setCanRotate(bool canRotate);
 };
 #endif
 

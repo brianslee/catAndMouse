@@ -22,6 +22,8 @@ Human::Human(sf::Vector2i initPos, int v, int s)
 	originalSpeed=speed;
 	sight = s;
 	isLoaded=true;
+	canRotate=true;
+	canAttack=true;
     
 }
 
@@ -180,7 +182,7 @@ void Human::react(std::vector<interactable*> itemsList){
 				itemsList[i]->setIsLoaded(false);
 				break;
 			}//end if item
-			if(type=="DamageTrap"){
+			if(type=="DamageTrap"||type=="StickyTrap"){
 				trap* dt=dynamic_cast<trap*>(itemsList[i]);
 				if(!dt->getIsDeployed()){
 					itemsList[i]->setIsLoaded(false);
@@ -210,6 +212,21 @@ void Human::setIsLoaded(bool isLoaded) {
 	this->isLoaded = isLoaded;
 }
 
+bool  Human::isCanAttack() {
+	return canAttack;
+}
+
+void  Human::setCanAttack(bool canAttack) {
+	this->canAttack = canAttack;
+}
+
+bool  Human::isCanRotate(){
+	return canRotate;
+}
+
+void  Human::setCanRotate(bool canRotate) {
+	this->canRotate = canRotate;
+}
 
 
 

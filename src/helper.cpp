@@ -51,6 +51,8 @@ bool checkAccess(Human& a, int dir, bigMap& map) {
 }
 
 void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
+	if(!player.isCanRotate())
+		return ;
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f charPos = player.getPos();
     sf::Vector2f windowPos = view.getCenter();

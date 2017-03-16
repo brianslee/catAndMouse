@@ -15,12 +15,14 @@ void Table::hide(Human * a){
 		if(!this->getIsOccupied()){
 			this->setIsOccupied(true);
 			a->setSight(this->getVisibility());
+			a->setCanAttack(false);
 			this->updateSprite(0,1);
 			a->setIsLoaded(false);
 			a->setSpeed(0);
 		}else{
 			this->setIsOccupied(false);
 			a->setSight(3);
+			a->setCanAttack(true);
 			this->updateSprite(0,0);
 			a->setIsLoaded(true);
 			a->setSpeedToOriginal();

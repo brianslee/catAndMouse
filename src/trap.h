@@ -8,26 +8,26 @@
 class trap:
 		public Item
 {
-private:
+protected:
 	bool isDeployed; // if the trap is deployed on the map
-
+	bool activated;
 public:
 	//C
 	explicit trap(std::string trapImg,std::string message,std::string trapType)
-	:Item(trapImg,message,trapType),isDeployed(false){}
+	:Item(trapImg,message,trapType),isDeployed(false),activated(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType,float scale)
-		:Item(trapImg,message,trapType,scale),isDeployed(false){}
+		:Item(trapImg,message,trapType,scale),isDeployed(false),activated(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType,bool depolyed)
-	:Item(trapImg,message,trapType),isDeployed(depolyed){}
+	:Item(trapImg,message,trapType),isDeployed(depolyed),activated(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType, float scale ,bool depolyed)
-		:Item(trapImg,message,trapType,scale),isDeployed(depolyed){}
+		:Item(trapImg,message,trapType,scale),isDeployed(depolyed),activated(false){}
 		
 	~trap(){}
 
-	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
+	virtual void afterActivated();
 
 	bool getIsDeployed(); // return if the trap is deployed to the map
 
