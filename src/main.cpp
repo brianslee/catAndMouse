@@ -24,6 +24,7 @@ angle, player position, projectile position, item position
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
+#include "character.h"
 #include "chest.h"
 #include "damageTrap.h"
 #include "entity.h"
@@ -45,13 +46,13 @@ angle, player position, projectile position, item position
 
 //setup player sprites
 
-void setupPlayer(Human & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
+void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);
     player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
     player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
     player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
- player.rect.move(x,y);
+ 	player.rect.move(x,y);
     player.getSprite().move(x,y);
 }
 
@@ -138,8 +139,8 @@ int main()
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
-    Human player = Human(sf::Vector2i(5,5),playerMovementSpeed,3);
-    Human player2 = Human(sf::Vector2i(5,9),playerMovementSpeed,3);
+    Character player = Character(sf::Vector2i(5,5),playerMovementSpeed,3);
+    Character player2 = Character(sf::Vector2i(5,9),playerMovementSpeed,3);
 
     bigMap maze = bigMap(30);
 

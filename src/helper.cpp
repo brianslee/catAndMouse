@@ -17,13 +17,13 @@ sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
     else if (ty > mapSize.y - 400)ty = double(mapSize.y - 400);
     return sf::Vector2f(tx, ty);
 }
-
-bool checkAccess(Human& a, int dir, bigMap& map) {
+/*
+bool checkAccess(Character& a, int dir, bigMap& map) {
     
-    // human is standing on 4 grids
+    // Character is standing on 4 grids
     if (int(a.getPos().x) % 80 > 50 && int(a.getPos().y) % 80 > 50)return true;
     
-    // human is standing on 2 grids
+    // Character is standing on 2 grids
     // horizontal
     else if ((int(a.getPos().x) % 80 > 50) && (int(a.getPos().y) % 80 <= 50)) {
         if (dir == 0 && (int(a.getPos().y) % 80 <= 35))
@@ -41,16 +41,16 @@ bool checkAccess(Human& a, int dir, bigMap& map) {
         else return 1;
     }
     
-    // human is standing on 1 grid
+    // Character is standing on 1 grid
     else if (int(a.getPos().x) % 80 <= 35 && dir == 2)return !map.getWall(a.getCoor().x - 1, a.getCoor().y);
     else if (int(a.getPos().x) % 80 >= 45 && dir == 3)return !map.getWall(a.getCoor().x + 1, a.getCoor().y);
     else if (int(a.getPos().y) % 80 <= 35 && dir == 0)return !map.getWall(a.getCoor().x, a.getCoor().y - 1);
     else if (int(a.getPos().y) % 80 >= 45 && dir == 1)return !map.getWall(a.getCoor().x, a.getCoor().y + 1);
     
     return 1;
-}
-
-void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
+}*/
+/*
+void updateRotation(Character& player, sf::View& view, sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f charPos = player.getPos();
     sf::Vector2f windowPos = view.getCenter();
@@ -66,8 +66,8 @@ void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
     player.getSprite().setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
     
     
-}
-
+}*/
+/*
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
         sprite.setTextureRect(sf::IntRect(0, spriteCounter*spriteWidth, spriteLength, spriteWidth));
@@ -77,5 +77,5 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
         spriteCounter = (spriteCounter + 1) % spriteNum;
     }
     return spriteCounter;
-}
+}*/
 
