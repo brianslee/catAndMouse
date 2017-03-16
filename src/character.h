@@ -10,7 +10,7 @@
 #include "chest.h"
 #include "entity.h"
 #include "interactable.h"
-
+#include "HealthBar.h"
 
 
 class Human:public entity{
@@ -22,7 +22,7 @@ class Human:public entity{
  	int sight;
  	const static int dis=70;
  	bool isLoaded;
-
+	HealthBar hp;
        
  public:
     int movementSpeed = 4 ;
@@ -30,7 +30,6 @@ class Human:public entity{
     int counterWalking = 0;
     int direction = 0;
     int counter = 0;
-    int hp;
     bool alive = true;
     
 
@@ -46,9 +45,15 @@ class Human:public entity{
     // get the coordinate of the character
     sf::Vector2i getCoor();
     
+    //get the aiming angle of the character
+    float getAngle(sf::View& view, sf::RenderWindow& window);
+
     // get the speed
     int getSpeed();
     
+    //get the original movement speed
+    int getOriginalSpeed();
+
     // get the sight
     int getSight();
     
@@ -76,9 +81,14 @@ class Human:public entity{
     // set a new position (relative to the map)
 	void setPos(const sf::Vector2f& pos);
 	
+	HealthBar* getHPBar();
+	
 	int getHP();
-
+	
 	void setHP(int hp);
+
+	void setHPBar(HealthBar hpb);
+
 
 	//get the distance between the interactables and the player
     int distanceToInteractable(interactable* item);  	
