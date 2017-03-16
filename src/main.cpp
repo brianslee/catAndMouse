@@ -40,12 +40,13 @@ angle, player position, projectile position, item position
 	
 	// Should not be at here
 	// Should be in some seperate class
+	//REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
     int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 
 //setup player sprites
-
+//REFACTOR - PLACED INTO CHARACTER CLASS
 void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);

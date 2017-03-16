@@ -17,7 +17,8 @@ sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
     else if (ty > mapSize.y - 400)ty = double(mapSize.y - 400);
     return sf::Vector2f(tx, ty);
 }
-/*
+// REFACTOR - MOVED ALL BELOW TO CHARACTER CLASS
+
 bool checkAccess(Character& a, int dir, bigMap& map) {
     
     // Character is standing on 4 grids
@@ -48,8 +49,8 @@ bool checkAccess(Character& a, int dir, bigMap& map) {
     else if (int(a.getPos().y) % 80 >= 45 && dir == 1)return !map.getWall(a.getCoor().x, a.getCoor().y + 1);
     
     return 1;
-}*/
-/*
+}
+
 void updateRotation(Character& player, sf::View& view, sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f charPos = player.getPos();
@@ -66,8 +67,8 @@ void updateRotation(Character& player, sf::View& view, sf::RenderWindow& window)
     player.getSprite().setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
     
     
-}*/
-/*
+}
+
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
         sprite.setTextureRect(sf::IntRect(0, spriteCounter*spriteWidth, spriteLength, spriteWidth));
@@ -77,5 +78,5 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
         spriteCounter = (spriteCounter + 1) % spriteNum;
     }
     return spriteCounter;
-}*/
+}
 

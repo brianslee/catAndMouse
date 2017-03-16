@@ -33,6 +33,7 @@ class Character:public entity{
     bool alive = true;
 
     //BEGIN REFACTOR
+    /*
     void setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth);
 
     void updateRotation(sf::View& view, sf::RenderWindow& window);
@@ -40,7 +41,7 @@ class Character:public entity{
     bool checkAccess(int dir, bigMap& map);
 
     int updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
-    
+    */
     //END REFACTOR
 
     // update the position of the sprite
