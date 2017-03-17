@@ -46,45 +46,32 @@ void Network::setup(){
 //Send everything and set to data
 
 void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
-sf::Packet packet;
-
-        packet << playerPos.x << playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
-
+	sf::Packet packet;
+	packet << playerPos.x << playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
 	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
         return;
-}
-
-
+	}
 }
 
 void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
-
-
 	sf::Packet packet;
-
-         if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
-
+	if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
         packet >> playerPos.x >> playerPos.y >>rectPos.x>>rectPos.y>> projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot;
-
-        }
-
-
+	}
 }
 
+void Network::sendIATypeChanged(short iaTypeChanged){
+	sf::Packet packet;
+	packet<<iaTypeChanged;
+//	if(socket.send(packet))
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Network::receiveIATypeChanged(short iaTypeChanged){
+	sf::Packet packet;
+	if(socket.receive(packet,remoteIP,remotePort)==sf::Socket::Done){
+		packet>>iaTypeChanged;
+	}
+	std::cout<<"Type changed "<<iaTypeChanged<<std::endl;
+}
 
 

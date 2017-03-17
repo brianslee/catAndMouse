@@ -4,7 +4,7 @@
 class hidingPlace:
 		public interactable
 {
-private:
+protected:
 	int visibility;
 	bool isOccupied;
 public:

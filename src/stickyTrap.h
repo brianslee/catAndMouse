@@ -1,23 +1,32 @@
-//
-//  stickyTrap.hpp
-//  addfiles
-//
-//  Created by James wang on 2/22/17.
-//  Copyright © 2017 James wang. All rights reserved.
-//
+
 
 #ifndef stickyTrap_hpp
 #define stickyTrap_hpp
 
-#include <stdio.h>
-class stickyTrap{
-    
-public:
-    void set_movement_speed(int speed); // set a new movement speed to the player
-    int get_speed();
+#include "trap.h"
+
+class stickyTrap:
+	public trap
+{
     
 private:
-    int Speed;
+    float duration;//duration of the trap
+    float activatedTime;// When the trap was activated
+public:
+    //Constructor
+    explicit stickyTrap(float duration)
+    	:trap("Spritesheets/gravMine.png","Grav Mine: hold 3sec","StickyTrap",2.f),duration(duration),activatedTime(-1){}
+    explicit stickyTrap(float duration,bool isDepolyed)
+    	:trap("Spritesheets/gravMine.png","Grav Mine: hold 3sec","StickyTrap",2.f,isDepolyed),duration(duration),activatedTime(-1){}
+
+    float getDuration();
+
+	float getActivatedTime();
+
+	void setActivatedTime(float activatedTime) ;
+
+	void activate(Character* a, float currentTime);
+
 
 };
 

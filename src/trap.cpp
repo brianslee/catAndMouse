@@ -2,7 +2,7 @@
 #include "trap.h"
 #include <math.h>
 
-	 void trap::activate(Character * a){
+	 void trap::afterActivated(){
 		 this->setIsDeployed(false);
 		 this->setIsLoaded(false);
 	}
@@ -30,4 +30,23 @@
 		this->setIsDeployed(true);
 	}
 
+	void trap::animation(){
+		if(!isLoaded||!isDeployed)
+			return ;
+		int startY,endY;
+		float freq;
+		if(curGridY==0){
+			startY=0;
+			endY=1;
+		}else{
+			startY=1;
+			endY=0;
+		}
+		if(activated){
+			freq=0.1;
+		}else{
+			freq=0.5;
+		}
+		interactable::animation(0,0,startY,endY,false,freq);
+	}
 

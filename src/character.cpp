@@ -22,6 +22,8 @@ Character::Character(sf::Vector2i initPos, int v, int s)
 	originalSpeed=speed;
 	sight = s;
 	isLoaded=true;
+	canRotate=true;
+	canAttack=true;
     
 }
 
@@ -161,7 +163,8 @@ void Character::inspect(std::vector<interactable*> itemsList){
 }
 
 
-void Character::react(std::vector<interactable*> itemsList){
+std::string Character::react(std::vector<interactable*> itemsList){
+	std::string reactedType="NULL";
 	for(unsigned int i=0;i<itemsList.size();i++){
 		if(distanceToInteractable(itemsList[i])<dis){
 			bool itemLoaded=itemsList[i]->getIsLoaded();
@@ -172,18 +175,21 @@ void Character::react(std::vector<interactable*> itemsList){
 				chest* ch=dynamic_cast<chest*>(itemsList[i]);
 				if(!ch->getIsOpen()){
 					ch->open();
+					reactedType="Chest";
 					break;
 				}
 			}//end if  chest
 			if(type=="Item"){
 				//get Item
 				itemsList[i]->setIsLoaded(false);
+				reactedType="Item";
 				break;
 			}//end if item
-			if(type=="DamageTrap"){
+			if(type=="DamageTrap"||type=="StickyTrap"){
 				trap* dt=dynamic_cast<trap*>(itemsList[i]);
 				if(!dt->getIsDeployed()){
 					itemsList[i]->setIsLoaded(false);
+					reactedType="Trap";
 					break;
 				}
 			}//end if damage trap
@@ -193,13 +199,16 @@ void Character::react(std::vector<interactable*> itemsList){
 					lo->open(this);
 				else
 					lo->close(this);
+				reactedType="HidingPlace";
 			}
 			if(type=="Table"){
 				Table* ta=dynamic_cast<Table*>(itemsList[i]);
 				ta->hide(this);
+				reactedType="HidingPlace";
 			}
 		}//end if (distance <80)
 	}//end for loop
+	return reactedType;
 }//end of react
 
 bool Character::isIsLoaded()  {
@@ -210,6 +219,21 @@ void Character::setIsLoaded(bool isLoaded) {
 	this->isLoaded = isLoaded;
 }
 
+bool  Character::isCanAttack() {
+	return canAttack;
+}
+
+void  Character::setCanAttack(bool canAttack) {
+	this->canAttack = canAttack;
+}
+
+bool  Character::isCanRotate(){
+	return canRotate;
+}
+
+void  Character::setCanRotate(bool canRotate) {
+	this->canRotate = canRotate;
+}
 
 //REFACTORED CODE BEGINS HERE
 

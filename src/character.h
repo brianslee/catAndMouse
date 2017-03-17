@@ -28,6 +28,7 @@ class Character:public entity{
  	const static int dis=70;
  	bool isLoaded;
 	HealthBar hp;
+	bool canRotate,canAttack;
        
  public:
     int movementSpeed = 4 ;
@@ -115,14 +116,19 @@ class Character:public entity{
 	void inspect(std::vector<interactable*> itemsList); 
 	
 	//React with the interactables that is closest to the player
-	void react(std::vector<interactable*> itemsList); 
+	std::string react(std::vector<interactable*> itemsList);
 
 	bool isIsLoaded();
 
 	void setIsLoaded(bool isLoaded);
 
+	bool isCanAttack();
 
+	void setCanAttack(bool canAttack);
 
+	bool isCanRotate();
+
+	void setCanRotate(bool canRotate);
 };
 #endif
 
