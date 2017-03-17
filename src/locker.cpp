@@ -14,7 +14,7 @@ bool locker::getDoorOpen(){
 	return this->doorOpen;
 }
 
-void locker::open(Human * a){
+void locker::open(Character * a){
 	doorOpen=true;
 	if(spriteX!=0)
 		this->updateSprite(0,4);
@@ -25,7 +25,7 @@ void locker::open(Human * a){
 	}
 }
 
-void locker::close(Human* a){
+void locker::close(Character* a){
 	doorOpen=false;
 	if(a->distanceToInteractable(this)<dis){
 		this->setIsOccupied(true);

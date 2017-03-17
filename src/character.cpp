@@ -10,7 +10,7 @@
 #include "locker.h"
 #include "Table.h"
 
-Human::Human(sf::Vector2i initPos, int v, int s)
+Character::Character(sf::Vector2i initPos, int v, int s)
 {
     rect.setSize(sf::Vector2f(40, 40));
     //rect.setPosition(280, 440);
@@ -22,65 +22,83 @@ Human::Human(sf::Vector2i initPos, int v, int s)
 	originalSpeed=speed;
 	sight = s;
 	isLoaded=true;
-	this->hp=100;
     
 }
 
-void Human::update()
+void Character::update()
 {
     sprite.setPosition(rect.getPosition());
 }
  
 
-void Human::setPos(const sf::Vector2f& pos)
+void Character::setPos(const sf::Vector2f& pos)
 {
 	sprite_original.setPosition(pos);
     rect.setPosition(pos);
 }
 
-sf::Sprite& Human::getSprite()
+sf::Sprite& Character::getSprite()
 {
     return sprite_original;
 }
-sf::Vector2i Human::getCoor()
+sf::Vector2i Character::getCoor()
 {
     return position;
 }
-int Human::getSpeed()
+
+float Character::getAngle(sf::View& view, sf::RenderWindow& window){
+	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+	sf::Vector2f charPos = this->getPos();
+	sf::Vector2f windowPos = view.getCenter();
+	charPos.x += 30;
+	charPos.y += 30;
+	windowPos.x -= 400;
+	windowPos.y -= 400;
+
+	float angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
+	return angle;
+}
+
+int Character::getSpeed()
 {
     return speed;
 }
-int Human::getSight()
+
+int Character::getOriginalSpeed()
+{
+	return this->originalSpeed;
+}
+int Character::getSight()
 {
     return sight;
 }
-sf::Vector2f Human::getPos()
+sf::Vector2f Character::getPos()
 {
     return sprite_original.getPosition();
 }
-void Human::setCoor(sf::Vector2i coor)
+void Character::setCoor(sf::Vector2i coor)
 {
     position = coor; sprite_original.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
-rect.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
+    rect.setPosition(80 * coor.x + 40, 80 * coor.y + 40);
 }
-void Human::setSpeed(int v)
+void Character::setSpeed(int v)
 {
     speed = v;
 }
 
-void Human::setSpeedToOriginal(){
+void Character::setSpeedToOriginal(){
 	this->speed=this->originalSpeed;
 }
 
-void Human::setSight(int s)
+void Character::setSight(int s)
 {
     sight = s;
 }
-void Human::updateCoor()
+void Character::updateCoor()
 {
     position = sf::Vector2i(int((sprite_original.getPosition().x) / 80.0), int((sprite_original.getPosition().y) / 80.0));
 }
-void Human::walk(int dir) {
+void Character::walk(int dir) {
     //map up/down/left/right to 0/1/2/3
     updateCoor();
     switch (dir)
@@ -110,20 +128,31 @@ void Human::walk(int dir) {
     }
     updateCoor();
 }
-int Human::getHP(){
-	return this->hp;
+
+
+HealthBar* Character::getHPBar(){
+	return &(this->hp);
 }
 
-void Human::setHP(int hp){
+int Character::getHP(){
+	return this->hp.getHP();
+}
+
+void Character::setHP(int hp){
+	this->hp.setHP(hp);
+}
+
+void Character::setHPBar(HealthBar hp){
 	this->hp=hp;
 }
 
-int Human::distanceToInteractable(interactable* item){
+
+int Character::distanceToInteractable(interactable* item){
 	float x=item->getPos().x-getPos().x;
 	float y=item->getPos().y-getPos().y;
 	return sqrt(pow(x,2)+pow(y,2));
 }
-void Human::inspect(std::vector<interactable*> itemsList){
+void Character::inspect(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
 		if(distanceToInteractable(itemsList[i])<dis){
 			itemsList[i]->inspect();
@@ -132,7 +161,7 @@ void Human::inspect(std::vector<interactable*> itemsList){
 }
 
 
-void Human::react(std::vector<interactable*> itemsList){
+void Character::react(std::vector<interactable*> itemsList){
 	for(unsigned int i=0;i<itemsList.size();i++){
 		if(distanceToInteractable(itemsList[i])<dis){
 			bool itemLoaded=itemsList[i]->getIsLoaded();
@@ -173,19 +202,85 @@ void Human::react(std::vector<interactable*> itemsList){
 	}//end for loop
 }//end of react
 
-bool Human::isIsLoaded()  {
+bool Character::isIsLoaded()  {
 	return isLoaded;
 }
 
-void Human::setIsLoaded(bool isLoaded) {
+void Character::setIsLoaded(bool isLoaded) {
 	this->isLoaded = isLoaded;
 }
 
 
+//REFACTORED CODE BEGINS HERE
+/*
+void Character::setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
+{
+	getSprite().setTexture(texture);
+    getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
+    getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
+    getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
+ 	rect.move(x,y);
+    getSprite().move(x,y);
+}
 
+void Character::updateRotation(sf::View& view, sf::RenderWindow& window)
+{
+	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f charPos = player.getPos();
+    sf::Vector2f windowPos = view.getCenter();
+    charPos.x += 30;
+    charPos.y += 30;
+    windowPos.x -= 400;
+    windowPos.y -= 400;
+    
+    //	std::cout << mousePos.x << ' ' << mousePos.y << std::endl;
+    //	std::cout << atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159 << std::endl;
+    sf::Transform transform;
+    
+    getSprite().setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
+}
 
+int Character::updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
+    if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
+        getSprite().setTextureRect(sf::IntRect(0, spriteCounter*spriteWidth, spriteLength, spriteWidth));
+        getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
+        window.draw(sprite);
+        clock.restart();
+        spriteCounter = (spriteCounter + 1) % spriteNum;
+    }
+    return spriteCounter;
+}
 
-
-
+bool Character::checkAccess(int dir, bigMap& map)
+{
+	if (int(this.getPos().x) % 80 > 50 && int(this.getPos().y) % 80 > 50)return true;
+    
+    // Character is standing on 2 grids
+    // horizontal
+    else if ((int(this.getPos().x) % 80 > 50) && (int(this.getPos().y) % 80 <= 50)) {
+        if (dir == 0 && (int(a.getPos().y) % 80 <= 35))
+            return !(map.getWall(this.getCoor().x, this.getCoor().y - 1) || map.getWall(this.getCoor().x + 1, this.getCoor().y - 1));
+        else if (dir == 1 && (int(this.getPos().y) % 80 >= 45))
+            return !(map.getWall(this.getCoor().x, this.getCoor().y + 1) || map.getWall(this.getCoor().x + 1, this.getCoor().y + 1));
+        else return 1;
+    }
+    // vertical
+    else if ((int(this.getPos().y) % 80 > 50) && (int(this.getPos().x) % 80 <= 50)) {
+        if (dir == 2 && (int(this.getPos().x) % 80 <= 45))
+            return !(map.getWall(this.getCoor().x - 1, this.getCoor().y) || map.getWall(this.getCoor().x - 1, this.getCoor().y + 1));
+        else if (dir == 3 && (int(this.getPos().x) % 80 >= 45))
+            return !(map.getWall(this.getCoor().x + 1, this.getCoor().y) || map.getWall(this.getCoor().x + 1, this.getCoor().y + 1));
+        else return 1;
+    }
+    
+    // Character is standing on 1 grid
+    else if (int(this.getPos().x) % 80 <= 35 && dir == 2)return !map.getWall(this.getCoor().x - 1, this.getCoor().y);
+    else if (int(this.getPos().x) % 80 >= 45 && dir == 3)return !map.getWall(this.getCoor().x + 1, this.getCoor().y);
+    else if (int(this.getPos().y) % 80 <= 35 && dir == 0)return !map.getWall(this.getCoor().x, this.getCoor().y - 1);
+    else if (int(this.getPos().y) % 80 >= 45 && dir == 1)return !map.getWall(this.getCoor().x, this.getCoor().y + 1);
+    
+    return 1;
+}
+*/
 
 

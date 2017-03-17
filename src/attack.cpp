@@ -22,7 +22,7 @@ projectile::projectile()
 }
 
 
-void projectile::update(Human& player, sf::View& view, sf::RenderWindow& window)
+void projectile::updateProjectile(Character& player, sf::View& view, sf::RenderWindow& window)
 {
     //sf::Vector2f loc(sf::Mouse::getPosition());
    //rect.move(direction.x,direction.y);
@@ -34,46 +34,9 @@ void projectile::update(Human& player, sf::View& view, sf::RenderWindow& window)
     windowPos.x -= 400;
     windowPos.y -= 400;
     
-    /*
-    sf::Vector2i p = player.getCoor();
-    sf::Vector2i m = sf::Mouse::getPosition();
-    
-    double slope = (m.y - p.y) / (m.x - p.x);
-    sf:: Vector2f d(cos(slope), sin(slope));
-    */
-    
-    
     float angle = (-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159) -90;
     
     rect.move(cos((3.14159/180)*angle)* movementSpeed, sin((3.14159/180)*angle)*movementSpeed);
-    
-    
-    
-    //rect.move(0, -movementSpeed);
-    
-    
-   // direction.x = static_cast<float>(cos(3.1415 * player.getRotation() / 180) * movementSpeed);
-  //  direction.y = static_cast<float>(sin(3.1415 * player.GetRotation() / 180) * movementSpeed);
-    
-
-   /* if (direction == 1) // Up
-    {
-        rect.move(0, -movementSpeed);
-    }
-    if (direction == 2) // Down
-    {
-        rect.move(0, movementSpeed);
-    }
-    if (direction == 3) // Left
-    {
-        rect.move(-movementSpeed, 0);
-    }
-    if (direction == 4) // Right
-    {
-        rect.move(movementSpeed, 0);
-    }
-
-    */
     
     
     counterLifetime++;

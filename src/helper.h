@@ -13,10 +13,10 @@
 sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize);
 
 // Check if moving towards dir is legal
-bool checkAccess(Human& a, int dir, bigMap& map);
+bool checkAccess(Character& a, int dir, bigMap& map);
 
 // Rotate the character direction to mouse direction
-void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window);
+void updateRotation(Character& player, sf::View& view, sf::RenderWindow& window);
 
 // Update character sprite for animations
 int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);

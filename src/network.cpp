@@ -1,4 +1,6 @@
 #include "network.h"
+#include <SFML/Graphics.hpp>
+#include<string>
 
 Network::Network(){}
 
@@ -43,51 +45,6 @@ void Network::setup(){
 
 
 
-void Network::receiveData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, float& rotation){
-
-
-	sf::Packet packet;
- 	
-        if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
-
-        packet >> playerPos.x >> playerPos.y >>rectPos.x>>rectPos.y>> rotation;
-
-	packet.clear();
-}
-}
-
-
-void Network::sendData(sf::Vector2f movement, float rotation){
-
-        sf::Packet packet;
-
-        packet << movement.x << movement.y << rotation;
-
-        if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
-
-        return;
-}
-}
-
-bool Network::isAttack() {
-
-	return attacked;
-
-}
-
-void Network::sendAttack(sf::Vector2f projectilePos, int direction, float angle)
-{
-	sf::Packet packet;
-
-	packet << projectilePos.x << projectilePos.y << direction << angle;
-
-	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
-        return;
-}
-
-}
-
-
 //Send everything and set to data
 
 void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
@@ -118,28 +75,9 @@ void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int
 
 
 
-void Network::receiveAttack(sf::Vector2f& projectilePos, int& direction, float &angle)
-{
-
-	sf::Packet packet;	
-
-	 if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
-
-	packet >> projectilePos.x >> projectilePos.y >> direction >> angle;
-		packet.clear();
-	}
-
-}
 
 
 
-
-
-//
-//
-//std::string Network::getPlayerSelection() {
-//		return playerSelection;
-//	}
 
 
 
