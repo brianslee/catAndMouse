@@ -44,23 +44,16 @@ For testing proposes, we recommend running the game two consoles to represent tw
 
 Basic controls:
 
-W = north
-S = south
-A = west
-D = east
+W = up
+S = down
+A = left
+D = right
 Mouse = 360 directional view
-Space bar = shooting
-E = Interact with objects in game. 
+Mouse click = shooting
+E = Interact with objects in game.
+1 = Use item in inventory
 
 
 BUGS:
 
-No Marine character sprite. No chest sprite.
-
-Cannot select marine. All selections ends up being Alien.  
-
-Attacking direction, only 4 direction attack, not following direction key.
-
-If connected both players can pick up items that was previously picked up.
-
-Fog of War, can see other players through the Fog of War
+If running, it's possible to run through the walls

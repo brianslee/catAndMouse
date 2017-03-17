@@ -31,7 +31,7 @@ angle, player position, projectile position, item position
 #include "Audio.h"
 #include "Timer.h"
 #include "InteractableManager.h"
-
+#include "Inventory.h"
 
     int projectilesMovementSpeed=9;
     
@@ -88,7 +88,7 @@ int main()
     sf::Vector2f oldMove;
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,marineTexture,alienTexture,hpBarTexture;
+    sf::Texture texture,invTexture, tx2,marineTexture,alienTexture,hpBarTexture;
 
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -120,7 +120,14 @@ int main()
     if (!hpBarTexture.loadFromFile("Spritesheets/Health_Bar.png")) {
         return EXIT_FAILURE;
     }
-    spr.setTexture(texture);
+      if (!invTexture.loadFromFile("Spritesheets/inventory2.png")) {
+        return EXIT_FAILURE;
+    }
+
+    std::string itemName;
+
+
+	spr.setTexture(texture);
 
     spr.move(0, 0);
     std::cout << "Creating Instances...\n";
@@ -185,8 +192,16 @@ int main()
     player2.updateCoor(); 
     
     player.setHPBar(HealthBar(hpBarTexture,100,200,200,40));
-    player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x+200,getCenter(player.getPos(), image.getSize()).y+200);
-        
+
+    
+ Inventory inventory(invTexture, 600, 600);
+   player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x-400 ,getCenter(player.getPos(), image.getSize()).y+200);
+
+   inventory.setPos(getCenter(player.getPos(), image.getSize()).x,getCenter(player.getPos(), image.getSize()).y-50);
+
+
+
+
     // Fix the viewpoint bug
     view.setCenter(getCenter(player.getPos(), image.getSize()));
     window.setView(view);
@@ -227,7 +242,9 @@ int main()
 
                     case sf::Keyboard::E:
                         reactedType=player.react(manager.getIAList());
-                        break;
+                        inventory.addItem(reactedType);
+
+			break;
                     case sf::Keyboard::W:
                         if (player.checkAccess(0, maze))
                             player.walk(0);
@@ -247,6 +264,7 @@ int main()
               //For Debug
                     case sf::Keyboard::Num1:
                         dt1->placeTrap(&player,view,window);
+			inventory.deleteItem(reactedType);
                         //send over the network that the trap is placed
 
                         break;
@@ -277,7 +295,14 @@ int main()
                     default:
                         break;
                 }//end switch
-                player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x+200,getCenter(player.getPos(), image.getSize()).y+200);
+
+
+
+ player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x-400 ,getCenter(player.getPos(), image.getSize()).y+200);
+
+   inventory.setPos(getCenter(player.getPos(), image.getSize()).x,getCenter(player.getPos(), image.getSize()).y-50);
+
+
 
                 view.setCenter(getCenter(player.getPos(), image.getSize()));
                 window.setView(view);
@@ -295,7 +320,7 @@ int main()
 
             player.updateRotation(view, window);
 
-            
+	    window.draw(inventory.getSprite());            
             window.draw(player.getHPBar()->getSprite());
         }//end while event
 
@@ -512,7 +537,7 @@ window.draw(text2);
               window.draw(maze.getShade(i,j));
             }
         window.draw(player.getHPBar()->getSprite());
-
+	window.draw(inventory.getSprite());
  
       //Draw my projectiles
         int counter = 0;

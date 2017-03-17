@@ -9,16 +9,29 @@
 #ifndef Inventory_hpp
 #define Inventory_hpp
 
-#include <stdio.h>
+
+
+
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <string>
+#include <iostream>
 class Inventory{
 public:
-    void add_item(std::string new_item); // add a item
-    void delete_item(std::string used_item); //delete a item
-
-    
+    bool addItem(std::string item); // add a item
+    void deleteItem(std::string item); //delete a item
+    Inventory(sf::Texture& texture, int h, int w);
+    void updateInventorySprite();
+    void setPos(float x, float y);
+    sf::Sprite& getSprite() {return spriteSheet;}
+   // bool isFull() {return hasItem;}   
 private:
-    std::string *Items_in_bag[]; // items list
+   // std::string *Items_in_bag[]; // items list
+    bool hasItem;
+    int height;
+    int width;
+
+    sf::Sprite spriteSheet;
 };
 
 #endif /* Inventory_hpp */
