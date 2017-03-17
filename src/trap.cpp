@@ -25,7 +25,7 @@
 
 		this->setPosition(playerPosX+distX,playerPosY+distY);
 
-		this->updateSprite(0,1);
+		this->changeSprite(0,1);
 		this->setIsLoaded(true);
 		this->setIsDeployed(true);
 	}
@@ -48,5 +48,13 @@
 			freq=0.5;
 		}
 		interactable::animation(0,0,startY,endY,false,freq);
+	}
+
+	bool trap::isActivated() {
+		return activated;
+	}
+
+	void trap::setActivated(bool activated) {
+		this->activated = activated;
 	}
 

@@ -28,6 +28,19 @@
 		return isOpen;
 	}
 
+	void chest::setIsOpen(bool isOpen){
+		this->isOpen=isOpen;
+		updateSprite();
+	}
+
+	void chest::updateSprite(){
+		if(isOpen)
+			changeSprite(0,1);
+		else
+			changeSprite(0,0);
+
+	}
+
 	Item * chest::getItem(){
 		if(isOpen){
 			Item * temp=i;
@@ -49,7 +62,7 @@
 			i->setIsLoaded(true);
 		}
 		if(spriteX!=0)
-			this->updateSprite(0,1);
+			updateSprite();
 	}
 
 

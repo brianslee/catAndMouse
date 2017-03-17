@@ -26,6 +26,10 @@ public:
 	
 	bool getIsOpen(); //return if the chest is open
 
+	void setIsOpen(bool isOpen); // set the chest is open or not
+
+	void updateSprite(); // update the sprite according to chest state
+
 	Item * getItem(); //return the item in the chest
 
 	void setItem(Item * i); //set the item "inside" the chest

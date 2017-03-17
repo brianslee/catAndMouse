@@ -39,7 +39,7 @@ bool Inventory::addItem(std::string item){
 
 
 //remove the item from inventory, update the inventory sprite
-void Inventory::deleteItem(std::string item)
+void Inventory::deleteItem()
 {
 
         hasItem = false;

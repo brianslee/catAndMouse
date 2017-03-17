@@ -6,7 +6,7 @@ class Item:
 {
 private:
 	bool used;
-	short occupied; //0= on map, 1= marine, 2=aliean
+	bool occupied;
 public:
 	//Constructor
 	explicit Item(std::string itemImg, std::string message);
@@ -17,9 +17,9 @@ public:
 
 	explicit Item(std::string itemImg, std::string message,std::string itemType,float scale);
 
-	short getOccupied();
+	bool getOccupied();
 
-	void setOccupied(short occupied);
+	void setOccupied(bool occupied);
 
 	bool isUsed() ;
 

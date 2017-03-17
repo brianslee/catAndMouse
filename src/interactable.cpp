@@ -54,7 +54,7 @@ interactable::~interactable(){
 		renderWindow.draw(sprite);
 }
 
- void interactable::updateSprite(int gridX,int gridY){
+ void interactable::changeSprite(int gridX,int gridY){
 	curGridX=gridX;
 	curGridY=gridY;
 	rect.left=0;
@@ -94,7 +94,7 @@ interactable::~interactable(){
 			 }else
 				 curGridY+=increment;
 		 }
-		 updateSprite(curGridX,curGridY);
+		 changeSprite(curGridX,curGridY);
 		 clock.restart();
 	 }
  }
@@ -113,6 +113,10 @@ interactable::~interactable(){
 			sprite.getPosition().y+this->spriteY*scaleFactor/2);
 	return vect;
 }
+
+ sf::Vector2f interactable::getSpritePos(){
+ 	return sprite.getPosition();
+ }
 
  void interactable::inspect(){
 	if(isLoaded)

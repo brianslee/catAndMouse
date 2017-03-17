@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 
+#include "InteractableManager.h"
 
 class Network {
 
@@ -15,15 +16,17 @@ public:
 	//Show if main character is marine
 	bool isMarine(){return marine;}
 
+
 	//Send all data
-	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot,
+			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot,
+			InteractableManager* im, bool& shouldSend,bool& playerLoaded,int& playerHP);
 	
 	//receive all data
-	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
+	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot,
+			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot,
+			InteractableManager* im,bool& player2Loaded,int& player2HP);
 
-	void sendIATypeChanged(short iaTypeChanged);
-
-	void receiveIATypeChanged(short iaTypeChanged);
 
 
 private:
@@ -31,7 +34,6 @@ private:
 	sf::UdpSocket socket;
 
 	sf::IpAddress remoteIP; 
-
 	
     //sf::Packet packet;
 	unsigned short remotePort;

@@ -26,11 +26,14 @@ public:
 	virtual void load(std::string filename); // load the image
 	virtual void setRect(int left,int top,int width,int height);
 	virtual void draw(sf::RenderWindow & renderWindow); // draw the sprite to the window
-	virtual void updateSprite(int gridX,int gridY);
+	virtual void changeSprite(int gridX,int gridY); // Change the sprite of the interactable
+
+	// Animation of the Interactable
 	virtual void animation(int startGridX,int endGridX,int startGridY, int endGridY,bool rowFirst,float freq);
 	virtual void setPosition(float x, float y); //set position of the interactable args: float
 	virtual void setPosition(sf::Vector2f pos); //set position of the interactable args: sf::Vector2f
 	virtual sf::Vector2f getPos(); //return the position of the interactable
+	virtual sf::Vector2f getSpritePos();// return the pos of the sprite
 	virtual void inspect(); // inspect the interactable, which will gives a message
 	virtual void setMessage(std::string m); //set the message
 	virtual sf::Sprite& getSprite(); //return the sprite of the interactable

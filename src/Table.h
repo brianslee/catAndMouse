@@ -10,6 +10,12 @@ public:
 	explicit Table(int visibility);
 	explicit Table(std::string img, std::string message, float scale, int visibility);
 
+	// update the sprite according to the state;
+	void updateSprite();
+
+	// Overriden method from hidingPlace
+	void animation(){updateSprite();}
+
 	//To hide under table
 	void hide(Character* a);
 

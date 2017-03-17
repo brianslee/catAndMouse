@@ -10,12 +10,10 @@
 #include "chest.h"
 #include "locker.h"
 #include "Table.h"
-#include "network.h"
 
 class InteractableManager {
 private:
 	std::vector<interactable *> gameInteractable;
-	std::vector<chest *> gameChests;
 	std::vector<hidingPlace *> gameHidingPlaces;
 	std::vector<trap *> gameTraps;
 
@@ -35,24 +33,10 @@ public:
 	void startAnimation();
 
 	// Detect the distance between all the traps and the character to determine should the traps activate.
-	void trapsDetection(Character* a,float currentTime);
+	bool trapsDetection(Character* a,float currentTime);
 
-	// Update the traps list through network
-	void notifyTrapsDeployed(Network* network);
-
-	// Update the hiding place list through network
-	void notifyHidingPlacesActions(Network* network);
-
-	// Update the chest list through network
-	void notifyChestsOpen(Network* network);
-
-	void receiveNotificaton(Network* network);
 	// Return the vector: gameInteractable
 	std::vector<interactable *> getIAList();
-
-//	// Return the vector:
-//	std::vector<trap *> getTrapsList();
-
 
 };
 

@@ -27,7 +27,7 @@ angle, player position, projectile position, item position
 #include "character.h"
 #include "entity.h"
 #include "helper.h"
-//#include "network.h"
+#include "network.h"
 #include "Audio.h"
 #include "Timer.h"
 #include "InteractableManager.h"
@@ -70,6 +70,8 @@ int main()
     float sbRot;
     sf::Vector2f spPos, sbPos,rectPos;
     int spRot, sbDir;
+    bool playerLoaded;
+    int playerHP;
 
     //Data to receive
     //Player: rpPos, rpRot
@@ -77,8 +79,8 @@ int main()
     float rbRot;
     sf::Vector2f rpPos, rbPos;
     int rpRot, rbDir;
-    short interactableTypeChanged;//0=nothing,1=interactable,2=chest,3=trap,4=hidingPlace
-
+    bool player2Loaded;
+    int player2HP;
     
     //Starts up network, prompts user for IP address and player choice.
     Network network;  
@@ -137,20 +139,22 @@ int main()
     bigMap maze = bigMap(30);
 
     //Interactable
-    InteractableManager manager=InteractableManager();
+    bool reacted=false;
+    bool trapActivated=false;
+    InteractableManager* manager=new InteractableManager();
 
-    Item * rifle=new Item("Spritesheets/rifle1.png","Rifle",2.f); manager.add(rifle);
+    Item * rifle=new Item("Spritesheets/rifle1.png","Rifle",2.f); manager->add(rifle);
 
-    damageTrap * dt1=new damageTrap(20); manager.add(dt1);
-    damageTrap * dt2=new damageTrap(20); manager.add(dt2);
-    stickyTrap * st1=new stickyTrap(3); manager.add(st1);
+    damageTrap * dt1=new damageTrap(20); manager->add(dt1);
+    damageTrap * dt2=new damageTrap(20); manager->add(dt2);
+    stickyTrap * st1=new stickyTrap(3); manager->add(st1);
 
-    chest * ch=new chest(rifle); manager.add(ch);
-    chest * ch2=new chest(dt2); manager.add(ch2);
-    chest * ch3=new chest(st1); manager.add(ch3);
+    chest * ch=new chest(rifle); manager->add(ch);
+    chest * ch2=new chest(dt2); manager->add(ch2);
+    chest * ch3=new chest(st1); manager->add(ch3);
 
-    locker * lo1=new locker(1); manager.add(lo1);
-    Table * ta1=new Table(2); manager.add(ta1);
+    locker * lo1=new locker(1); manager->add(lo1);
+    Table * ta1=new Table(2); manager->add(ta1);
 
     lo1->setPosition(320,1050);
     ta1->setPosition(1485,590);
@@ -229,7 +233,7 @@ int main()
             oldMove = player.getPos();
 
             //Trap
-            manager.trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
+            trapActivated=manager->trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
             //end Trap
            
             if (event.type == sf::Event::Closed)
@@ -241,10 +245,10 @@ int main()
                 {
 
                     case sf::Keyboard::E:
-                        reactedType=player.react(manager.getIAList());
+                        reactedType=player.react(manager->getIAList());
                         inventory.addItem(reactedType);
-
-			break;
+                        reacted=true;
+                        break;
                     case sf::Keyboard::W:
                         if (player.checkAccess(0, maze))
                             player.walk(0);
@@ -264,12 +268,14 @@ int main()
               //For Debug
                     case sf::Keyboard::Num1:
                         dt1->placeTrap(&player,view,window);
-			inventory.deleteItem(reactedType);
+                        inventory.deleteItem();
+                        reacted=true;
                         //send over the network that the trap is placed
-
                         break;
                     case sf::Keyboard::Num2:
                         st1->placeTrap(&player,view,window);
+                        inventory.deleteItem();
+						reacted=true;
                         break;
                     case sf::Keyboard::LShift:
                         if(player.getSpeed()==player.getOriginalSpeed())
@@ -278,19 +284,25 @@ int main()
                             player.setSpeedToOriginal();
                         break;
                     case sf::Keyboard::H:
-                        std::cout<< "HP: " <<player.getHP()<<std::endl;
+                        std::cout<< "Opponent HP: " <<player2.getHP()<<std::endl;
                         std::cout<<"Time:" <<mainGameTimer.getTimeAsSeconds()<<std::endl;
                         std::cout<<"Angle:"<<player.getAngle(view,window)<<std::endl;
 
                         break;
                     case sf::Keyboard::J:
                         //distance to all the interactable on map
-                        for(int i=0;i<manager.getIAList().size();i++){
-                            int distance=player.distanceToInteractable(manager.getIAList()[i]);
-                            std::cout<<manager.getIAList()[i]->getType()<<" "<<distance<<std::endl;
+                        for(int i=0;i<manager->getIAList().size();i++){
+                            int distance=player.distanceToInteractable(manager->getIAList()[i]);
+                            std::cout<<manager->getIAList()[i]->getType()<<" "<<distance<<std::endl;
                         }
                         std::cout<<"\n"<<std::endl;
                         break;
+                    case sf::Keyboard::O:
+                    	player.setPos(sf::Vector2f(1700,2100)); //teleport to alien location
+                    	break;
+                    case sf::Keyboard::P:
+                    	player.setPos(sf::Vector2f(250,400)); //teleport to marine location
+                    	break;
                  //End for debug
                     default:
                         break;
@@ -324,8 +336,7 @@ int main()
             window.draw(player.getHPBar()->getSprite());
         }//end while event
 
-        manager.startAnimation();
-//      manager.receiveNotificaton(&network);
+        manager->startAnimation();
 
         maze.updateShade(player.getCoor(), player.getSight());
         
@@ -350,22 +361,27 @@ int main()
 
         sf::Vector2f player2Pos;
         int player2Dir;
+		playerLoaded=player.isIsLoaded();
+		playerHP=player.getHP();
 
-        if(packetSendClock.getElapsedTime().asMilliseconds()>20){
-            network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot);
-            packetSendClock.restart();
-        }
+		reacted=reacted||trapActivated;
+		if(packetSendClock.getElapsedTime().asMilliseconds()>20){
+			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot,manager,reacted,playerLoaded,playerHP);
+			reacted=false;
+			packetSendClock.restart();
+		}
 
     //reset attack positions after send
         sbPos = sf::Vector2f(0,0);
         sbDir = 0;
         sbRot = 0.0;
 
-        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot);
-
+        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot,manager,player2Loaded,player2HP);
     //set new received positions
         player2Pos = rpPos;
         player2Dir = rpRot;
+        player2.setIsLoaded(player2Loaded);
+        player2.setHP(player2HP);
 
 
         player2.getSprite().setRotation(player2Dir);
@@ -548,7 +564,7 @@ int main()
 //      for(unsigned int i=0;i<itemsList.size();i++){
 //          itemsList[i]->draw(window);
 //      }
-        manager.drawAll(window);
+        manager->drawAll(window);
         if(player.isIsLoaded())
             window.draw(player.getSprite());
         if(player2.isIsLoaded())

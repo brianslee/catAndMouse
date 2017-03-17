@@ -26,11 +26,11 @@ Item::Item(std::string itemImg, std::string message,std::string itemType,float s
 	this->setRect(0,0,32,32);
 }
 
-short Item::getOccupied() {
+bool Item::getOccupied() {
 	return occupied;
 }
 
-void Item::setOccupied(short occupied) {
+void Item::setOccupied(bool occupied) {
 	this->occupied = occupied;
 }
 

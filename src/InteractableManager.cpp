@@ -14,10 +14,6 @@ void InteractableManager::add(interactable * mInteractable){
 			hidingPlace* hp=dynamic_cast<hidingPlace*>(mInteractable);
 			gameHidingPlaces.push_back(hp);
 		}
-		if(type=="Chest"){
-			chest* ch=dynamic_cast<chest*>(mInteractable);
-			gameChests.push_back(ch);
-		}
 }
 
 
@@ -26,7 +22,6 @@ void InteractableManager::remove(std::string name){
 }
 
 void InteractableManager::drawAll(sf::RenderWindow& window){
-//	std::map<std::string,interactable *>::const_iterator itr=gameInteractable.begin();
 	std::vector<interactable *>::iterator itr=gameInteractable.begin();
 	while(itr !=gameInteractable.end()){
 		(*itr)->draw(window);
@@ -50,11 +45,13 @@ void InteractableManager::startAnimation(){
 	}
 }
 
-void InteractableManager::trapsDetection(Character* a,float currentTime){
+bool InteractableManager::trapsDetection(Character* a,float currentTime){
+	bool result=false;
 	std::vector<trap*>::iterator trap_itr=gameTraps.begin();
 	while(trap_itr!=gameTraps.end()){
 		if((*trap_itr)->getIsLoaded()&&(*trap_itr)->getIsDeployed()){
 			if(a->distanceToInteractable(*trap_itr)<25){
+				result=true;
 				if((*trap_itr)->getType()=="StickyTrap"){
 					stickyTrap* st=dynamic_cast<stickyTrap*>(*trap_itr);
 					st->activate(a,currentTime);
@@ -66,42 +63,12 @@ void InteractableManager::trapsDetection(Character* a,float currentTime){
 		}
 		trap_itr++;
 	}
+	return result;
 }
 
-void InteractableManager::notifyTrapsDeployed(Network* network){
-
-}
-
-// Update the hiding place list through network
-void InteractableManager::notifyHidingPlacesActions(Network* network){
-
-}
-
-// Update the chest list through network
-void InteractableManager::notifyChestsOpen(Network* network){
-
-}
-
-void InteractableManager::receiveNotificaton(Network* network){
-	short typeChanged;
-	network->receiveIATypeChanged(typeChanged);
-}
 
 std::vector<interactable *> InteractableManager::getIAList(){
 	return gameInteractable;
 }
 
-//std::vector<trap *> InteractableManager::getTrapsList(){
-//	return gameTraps;
-//}
-
-
-//std::map<std::string,interactable *> InteractableManager::getIAList(){
-//	return this->gameInteractable;
-//}
-//
-//
-//std::map<trap *> InteractableManager::getTrapsList(){
-//	return this->gameTraps;
-//}
 

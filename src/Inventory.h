@@ -23,7 +23,7 @@ public:
     bool addItem(std::string item);
     
     //Delete an item from the inventory
-    void deleteItem(std::string item);
+    void deleteItem();
 
     //Constructor that sets the inventory sprite
     Inventory(sf::Texture& texture, int h, int w);
