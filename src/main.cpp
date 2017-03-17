@@ -93,7 +93,6 @@ int main()
 	float rbRot;
 	sf::Vector2f rpPos, rbPos;
 	int rpRot, rbDir;
-	short interactableTypeChanged;//0=nothing,1=interactable,2=chest,3=trap,4=hidingPlace
 
 	//Save previous movement
 	sf::Vector2f oldMove;
@@ -146,9 +145,8 @@ int main()
     bigMap maze = bigMap(30);
 
 	//Interactable
-    bool shouldSend=false;
-    bool shouldSend2=false;
-//    short shouldSendOrReceive=0;//0=nothing,1=send,2=receive
+    bool reacted=false;
+    bool trapActivated=false;
     InteractableManager * manager=new InteractableManager();
 
 	Item * rifle=new Item("Spritesheets/rifle1.png","Rifle",2.f); manager->add(rifle);
@@ -221,7 +219,7 @@ int main()
 			oldMove = player.getPos();
 
 			//Trap
-			shouldSend2=manager->trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
+			trapActivated=manager->trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
 			//end Trap
            
             if (event.type == sf::Event::Closed)
@@ -234,7 +232,7 @@ int main()
 
 					case sf::Keyboard::E:
 						reactedType=player.react(manager->getIAList());
-						shouldSend=true;
+						reacted=true;
 						break;
                     case sf::Keyboard::W:
                         if (checkAccess(player, 0, maze))
@@ -255,12 +253,12 @@ int main()
               //For Debug
 					case sf::Keyboard::Num1:
 						dt1->placeTrap(&player,view,window);
-						shouldSend=true;
+						reacted=true;
 						//send over the network that the trap is placed
 						break;
 					case sf::Keyboard::Num2:
 						st1->placeTrap(&player,view,window);
-						shouldSend=true;
+						reacted=true;
 						break;
 					case sf::Keyboard::LShift:
 						if(player.getSpeed()==player.getOriginalSpeed())
@@ -340,10 +338,10 @@ int main()
 		sf::Vector2f player2Pos;
 		int player2Dir;
 
-		shouldSend=shouldSend||shouldSend2;
+		reacted=reacted||trapActivated;
 		if(packetSendClock.getElapsedTime().asMilliseconds()>20){
-			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot,manager,shouldSend);
-			shouldSend=false;
+			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot,manager,reacted);
+			reacted=false;
 			packetSendClock.restart();
 		}
 

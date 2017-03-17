@@ -43,33 +43,15 @@ void Network::setup(){
 
 
 
-void Network::packPacket(sf::Vector2f&  data){
-	packetSend << data.x << data.y;
-}
-void Network::packPacket(int&  data,bool interger){
-	packetSend << data;
-}
-void Network::packPacket(float&  data){
-	packetSend << data;
-}
-
-void Network::clearPacket(){
-	packetSend.clear();
-}
-
-void Network::sendPacket(){
-	socket.send(packetSend,IPAddress,sendPort);
-	clearPacket();
-}
-
 
 
 //Send everything and set to data
 
 void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,
-		int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im,bool shouldChange){
+		int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot,
+		InteractableManager* im,bool update){
 	sf::Packet packet;
-	packet << playerPos.x<< playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot<<shouldChange;
+	packet << playerPos.x<< playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot<<update;
 	std::vector<interactable*> iaList=im->getIAList();
 	for(int i=0;i<iaList.size();i++){
 		bool isLoaded=false,occupied=false,isDeployed=false,activated=false,isOpen=false,isOccupied=false;
@@ -80,11 +62,8 @@ void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,
 			Item* it=dynamic_cast<Item*>(iaList[i]);
 			occupied=it->getOccupied();
 			pos=it->getSpritePos();
-//			std::cout<<it->getPos().x<<std::endl;
 			if(type=="DamageTrap"||type=="StickyTrap"){
 				trap* tp=dynamic_cast<trap*>(iaList[i]);
-//				packet<<tp->getIsDeployed();
-//				packet<<tp->isActivated();
 				isDeployed=tp->getIsDeployed();
 				activated=tp->isActivated();
 			}
@@ -110,20 +89,17 @@ void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,
 void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot,
 		sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im){
 	sf::Packet packet;
-	bool shouldChange;
+	bool update;
 	if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
        packet >> playerPos.x>> playerPos.y >>rectPos.x>>rectPos.y;
-       packet>>projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot>>shouldChange;
-
-
+       packet>>projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot>>update;
 
        bool isLoaded,occupied,isDeployed,activated,isOpen,isOccupied;
        sf::Vector2f pos;
        std::vector<interactable*> iaList=im->getIAList();
        	for(int i=0;i<iaList.size();i++){
        		packet>>isLoaded>>pos.x>>pos.y>>occupied>>isDeployed>>activated>>isOpen>>isOccupied;
-            if(shouldChange){
-
+            if(update){
 				std::cout<<"Received isDeployed: "<<isDeployed<<" Received pos X: "<<pos.x<<" Y: "<<pos.y<<std::endl;
 				std::string type=iaList[i]->getType();
 				iaList[i]->setIsLoaded(isLoaded);
@@ -148,22 +124,6 @@ void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int
        	}
 
 	}
-}
-
-void Network::sendIATypeChanged(short iaTypeChanged){
-	sf::Packet packet;
-	packet<<iaTypeChanged;
-	if(socket.send(packet,IPAddress,sendPort)!=sf::Socket::Done){
-		return ;
-	}
-}
-
-void Network::receiveIATypeChanged(short iaTypeChanged){
-	sf::Packet packet;
-	if(socket.receive(packet,remoteIP,remotePort)==sf::Socket::Done){
-		packet>>iaTypeChanged;
-	}
-//	std::cout<<"Type changed "<<iaTypeChanged<<std::endl;
 }
 
 

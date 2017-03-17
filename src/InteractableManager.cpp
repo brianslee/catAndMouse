@@ -22,7 +22,6 @@ void InteractableManager::remove(std::string name){
 }
 
 void InteractableManager::drawAll(sf::RenderWindow& window){
-//	std::map<std::string,interactable *>::const_iterator itr=gameInteractable.begin();
 	std::vector<interactable *>::iterator itr=gameInteractable.begin();
 	while(itr !=gameInteractable.end()){
 		(*itr)->draw(window);
