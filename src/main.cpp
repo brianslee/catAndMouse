@@ -33,7 +33,7 @@ angle, player position, projectile position, item position
 #include "InteractableManager.h"
 #include "Inventory.h"
 
-    int projectilesMovementSpeed=30;
+    int projectilesMovementSpeed=9;
     
     // Should not be at here
     // Should be in some seperate class
@@ -181,8 +181,8 @@ int main()
 
     }else
     {
-        player.setCharacter(true);
-        player2.setCharacter(false);
+        player.setCharacter(false);
+        player2.setCharacter(true);
         player.setupSprite(alienTexture, 1720, 2140);
         player2.setupSprite(marineTexture, 280, 440);
    
@@ -434,7 +434,7 @@ int main()
         angle = rbRot;
 
         if(attackPos.x != 0){
-            if (elapsed2.asSeconds() >= 0.8)
+            if (elapsed2.asSeconds() >= 0.5)
             {
                 clock2.restart();
                 enemyBullet.rect.setPosition(attackPos.x, attackPos.y);
@@ -460,28 +460,66 @@ int main()
 
 
        
-  // Delete Dead Enemy
-        counter = 0;
-        
+ // Delete Dead Enemy
+    
         if (player.alive == false)
         {
-            std::cout << "You Lose" << std::endl;
-            return 0;
+	    sf::Font font;
+         sf::Vector2f textposition;
+	if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
+	{
+   		 return 0;
+	}
+    textposition.x = player.getPos().x;
+    textposition.y = player.getPos().y;
+       
+     while (!sf::Keyboard::isKeyPressed((sf::Keyboard::Space))){
+	sf::Text text("You Lose",font,100);
+    sf::Text text2("Press Space To Quit",font,30);
+	text.setColor(sf::Color::Red);
+    text.setPosition(textposition.x,textposition.y);
+    text2.setPosition(textposition.x+30,textposition.y + 120);
+	
+	window.clear();
+	window.draw(text);
+window.draw(text2);
+	window.display();
         }
-        
-        counter++;
+        return 0;
+
+    }
+      
         
 
-        counter = 0;
+ 
         
         if (player2.alive == false)
         {
-            std::cout << "You win" <<std::endl;
-            return 0;
+	    sf::Font font;
+        sf::Vector2f textposition;
+	if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
+	{
+   		 return 0;
+	}
+    textposition.x = player.getPos().x;
+    textposition.y = player.getPos().y;
+       
+    while (!sf::Keyboard::isKeyPressed((sf::Keyboard::Space))){
+	sf::Text text("You Win",font,100);
+    sf::Text text2("Press Space To Quit",font,30);
+	text.setColor(sf::Color::Red);
+    text.setPosition(textposition.x,textposition.y);
+    text2.setPosition(textposition.x+30,textposition.y + 120);
+	
+	window.clear();
+	window.draw(text);
+window.draw(text2);
+	window.display();
         }
-        
-        counter2++;
+        return 0;
 
+}
+   
         
         //Draw All In Game Objects
         window.draw(spr);
