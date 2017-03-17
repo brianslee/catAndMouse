@@ -31,9 +31,6 @@ angle, player position, projectile position, item position
 #include "Audio.h"
 #include "Timer.h"
 #include "InteractableManager.h"
-#include "Marine.h"
-#include "Alien.h"
-
 
 
 	int projectilesMovementSpeed=30;
@@ -41,16 +38,12 @@ angle, player position, projectile position, item position
 	// Should not be at here
 	// Should be in some seperate class
 	//REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
-	/*
     int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
-    */
 
-//END REFACTOR
 
 //setup player sprites
 //REFACTOR - PLACED INTO CHARACTER CLASS
-    /*
 void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
     player.getSprite().setTexture(texture);
@@ -60,8 +53,8 @@ void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spr
  	player.rect.move(x,y);
     player.getSprite().move(x,y);
 }
-*/
-//END REFACTOR
+
+
 int main()
 {
     Timer mainGameTimer;
@@ -110,11 +103,7 @@ int main()
     network.setup();
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Cat And Mouse", sf::Style::Titlebar | sf::Style::Close);
-    sf::Texture texture,tx2,hpBarTexture;
-    //REFACTOR - REMOVE BELOW
-    /*
-    sf::Texture marineTexture,alienTexture;
-    */
+    sf::Texture texture,tx2,marineTexture,alienTexture,hpBarTexture;
 
     sf::Image image;
     sf::Sprite spr, spr2;
@@ -138,29 +127,21 @@ int main()
     	return EXIT_FAILURE;
 	}
     
-    //REFACTOR - REMOVE THESE TWO, MADE WHEN MARINE AND ALIENS ARE MADE
-    /*
     if (!alienTexture.loadFromFile("Spritesheets/Alien_1_Movement2-1.png")) {
         return EXIT_FAILURE;
     }
     if (!marineTexture.loadFromFile("Spritesheets/Space_Marine1-2.png")) {
         return EXIT_FAILURE;
     }
-    */
-    //END REFACTOR
     if (!hpBarTexture.loadFromFile("Spritesheets/Health_Bar.png")) {
         return EXIT_FAILURE;
     }
     spr.setTexture(texture);
 
     spr.move(0, 0);
-    //REFACTOR CODE - REMOVE INSTANCES BELOW
-    /*
     std::cout << "Creating Instances...\n";
     Character player = Character(sf::Vector2i(5,5),playerMovementSpeed,3);
     Character player2 = Character(sf::Vector2i(5,9),playerMovementSpeed,3);
-    */
-    //END REFACTOR
 
     bigMap maze = bigMap(30);
 
@@ -196,26 +177,14 @@ int main()
     std::cout << "Initializing...\n";
     maze.load(image);
     if(network.isMarine()){
-    	//REFACTOR CODE - DELETE CODE BELOW, REPLACE WITH INSTANTIATION
-    	/*
 		setupPlayer(player, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
 		setupPlayer(player2, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
-*/
-		Marine player(sf::Vector2i(5,5),playerMovementSpeed,3);
-    	Alien player2(sf::Vector2i(5,9),playerMovementSpeed,3);
-    	//END REFACTOR CODE
 
 		audio.playMarineIntro();
 
     }else{
-    	//REFACTOR CODE - DELETE CODE BELOW, REPLACE WITH INSTANTIATION
-    	/*
     	setupPlayer(player, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
     	setupPlayer(player2, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
-*/
-    	Alien player(sf::Vector2i(5,5),playerMovementSpeed,3);
-    	Marine player2(sf::Vector2i(5,9),playerMovementSpeed,3);
-    	//END REFACTOR CODE
    
 	audio.playAlienIntro();
  }
@@ -329,12 +298,12 @@ int main()
                 window.setView(view);
             }//end if (keypressed)
             if(network.isMarine()){
-            	player2.getSpriteCounter() = player2.updateSprite(window, alienClock, player2.getSpriteLength(), player2.getSpriteWidth(), player2.getSpriteNum(), player2.getSpriteCounter());
-            	player.getSpriteCounter() = player.updateSprite(window, marineClock, player.getSpriteLength(), player.getSpriteWidth(), player.getSpriteNum(), player.getSpriteCounter());
+            	aSpriteCounter = updateSprite(player2.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 			else{
-            	player.getSpriteCounter() = player.updateSprite(window, alienClock, player.getSpriteLength(), player.getSpriteWidth(), player.getSpriteNum(), player.getSpriteCounter());
-            	player2.getSpriteCounter() = player2.updateSprite(window, marineClock, player2.getSpriteLength(), player2.getSpriteWidth(), player2.getSpriteNum(), player2.getSpriteCounter());
+            	aSpriteCounter = updateSprite(player.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+            	mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
 

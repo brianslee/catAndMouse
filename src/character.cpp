@@ -236,7 +236,7 @@ void  Character::setCanRotate(bool canRotate) {
 }
 
 //REFACTORED CODE BEGINS HERE
-
+/*
 void Character::setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
 	getSprite().setTexture(texture);
@@ -250,7 +250,7 @@ void Character::setupSprite(sf::Texture& texture, int x, int y, int spriteLength
 void Character::updateRotation(sf::View& view, sf::RenderWindow& window)
 {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f charPos = getPos();
+    sf::Vector2f charPos = player.getPos();
     sf::Vector2f windowPos = view.getCenter();
     charPos.x += 30;
     charPos.y += 30;
@@ -277,34 +277,34 @@ int Character::updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spr
 
 bool Character::checkAccess(int dir, bigMap& map)
 {
-	if (int(getPos().x) % 80 > 50 && int(getPos().y) % 80 > 50)return true;
+	if (int(this.getPos().x) % 80 > 50 && int(this.getPos().y) % 80 > 50)return true;
     
     // Character is standing on 2 grids
     // horizontal
-    else if ((int(getPos().x) % 80 > 50) && (int(getPos().y) % 80 <= 50)) {
-        if (dir == 0 && (int(getPos().y) % 80 <= 35))
-            return !(map.getWall(getCoor().x, getCoor().y - 1) || map.getWall(getCoor().x + 1, getCoor().y - 1));
-        else if (dir == 1 && (int(getPos().y) % 80 >= 45))
-            return !(map.getWall(getCoor().x, getCoor().y + 1) || map.getWall(getCoor().x + 1, getCoor().y + 1));
+    else if ((int(this.getPos().x) % 80 > 50) && (int(this.getPos().y) % 80 <= 50)) {
+        if (dir == 0 && (int(a.getPos().y) % 80 <= 35))
+            return !(map.getWall(this.getCoor().x, this.getCoor().y - 1) || map.getWall(this.getCoor().x + 1, this.getCoor().y - 1));
+        else if (dir == 1 && (int(this.getPos().y) % 80 >= 45))
+            return !(map.getWall(this.getCoor().x, this.getCoor().y + 1) || map.getWall(this.getCoor().x + 1, this.getCoor().y + 1));
         else return 1;
     }
     // vertical
-    else if ((int(getPos().y) % 80 > 50) && (int(getPos().x) % 80 <= 50)) {
-        if (dir == 2 && (int(getPos().x) % 80 <= 45))
-            return !(map.getWall(getCoor().x - 1, getCoor().y) || map.getWall(getCoor().x - 1, getCoor().y + 1));
-        else if (dir == 3 && (int(getPos().x) % 80 >= 45))
-            return !(map.getWall(getCoor().x + 1, getCoor().y) || map.getWall(getCoor().x + 1, getCoor().y + 1));
+    else if ((int(this.getPos().y) % 80 > 50) && (int(this.getPos().x) % 80 <= 50)) {
+        if (dir == 2 && (int(this.getPos().x) % 80 <= 45))
+            return !(map.getWall(this.getCoor().x - 1, this.getCoor().y) || map.getWall(this.getCoor().x - 1, this.getCoor().y + 1));
+        else if (dir == 3 && (int(this.getPos().x) % 80 >= 45))
+            return !(map.getWall(this.getCoor().x + 1, this.getCoor().y) || map.getWall(this.getCoor().x + 1, this.getCoor().y + 1));
         else return 1;
     }
     
     // Character is standing on 1 grid
-    else if (int(getPos().x) % 80 <= 35 && dir == 2)return !map.getWall(getCoor().x - 1, getCoor().y);
-    else if (int(getPos().x) % 80 >= 45 && dir == 3)return !map.getWall(getCoor().x + 1, getCoor().y);
-    else if (int(getPos().y) % 80 <= 35 && dir == 0)return !map.getWall(getCoor().x, getCoor().y - 1);
-    else if (int(getPos().y) % 80 >= 45 && dir == 1)return !map.getWall(getCoor().x, getCoor().y + 1);
+    else if (int(this.getPos().x) % 80 <= 35 && dir == 2)return !map.getWall(this.getCoor().x - 1, this.getCoor().y);
+    else if (int(this.getPos().x) % 80 >= 45 && dir == 3)return !map.getWall(this.getCoor().x + 1, this.getCoor().y);
+    else if (int(this.getPos().y) % 80 <= 35 && dir == 0)return !map.getWall(this.getCoor().x, this.getCoor().y - 1);
+    else if (int(this.getPos().y) % 80 >= 45 && dir == 1)return !map.getWall(this.getCoor().x, this.getCoor().y + 1);
     
     return 1;
 }
-
+*/
 
 
