@@ -18,13 +18,25 @@
 #include <iostream>
 class Inventory{
 public:
-    bool addItem(std::string item); // add a item
-    void deleteItem(std::string item); //delete a item
+    
+    //Add item to the inventory
+    bool addItem(std::string item);
+    
+    //Delete an item from the inventory
+    void deleteItem(std::string item);
+
+    //Constructor that sets the inventory sprite
     Inventory(sf::Texture& texture, int h, int w);
+    
+    //Changes the state of the sprite  
     void updateInventorySprite();
+    
+    //Change the position of the inventory
     void setPos(float x, float y);
+    
+    //Returns the sprite of the inventory
     sf::Sprite& getSprite() {return spriteSheet;}
-   // bool isFull() {return hasItem;}   
+    
 private:
    // std::string *Items_in_bag[]; // items list
     bool hasItem;
