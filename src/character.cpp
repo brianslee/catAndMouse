@@ -24,7 +24,6 @@ Character::Character(sf::Vector2i initPos, int v, int s)
 	isLoaded=true;
 	canRotate=true;
 	canAttack=true;
-    
 }
 
 void Character::update()
