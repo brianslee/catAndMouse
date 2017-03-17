@@ -44,23 +44,24 @@ For testing proposes, we recommend running the game two consoles to represent tw
 
 Basic controls:
 
-W = north
-S = south
-A = west
-D = east
+W = up
+S = down
+A = left
+D = right
 Mouse = 360 directional view
-Space bar = shooting
-E = Interact with objects in game. 
+Left Mouse Button = shooting
+Right Mouse Button = deploy item in inventory
+E = Interact with objects in game.
 
+Debug controls:
+1 = Deploy explosive mine
+2 = Deploy grav mine
+Shift: toggle running - Note, may cause character to run through walls
+O: teleport to Alien spawn position
+P: teleport to Marine spawn position
+H: gets HP of opposing player, time, player angle
+J: distance of the interactable objects to the player
 
 BUGS:
-
-No Marine character sprite. No chest sprite.
-
-Cannot select marine. All selections ends up being Alien.  
-
-Attacking direction, only 4 direction attack, not following direction key.
-
-If connected both players can pick up items that was previously picked up.
-
-Fog of War, can see other players through the Fog of War
+Bullets still pass through walls.
+Hitbox is very small, must shoot the center of your opponent to damage them
