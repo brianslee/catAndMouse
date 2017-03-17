@@ -20,22 +20,20 @@ angle, player position, projectile position, item position
 
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
-#include "character.h"
-#include "chest.h"
-#include "damageTrap.h"
 #include "entity.h"
 #include "helper.h"
-#include "network.h"
-#include "locker.h"
-#include "Table.h"
+//#include "network.h"
 #include "Audio.h"
 #include "Timer.h"
+#include "InteractableManager.h"
 #include "Marine.h"
 #include "Alien.h"
+
 
 
 	int projectilesMovementSpeed=30;
@@ -102,6 +100,7 @@ int main()
 	float rbRot;
 	sf::Vector2f rpPos, rbPos;
 	int rpRot, rbDir;
+	short interactableTypeChanged;//0=nothing,1=interactable,2=chest,3=trap,4=hidingPlace
 
 	//Save previous movement
 	sf::Vector2f oldMove;
@@ -164,38 +163,27 @@ int main()
     bigMap maze = bigMap(30);
 
 	//Interactable
-	Item item_test=Item("img/circle.png","Testing");
-	Item rifle=Item("Spritesheets/rifle1.png","Rifle",2.f);
-	chest ch=chest(&rifle);
-	chest ch2=chest();
-	chest ch3=chest(&item_test);
+    InteractableManager manager=InteractableManager();
 
-	damageTrap dt1=damageTrap(20);
-	damageTrap dt2=damageTrap(20);
-	ch2.setItem(&dt2);
+	Item * rifle=new Item("Spritesheets/rifle1.png","Rifle",2.f); manager.add(rifle);
 
-	locker lo1=locker(1);
-	Table ta1=Table(2);
+	damageTrap * dt1=new damageTrap(20); manager.add(dt1);
+	damageTrap * dt2=new damageTrap(20); manager.add(dt2);
+	stickyTrap * st1=new stickyTrap(3); manager.add(st1);
 
-	std::vector<interactable*> itemsList;
+	chest * ch=new chest(rifle); manager.add(ch);
+	chest * ch2=new chest(dt2); manager.add(ch2);
+	chest * ch3=new chest(st1); manager.add(ch3);
 
-	itemsList.push_back(&lo1);
-	itemsList.push_back(&ta1);
-	itemsList.push_back(&ch);
-	itemsList.push_back(&ch2);
-	itemsList.push_back(&ch3);
-	itemsList.push_back(&item_test);
-	itemsList.push_back(&rifle);
+	locker * lo1=new locker(1); manager.add(lo1);
+	Table * ta1=new Table(2); manager.add(ta1);
 
-	itemsList.push_back(&dt1);
-	itemsList.push_back(&dt2);
+	lo1->setPosition(320,1050);
+	ta1->setPosition(1485,590);
+	ch->setPosition(1000,1000);
+	ch2->setPosition(300,200);
+	ch3->setPosition(400,2000);
 
-	lo1.setPosition(320,1050);
-	ta1.setPosition(1485,590);
-//	ta1.setPosition(1717,1985);
-	ch.setPosition(1000,1000);
-	ch2.setPosition(300,200);
-	ch3.setPosition(400,2000);
 	//Item ends
     
    
@@ -251,45 +239,33 @@ int main()
 
 	//sf::Vector2f playerPos = player.getPos();
 	sf::Event event;
-		
+
         while (window.pollEvent(event))
         {
 
 			if(oldMove != player.getPos())
 			{
 				if(network.isMarine())
-						audio.playMarineWalk();
+					audio.playMarineWalk();
 				else
-						audio.playAlienWalk();
+					audio.playAlienWalk();
 			}
 			oldMove = player.getPos();
 
 			//Trap
-			if(dt1.getIsLoaded()&&dt1.getIsDeployed()){
-				if(player.distanceToInteractable(&dt1)<25){
-					dt1.activate(&player);
-				}
-			}
+			manager.trapsDetection(&player,mainGameTimer.getTimeAsSeconds());
+			//end Trap
            
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+
             if (event.type == sf::Event::KeyPressed) {
+            	std::string reactedType;
                 switch (event.key.code)
                 {
-					case sf::Keyboard::Num1:
-						dt1.placeTrap(&player,view,window);
-						//send over the network that the trap is placed	
-	
-						break;
+
 					case sf::Keyboard::E:
-						player.react(itemsList);
-						break;
-					case sf::Keyboard::LShift:
-						if(player.getSpeed()==player.getOriginalSpeed())
-							player.setSpeed(15);
-						else
-							player.setSpeedToOriginal();
+						reactedType=player.react(manager.getIAList());
 						break;
                     case sf::Keyboard::W:
                         if (checkAccess(player, 0, maze))
@@ -308,24 +284,33 @@ int main()
                             player.walk(3);
                         break;
               //For Debug
+					case sf::Keyboard::Num1:
+						dt1->placeTrap(&player,view,window);
+						//send over the network that the trap is placed
+
+						break;
+					case sf::Keyboard::Num2:
+						st1->placeTrap(&player,view,window);
+						break;
+					case sf::Keyboard::LShift:
+						if(player.getSpeed()==player.getOriginalSpeed())
+							player.setSpeed(15);
+						else
+							player.setSpeedToOriginal();
+						break;
                     case sf::Keyboard::H:
 						std::cout<< "HP: " <<player.getHP()<<std::endl;
 						std::cout<<"Time:" <<mainGameTimer.getTimeAsSeconds()<<std::endl;
 						std::cout<<"Angle:"<<player.getAngle(view,window)<<std::endl;
+
 						break;
                     case sf::Keyboard::J:
                     	//distance to all the interactable on map
-                    	for(int i=0;i<itemsList.size();i++){
-                    		int distance=player.distanceToInteractable(itemsList[i]);
-                    		std::cout<<itemsList[i]->getType()<<" "<<distance<<std::endl;
+                    	for(int i=0;i<manager.getIAList().size();i++){
+                    		int distance=player.distanceToInteractable(manager.getIAList()[i]);
+                    		std::cout<<manager.getIAList()[i]->getType()<<" "<<distance<<std::endl;
                     	}
                     	std::cout<<"\n"<<std::endl;
-                    	break;
-                    case sf::Keyboard::P:
-                    	//check if the interactable is loaded
-                    	for(int i=0; i<itemsList.size();i++){
-                    		std::cout<<itemsList[i]->getType()<<" "<<itemsList[i]->getIsLoaded()<<std::endl;
-                    	}
                     	break;
                  //End for debug
                     default:
@@ -345,16 +330,20 @@ int main()
             	player2.getSpriteCounter() = player2.updateSprite(window, marineClock, player2.getSpriteLength(), player2.getSpriteWidth(), player2.getSpriteNum(), player2.getSpriteCounter());
             }
 
-            updateRotation(player, view, window);
+
+
+			updateRotation(player, view, window);
+
             
 			window.draw(player.getHPBar()->getSprite());
-        }
-        
+        }//end while event
+
+		manager.startAnimation();
+//		manager.receiveNotificaton(&network);
+
         maze.updateShade(player.getCoor(), player.getSight());
         
         window.clear();
-
-
 
 
 	//getting player position and rotation
@@ -404,7 +393,7 @@ int main()
 			oldMovement = player2Pos;
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&player.isCanAttack())
 		{
 			if (elapsed1.asSeconds() >= 0.5)
 			{
@@ -413,7 +402,7 @@ int main()
                 //only do projectile attack if is Marine
 			  myBullet.rect.setPosition(player.getPos().x,player.getPos().y);
 			  myBullet.direction = player.direction;
-			  bulletAngle = myBullet.getPlayerAngle(player,view,window);
+			  bulletAngle = myBullet.getPlayerAngle(&player,view,window);
 			  myBullets.push_back(myBullet);
 
 			}
@@ -422,12 +411,11 @@ int main()
 			  sbDir = myBullet.direction;
 			  sbRot = bulletAngle;
 
-
 				if(network.isMarine())
 					audio.playMarineAttack();
 				else
 					audio.playAlienAttack();
-		}
+		}//end if button is pressed
 
 //To delete mybullets if it destroyed
 
@@ -511,9 +499,10 @@ int main()
 		
 		//Draw All In Game Objects
 		window.draw(spr);
-		for(unsigned int i=0;i<itemsList.size();i++){
-			itemsList[i]->draw(window);
-		}
+//		for(unsigned int i=0;i<itemsList.size();i++){
+//			itemsList[i]->draw(window);
+//		}
+		manager.drawAll(window);
 		if(player.isIsLoaded())
 			window.draw(player.getSprite());
 		if(player2.isIsLoaded())
@@ -576,7 +565,7 @@ int main()
         player.update();
         player2.update();
         window.display();
-    }
+    }// End while(window.isOpen)
     
     return 0;
 }

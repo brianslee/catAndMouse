@@ -10,17 +10,19 @@ Table::Table(int visibility)
 Table::Table(std::string img, std::string message,float scale, int visibility)
 :hidingPlace(img,message,"Table",scale,visibility){}
 
-void Table::hide(Character * a){
+void Table::hide(Character* a){
 	if(a->distanceToInteractable(this)<dis){
 		if(!this->getIsOccupied()){
 			this->setIsOccupied(true);
 			a->setSight(this->getVisibility());
+			a->setCanAttack(false);
 			this->updateSprite(0,1);
 			a->setIsLoaded(false);
 			a->setSpeed(0);
 		}else{
 			this->setIsOccupied(false);
 			a->setSight(3);
+			a->setCanAttack(true);
 			this->updateSprite(0,0);
 			a->setIsLoaded(true);
 			a->setSpeedToOriginal();

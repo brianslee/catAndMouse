@@ -19,9 +19,11 @@ public:
 	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 	
 	//receive all data
-
 	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot);
 
+	void sendIATypeChanged(short iaTypeChanged);
+
+	void receiveIATypeChanged(short iaTypeChanged);
 
 
 private:
@@ -40,6 +42,7 @@ private:
 	sf::Vector2f playerPos, projectilePos;
 	float angle;
 	int direction;
+
 
 
 };
