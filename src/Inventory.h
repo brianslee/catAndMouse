@@ -34,11 +34,14 @@ public:
     //Change the position of the inventory
     void setPos(float x, float y);
     
+    std::string getType() {return type;}
+
     //Returns the sprite of the inventory
     sf::Sprite& getSprite() {return spriteSheet;}
     
 private:
    // std::string *Items_in_bag[]; // items list
+    std::string type;
     bool hasItem;
     int height;
     int width;

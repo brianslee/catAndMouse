@@ -141,7 +141,8 @@ int Character::getHP(){
 
 void Character::setHP(int hp){
 	this->hp.setHP(hp);
-	if(hp<=0)this->alive=false;
+	if(hp<=0)
+		this->alive=false;
 }
 
 void Character::setHPBar(HealthBar hp){
@@ -189,7 +190,7 @@ std::string Character::react(std::vector<interactable*> itemsList){
 				trap* dt=dynamic_cast<trap*>(itemsList[i]);
 				if(!dt->getIsDeployed()){
 					itemsList[i]->setIsLoaded(false);
-					reactedType="Trap";
+					reactedType=type;
 					break;
 				}
 			}//end if damage trap

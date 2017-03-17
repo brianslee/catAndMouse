@@ -86,6 +86,8 @@ int main()
     Network network;  
     network.setup();
     
+//    bool connected=false;
+
     //Save previous movement
     sf::Vector2f oldMove;
 
@@ -308,6 +310,18 @@ int main()
                         break;
                 }//end switch
 
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Right)&&player.isCanAttack()){
+					if(inventory.getType()=="DamageTrap"){
+						dt1->placeTrap(&player,view,window);
+						inventory.deleteItem();
+						reacted=true;
+					}else if(inventory.getType()=="StickyTrap"){
+						st1->placeTrap(&player,view,window);
+						inventory.deleteItem();
+						reacted=true;
+					}
+				}
+
 
 
  player.getHPBar()->setPos(getCenter(player.getPos(), image.getSize()).x-400 ,getCenter(player.getPos(), image.getSize()).y+200);
@@ -395,6 +409,8 @@ int main()
             oldMovement = player2Pos;
         }
 
+
+
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&player.isCanAttack())
         {
             if (elapsed1.asSeconds() >= 0.5)
@@ -478,7 +494,7 @@ int main()
        
  // Delete Dead Enemy
     
-    if (player.alive == false){
+    if (!player.alive){
 	    sf::Font font;
 		if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
 		{
@@ -521,7 +537,7 @@ int main()
 
  
         
-        if (player2.alive == false)
+        if (!player2.alive&&player2.getHP()==0)
         {
 		    sf::Font font;
 			if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
@@ -586,8 +602,12 @@ int main()
                window.draw(myBullets[counter].rect);
 
         //check if bullet hit enemy
+             sf::Vector2f bulletPosition= myBullets[counter].rect.getPosition();
+             sf::Vector2f spriteBounds(20,20);
+             sf::FloatRect bulletRect(bulletPosition,spriteBounds);
 
-            if (myBullets[counter].rect.getGlobalBounds().intersects(player2.rect.getGlobalBounds()))
+//            if (myBullets[counter].rect.getGlobalBounds().intersects(player2.rect.getGlobalBounds()))
+             if(bulletRect.intersects(player2.rect.getGlobalBounds()))
              {
                 myBullets[counter].destroy = true;
                 std::cout <<"Player hit" << std::endl;
