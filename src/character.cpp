@@ -142,6 +142,7 @@ int Character::getHP(){
 
 void Character::setHP(int hp){
 	this->hp.setHP(hp);
+	if(hp<=0)this->alive=false;
 }
 
 void Character::setHPBar(HealthBar hp){
