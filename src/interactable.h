@@ -26,7 +26,8 @@ public:
 	virtual void load(std::string filename); // load the image
 	virtual void setRect(int left,int top,int width,int height);
 	virtual void draw(sf::RenderWindow & renderWindow); // draw the sprite to the window
-	virtual void updateSprite(int gridX,int gridY);
+//	virtual void updateSprite();
+	virtual void changeSprite(int gridX,int gridY);
 	virtual void animation(int startGridX,int endGridX,int startGridY, int endGridY,bool rowFirst,float freq);
 	virtual void setPosition(float x, float y); //set position of the interactable args: float
 	virtual void setPosition(sf::Vector2f pos); //set position of the interactable args: sf::Vector2f

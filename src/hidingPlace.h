@@ -18,6 +18,14 @@ public:
 
 	void setIsOccupied(bool io);
 
+	virtual void updateSprite(){}
+
+	virtual bool getDoorOpen(){return false;}
+
+	virtual void setDoorOpen(bool doorOpen){}
+
+	virtual void animation(){}
+
 
 
 

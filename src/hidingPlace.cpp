@@ -15,4 +15,5 @@
 
 	void hidingPlace::setIsOccupied(bool io){
 		this->isOccupied=io;
+		animation();
 	}

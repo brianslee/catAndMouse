@@ -66,22 +66,6 @@ bool InteractableManager::trapsDetection(Character* a,float currentTime){
 	return result;
 }
 
-//void InteractableManager::notifyTrapsDeployed(Network* network){
-//	network->sendIATypeChanged(3);
-//}
-//
-//void InteractableManager::notifyHidingPlacesActions(Network* network){
-//
-//}
-//
-//void InteractableManager::notifyChestsOpen(Network* network){
-//
-//}
-//
-//void InteractableManager::receiveNotificaton(Network* network){
-//	short typeChanged;
-//	network->receiveIATypeChanged(typeChanged);
-//}
 
 std::vector<interactable *> InteractableManager::getIAList(){
 	return gameInteractable;

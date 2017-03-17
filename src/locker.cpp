@@ -8,13 +8,17 @@ locker::locker(int visibility)
 {
 	this->setRect(0,0,648,648);
 	this->getSprite().setScale(scaleFactor,scaleFactor-0.07);
-	this->updateSprite(0,1);
+	updateSprite();
 }
 
 bool locker::getDoorOpen(){
 	return this->doorOpen;
 }
 
+void locker::setDoorOpen(bool doorOpen){
+	this->doorOpen=doorOpen;
+	this->updateSprite();
+}
 
 void locker::open(Character* a){
 	doorOpen=true;
@@ -47,6 +51,19 @@ sf::Vector2f locker::getPos(){
 	sf::Vector2f vect(sprite.getPosition().x+this->spriteX*scaleFactor/2,
 			sprite.getPosition().y+this->spriteY*scaleFactor/1.8);
 	return vect;
+}
+
+void locker::updateSprite(){
+	if(doorOpen){
+		changeSprite(0,6);
+		return;
+	}else{
+		if(isOccupied)
+			changeSprite(0,0);
+		else
+			changeSprite(0,1);
+	}
+
 }
 
 void locker::animation(){

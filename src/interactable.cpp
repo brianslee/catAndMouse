@@ -54,7 +54,7 @@ interactable::~interactable(){
 		renderWindow.draw(sprite);
 }
 
- void interactable::updateSprite(int gridX,int gridY){
+ void interactable::changeSprite(int gridX,int gridY){
 	curGridX=gridX;
 	curGridY=gridY;
 	rect.left=0;
@@ -94,7 +94,7 @@ interactable::~interactable(){
 			 }else
 				 curGridY+=increment;
 		 }
-		 updateSprite(curGridX,curGridY);
+		 changeSprite(curGridX,curGridY);
 		 clock.restart();
 	 }
  }

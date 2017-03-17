@@ -10,6 +10,10 @@ public:
 	explicit Table(int visibility);
 	explicit Table(std::string img, std::string message, float scale, int visibility);
 
+	void updateSprite();
+
+	void animation(){updateSprite();}
+
 	//To hide under table
 	void hide(Character* a);
 

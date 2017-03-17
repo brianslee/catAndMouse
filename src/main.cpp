@@ -86,6 +86,8 @@ int main()
 	float sbRot;
 	sf::Vector2f spPos, sbPos,rectPos;
 	int spRot, sbDir;
+	bool playerLoaded;
+	int playerHP;
 
 	//Data to receive
 	//Player: rpPos, rpRot
@@ -93,6 +95,8 @@ int main()
 	float rbRot;
 	sf::Vector2f rpPos, rbPos;
 	int rpRot, rbDir;
+	bool player2Loaded;
+	int player2HP;
 
 	//Save previous movement
 	sf::Vector2f oldMove;
@@ -267,7 +271,7 @@ int main()
 							player.setSpeedToOriginal();
 						break;
                     case sf::Keyboard::H:
-						std::cout<< "HP: " <<player.getHP()<<std::endl;
+						std::cout<< "Opponent HP: " <<player2.getHP()<<std::endl;
 						std::cout<<"Time:" <<mainGameTimer.getTimeAsSeconds()<<std::endl;
 						std::cout<<"Angle:"<<player.getAngle(view,window)<<std::endl;
 
@@ -337,10 +341,12 @@ int main()
 
 		sf::Vector2f player2Pos;
 		int player2Dir;
+		playerLoaded=player.isIsLoaded();
+		playerHP=player.getHP();
 
 		reacted=reacted||trapActivated;
 		if(packetSendClock.getElapsedTime().asMilliseconds()>20){
-			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot,manager,reacted);
+			network.sendAllData(spPos, rectPos, spRot, sbPos, sbDir, sbRot,manager,reacted,playerLoaded,playerHP);
 			reacted=false;
 			packetSendClock.restart();
 		}
@@ -350,12 +356,13 @@ int main()
         sbDir = 0;
         sbRot = 0.0;
 
-        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot,manager);
+        network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot,manager,player2Loaded,player2HP);
 
 	//set new received positions
         player2Pos = rpPos;
         player2Dir = rpRot;
-
+        player2.setIsLoaded(player2Loaded);
+        player2.setHP(player2HP);
 
 		player2.getSprite().setRotation(player2Dir);
 		if(player2Pos.x != 0){

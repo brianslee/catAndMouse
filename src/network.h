@@ -19,11 +19,13 @@ public:
 
 	//Send all data
 	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot,
-			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im, bool shouldSend);
+			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot,
+			InteractableManager* im, bool& shouldSend,bool& playerLoaded,int& playerHP);
 	
 	//receive all data
 	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot,
-			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im);
+			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot,
+			InteractableManager* im,bool& player2Loaded,int& player2HP);
 
 
 

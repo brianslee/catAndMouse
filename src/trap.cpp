@@ -25,7 +25,7 @@
 
 		this->setPosition(playerPosX+distX,playerPosY+distY);
 
-		this->updateSprite(0,1);
+		this->changeSprite(0,1);
 		this->setIsLoaded(true);
 		this->setIsDeployed(true);
 	}
