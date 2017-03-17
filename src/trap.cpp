@@ -50,3 +50,11 @@
 		interactable::animation(0,0,startY,endY,false,freq);
 	}
 
+	bool trap::isActivated() {
+		return activated;
+	}
+
+	void trap::setActivated(bool activated) {
+		this->activated = activated;
+	}
+

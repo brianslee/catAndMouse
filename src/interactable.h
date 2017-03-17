@@ -30,7 +30,8 @@ public:
 	virtual void animation(int startGridX,int endGridX,int startGridY, int endGridY,bool rowFirst,float freq);
 	virtual void setPosition(float x, float y); //set position of the interactable args: float
 	virtual void setPosition(sf::Vector2f pos); //set position of the interactable args: sf::Vector2f
-	virtual sf::Vector2f getPos(); //return the position of the interactable
+	virtual sf::Vector2f getPos(); //return the position of the interactable for distance calc
+	virtual sf::Vector2f getSpritePos();// return the pos of the sprite
 	virtual void inspect(); // inspect the interactable, which will gives a message
 	virtual void setMessage(std::string m); //set the message
 	virtual sf::Sprite& getSprite(); //return the sprite of the interactable

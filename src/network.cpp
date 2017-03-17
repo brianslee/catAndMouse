@@ -43,27 +43,119 @@ void Network::setup(){
 
 
 
+void Network::packPacket(sf::Vector2f&  data){
+	packetSend << data.x << data.y;
+}
+void Network::packPacket(int&  data,bool interger){
+	packetSend << data;
+}
+void Network::packPacket(float&  data){
+	packetSend << data;
+}
+
+void Network::clearPacket(){
+	packetSend.clear();
+}
+
+void Network::sendPacket(){
+	socket.send(packetSend,IPAddress,sendPort);
+	clearPacket();
+}
+
+
+
 //Send everything and set to data
 
-void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+void Network::sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,
+		int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im,bool shouldChange){
 	sf::Packet packet;
-	packet << playerPos.x << playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot;
+	packet << playerPos.x<< playerPos.y << rectPos.x << rectPos.y << projectilePos.x << projectilePos.y << playerRot << projectileDir << projectileRot<<shouldChange;
+	std::vector<interactable*> iaList=im->getIAList();
+	for(int i=0;i<iaList.size();i++){
+		bool isLoaded=false,occupied=false,isDeployed=false,activated=false,isOpen=false,isOccupied=false;
+		sf::Vector2f pos;
+		std::string type=iaList[i]->getType();
+		isLoaded=iaList[i]->getIsLoaded();
+		if(type=="Item"||type=="DamageTrap"||type=="StickyTrap"){
+			Item* it=dynamic_cast<Item*>(iaList[i]);
+			occupied=it->getOccupied();
+			pos=it->getSpritePos();
+//			std::cout<<it->getPos().x<<std::endl;
+			if(type=="DamageTrap"||type=="StickyTrap"){
+				trap* tp=dynamic_cast<trap*>(iaList[i]);
+//				packet<<tp->getIsDeployed();
+//				packet<<tp->isActivated();
+				isDeployed=tp->getIsDeployed();
+				activated=tp->isActivated();
+			}
+		}
+		if(type=="Table"||type=="Locker"){
+			hidingPlace* hp=dynamic_cast<hidingPlace*>(iaList[i]);
+
+		}
+		if(type=="Chest"){
+
+		}
+		packet<<isLoaded<<pos.x<<pos.y<<occupied<<isDeployed<<activated<<isOpen<<isOccupied;
+		std::cout<<"Sent isDeployed: "<<isDeployed<<" Send posX: "<<pos.x<<" Send posY: "<<pos.y<<std::endl;
+
+	}
+	if(packet.getDataSize()>40)
+		std::cout<<packet.getDataSize()<<std::endl;
 	if(socket.send(packet, IPAddress, sendPort) != sf::Socket::Done){
         return;
 	}
 }
 
-void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot, sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot){
+void Network::receiveAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos, int& playerRot,
+		sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im){
 	sf::Packet packet;
+	bool shouldChange;
 	if(socket.receive(packet, remoteIP, remotePort) == sf::Socket::Done){
-        packet >> playerPos.x >> playerPos.y >>rectPos.x>>rectPos.y>> projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot;
+       packet >> playerPos.x>> playerPos.y >>rectPos.x>>rectPos.y;
+       packet>>projectilePos.x >> projectilePos.y >> playerRot >> projectileDir >> projectileRot>>shouldChange;
+
+
+
+       bool isLoaded,occupied,isDeployed,activated,isOpen,isOccupied;
+       sf::Vector2f pos;
+       std::vector<interactable*> iaList=im->getIAList();
+       	for(int i=0;i<iaList.size();i++){
+       		packet>>isLoaded>>pos.x>>pos.y>>occupied>>isDeployed>>activated>>isOpen>>isOccupied;
+            if(shouldChange){
+
+				std::cout<<"Received isDeployed: "<<isDeployed<<" Received pos X: "<<pos.x<<" Y: "<<pos.y<<std::endl;
+				std::string type=iaList[i]->getType();
+				iaList[i]->setIsLoaded(isLoaded);
+				if(type=="Item"||type=="DamageTrap"||type=="StickyTrap"){
+					Item* it=dynamic_cast<Item*>(iaList[i]);
+					it->setOccupied(occupied);
+					it->setPosition(pos);
+					if(type=="DamageTrap"||type=="StickyTrap"){
+						trap* tp=dynamic_cast<trap*>(iaList[i]);
+						tp->setIsDeployed(isDeployed);
+						tp->setActivated(activated);
+					}
+				}
+				if(type=="Table"||type=="Locker"){
+					hidingPlace* hp=dynamic_cast<hidingPlace*>(iaList[i]);
+
+				}
+				if(type=="Chest"){
+
+				}
+            }//end if should Change
+       	}
+
 	}
 }
 
 void Network::sendIATypeChanged(short iaTypeChanged){
 	sf::Packet packet;
 	packet<<iaTypeChanged;
-//	if(socket.send(packet))
+	if(socket.send(packet,IPAddress,sendPort)!=sf::Socket::Done){
+		return ;
+	}
 }
 
 void Network::receiveIATypeChanged(short iaTypeChanged){
@@ -71,7 +163,7 @@ void Network::receiveIATypeChanged(short iaTypeChanged){
 	if(socket.receive(packet,remoteIP,remotePort)==sf::Socket::Done){
 		packet>>iaTypeChanged;
 	}
-	std::cout<<"Type changed "<<iaTypeChanged<<std::endl;
+//	std::cout<<"Type changed "<<iaTypeChanged<<std::endl;
 }
 
 

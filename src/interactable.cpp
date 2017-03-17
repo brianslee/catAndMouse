@@ -50,7 +50,7 @@ interactable::~interactable(){
  }
 
  void interactable::draw(sf::RenderWindow & renderWindow){
-	if(isLoaded)
+	if(isLoaded&&this->getPos().x!=32&&this->getPos().y!=32)
 		renderWindow.draw(sprite);
 }
 
@@ -112,6 +112,10 @@ interactable::~interactable(){
 	sf::Vector2f vect(sprite.getPosition().x+this->spriteX*scaleFactor/2,
 			sprite.getPosition().y+this->spriteY*scaleFactor/2);
 	return vect;
+}
+
+sf::Vector2f interactable::getSpritePos(){
+	return sprite.getPosition();
 }
 
  void interactable::inspect(){

@@ -36,6 +36,10 @@ public:
 	void placeTrap(Character * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
 
 	void animation();
+
+	bool isActivated();
+
+	void setActivated(bool activated) ;
 };
 
 
