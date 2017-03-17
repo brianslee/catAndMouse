@@ -2,23 +2,18 @@
 #define CHARACTER_H
 
 #include <SFML/Graphics.hpp>
-#include <cmath>
-#include <iostream>
-#include <stdio.h>
 #include <utility>
 #include <vector>
 #include <typeinfo>
 
 
-#include "alienattack.h"
-#include "bigMap.h"
 #include "chest.h"
 #include "entity.h"
 #include "interactable.h"
-#include "HealthBar.h"
 
 
-class Character:public entity{
+
+class Human:public entity{
  private:
  	sf::Vector2i position;
  	sf::Sprite sprite_original;
@@ -27,8 +22,7 @@ class Character:public entity{
  	int sight;
  	const static int dis=70;
  	bool isLoaded;
-	HealthBar hp;
-	bool canRotate,canAttack;
+
        
  public:
     int movementSpeed = 4 ;
@@ -36,27 +30,15 @@ class Character:public entity{
     int counterWalking = 0;
     int direction = 0;
     int counter = 0;
+    int hp;
     bool alive = true;
-
-    //BEGIN REFACTOR
     
-    void setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth);
-
-    void updateRotation(sf::View& view, sf::RenderWindow& window);
-
-    bool checkAccess(int dir, bigMap& map);
-
-    int updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
-    
-    virtual bool isMarine() {return false;}
-    virtual bool isAlien() {return false;}
-    //END REFACTOR
 
     // update the position of the sprite
     void update();
     //void updateMovement();
         
-    Character(sf::Vector2i initPos, int v, int s);
+    Human(sf::Vector2i initPos, int v, int s);
     
     // get the sprite
     sf::Sprite& getSprite();
@@ -64,15 +46,9 @@ class Character:public entity{
     // get the coordinate of the character
     sf::Vector2i getCoor();
     
-    //get the aiming angle of the character
-    float getAngle(sf::View& view, sf::RenderWindow& window);
-
     // get the speed
     int getSpeed();
     
-    //get the original movement speed
-    int getOriginalSpeed();
-
     // get the sight
     int getSight();
     
@@ -100,14 +76,9 @@ class Character:public entity{
     // set a new position (relative to the map)
 	void setPos(const sf::Vector2f& pos);
 	
-	HealthBar* getHPBar();
-	
 	int getHP();
-	
+
 	void setHP(int hp);
-
-	void setHPBar(HealthBar hpb);
-
 
 	//get the distance between the interactables and the player
     int distanceToInteractable(interactable* item);  	
@@ -116,19 +87,13 @@ class Character:public entity{
 	void inspect(std::vector<interactable*> itemsList); 
 	
 	//React with the interactables that is closest to the player
-	std::string react(std::vector<interactable*> itemsList);
+	void react(std::vector<interactable*> itemsList); 
 
 	bool isIsLoaded();
 
 	void setIsLoaded(bool isLoaded);
 
-	bool isCanAttack();
 
-	void setCanAttack(bool canAttack);
-
-	bool isCanRotate();
-
-	void setCanRotate(bool canRotate);
 };
 #endif
 

@@ -8,34 +8,32 @@
 class trap:
 		public Item
 {
-protected:
+private:
 	bool isDeployed; // if the trap is deployed on the map
-	bool activated;
 public:
 	//C
 	explicit trap(std::string trapImg,std::string message,std::string trapType)
-	:Item(trapImg,message,trapType),isDeployed(false),activated(false){}
+	:Item(trapImg,message,trapType),isDeployed(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType,float scale)
-		:Item(trapImg,message,trapType,scale),isDeployed(false),activated(false){}
+		:Item(trapImg,message,trapType,scale),isDeployed(false){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType,bool depolyed)
-	:Item(trapImg,message,trapType),isDeployed(depolyed),activated(false){}
+	:Item(trapImg,message,trapType),isDeployed(depolyed){}
 
 	explicit trap(std::string trapImg,std::string message,std::string trapType, float scale ,bool depolyed)
-		:Item(trapImg,message,trapType,scale),isDeployed(depolyed),activated(false){}
+		:Item(trapImg,message,trapType,scale),isDeployed(depolyed){}
 		
 	~trap(){}
 
-	virtual void afterActivated();
+	virtual void activate(Human * a); // Make the traps activate, do damage to player, then set it disappear
 
 	bool getIsDeployed(); // return if the trap is deployed to the map
 
 	void setIsDeployed(bool isDeployed); // set the trap to be deployed
 
-	void placeTrap(Character * a,sf::View& view, sf::RenderWindow& window); // deployed the trap on the map
+	void placeTrap(Human a); // deployed the trap on the map
 
-	void animation();
 };
 
 

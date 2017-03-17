@@ -17,14 +17,13 @@ sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
     else if (ty > mapSize.y - 400)ty = double(mapSize.y - 400);
     return sf::Vector2f(tx, ty);
 }
-// REFACTOR - MOVED ALL BELOW TO CHARACTER CLASS
-/*
-bool checkAccess(Character& a, int dir, bigMap& map) {
+
+bool checkAccess(Human& a, int dir, bigMap& map) {
     
-    // Character is standing on 4 grids
+    // human is standing on 4 grids
     if (int(a.getPos().x) % 80 > 50 && int(a.getPos().y) % 80 > 50)return true;
     
-    // Character is standing on 2 grids
+    // human is standing on 2 grids
     // horizontal
     else if ((int(a.getPos().x) % 80 > 50) && (int(a.getPos().y) % 80 <= 50)) {
         if (dir == 0 && (int(a.getPos().y) % 80 <= 35))
@@ -42,7 +41,7 @@ bool checkAccess(Character& a, int dir, bigMap& map) {
         else return 1;
     }
     
-    // Character is standing on 1 grid
+    // human is standing on 1 grid
     else if (int(a.getPos().x) % 80 <= 35 && dir == 2)return !map.getWall(a.getCoor().x - 1, a.getCoor().y);
     else if (int(a.getPos().x) % 80 >= 45 && dir == 3)return !map.getWall(a.getCoor().x + 1, a.getCoor().y);
     else if (int(a.getPos().y) % 80 <= 35 && dir == 0)return !map.getWall(a.getCoor().x, a.getCoor().y - 1);
@@ -51,9 +50,7 @@ bool checkAccess(Character& a, int dir, bigMap& map) {
     return 1;
 }
 
-void updateRotation(Character& player, sf::View& view, sf::RenderWindow& window) {
-	if(!player.isCanRotate())
-		return ;
+void updateRotation(Human& player, sf::View& view, sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f charPos = player.getPos();
     sf::Vector2f windowPos = view.getCenter();
@@ -81,4 +78,4 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
     }
     return spriteCounter;
 }
-*/
+
