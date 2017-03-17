@@ -21,6 +21,7 @@ Alien::Alien(sf::Vector2i initPos, int v, int s)
 	spriteLength = 215;
 	spriteWidth = 215;
 	alienTexture.loadFromFile("Spritesheets/Alien_1_Movement2-1.png");
+	setupSprite(alienTexture, 1720, 2140, spriteLength, spriteWidth);
 }
 
 bool Alien::isMarine()
