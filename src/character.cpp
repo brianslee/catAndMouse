@@ -245,6 +245,7 @@ void Character::setCharacter(bool marine)
         spriteNum = 9;
         spriteLength = 216;
         spriteWidth = 216;
+        isMarine = true;
     }
     else
     {
@@ -252,6 +253,7 @@ void Character::setCharacter(bool marine)
         spriteNum = 4;
         spriteLength = 215;
         spriteWidth = 215;
+        isAlien = true;
     }
 }
 
@@ -353,3 +355,17 @@ int Character::getSpriteWidth()
 {
     return spriteWidth;
 }
+/*
+void Character::upgradeSprite(sf::Texture& texture, int nSpriteCounter, int nSpriteNum, int nSpriteWidth, int nSpriteLength, bool term)
+{
+    spriteCounter = nSpriteCounter;
+    spriteNum = nSpriteNum;
+    spriteWidth = nSpriteWidth;
+    spriteLength = nSpriteLength;
+    bool isTerm = term;
+
+    getSprite().setTexture(texture);
+    getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
+    getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
+    getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
+}*/

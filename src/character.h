@@ -44,6 +44,7 @@ class Character : public entity
     bool alive = true;
     bool isAlien = false;
     bool isMarine = false;
+    bool isTerm = false;
     
     //Public Functions
     //Constructor
@@ -147,5 +148,7 @@ class Character : public entity
     
     //React with the interactables that is closest to the player
     std::string react(std::vector<interactable*> itemsList);
+
+    //void upgradeSprite(sf::Texture& texture, int nSpriteCounter, int nSpriteNum, int nSpriteWidth, int nSpriteLength, bool term);
 };
 #endif
