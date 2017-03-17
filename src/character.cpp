@@ -237,7 +237,25 @@ void  Character::setCanRotate(bool canRotate) {
 
 //REFACTORED CODE BEGINS HERE
 
-void Character::setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
+void Character::setCharacter(bool marine)
+{
+    if(marine)
+    {
+        spriteCounter = 0;
+        spriteNum = 9;
+        spriteLength = 216;
+        spriteWidth = 216;
+    }
+    else
+    {
+        spriteCounter = 0;
+        spriteNum = 4;
+        spriteLength = 215;
+        spriteWidth = 215;
+    }
+}
+
+void Character::setupSprite(sf::Texture& texture, int x, int y)
 {
 	getSprite().setTexture(texture);
     getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
@@ -264,7 +282,7 @@ void Character::updateRotation(sf::View& view, sf::RenderWindow& window)
     getSprite().setRotation(-atan2(charPos.x - windowPos.x - mousePos.x, charPos.y - windowPos.y - mousePos.y)*180.0 / 3.14159);
 }
 
-int Character::updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter) {
+int Character::updateSprite(sf::RenderWindow& window, sf::Clock& clock) {
     if (clock.getElapsedTime().asMilliseconds() > 100.0f) {
         getSprite().setTextureRect(sf::IntRect(0, spriteCounter*spriteWidth, spriteLength, spriteWidth));
         getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
@@ -306,5 +324,32 @@ bool Character::checkAccess(int dir, bigMap& map)
     return 1;
 }
 
+bool Character::getIsMarine()
+{
+    return isMarine;
+}
 
+bool Character::getIsAlien()
+{
+    return isAlien;
+}
 
+int Character::getSpriteCounter()
+{
+    return spriteCounter;
+}
+
+int Character::getSpriteNum()
+{
+    return spriteNum;
+}
+
+int Character::getSpriteLength()
+{
+    return spriteLength;
+}
+
+int Character::getSpriteWidth()
+{
+    return spriteWidth;
+}

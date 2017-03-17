@@ -25,8 +25,6 @@ angle, player position, projectile position, item position
 #include "alienattack.h"
 #include "attack.h"
 #include "character.h"
-#include "Marine.h"
-#include "Alien.h"
 #include "entity.h"
 #include "helper.h"
 //#include "network.h"
@@ -40,8 +38,6 @@ angle, player position, projectile position, item position
     // Should not be at here
     // Should be in some seperate class
     //REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
-    int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
-    int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
 
 int main()
 {
@@ -165,15 +161,21 @@ int main()
 
     std::cout << "Initializing...\n";
     maze.load(image);
-    if(network.isMarine()){
-        player.setupSprite(marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
-        player2.setupSprite(alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
+    if(network.isMarine())
+    {
+        player.setCharacter(true);
+        player2.setCharacter(false);
+        player.setupSprite(marineTexture, 280, 440);
+        player2.setupSprite(alienTexture, 1720, 2140);
 
         audio.playMarineIntro();
 
-    }else{
-        player.setupSprite(alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
-        player2.setupSprite(marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
+    }else
+    {
+        player.setCharacter(true);
+        player2.setCharacter(false);
+        player.setupSprite(alienTexture, 1720, 2140);
+        player2.setupSprite(marineTexture, 280, 440);
    
     audio.playAlienIntro();
  }
@@ -279,12 +281,12 @@ int main()
                 window.setView(view);
             }//end if (keypressed)
             if(network.isMarine()){
-                aSpriteCounter = player2.updateSprite(window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
-                mSpriteCounter = player.updateSprite(window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+                player2.updateSprite(window, alienClock);
+                player.updateSprite(window, marineClock);
             }
             else{
-                aSpriteCounter = player.updateSprite(window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
-                mSpriteCounter = player2.updateSprite(window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+                player.updateSprite(window, alienClock);
+                player2.updateSprite(window, marineClock);
             }
 
 

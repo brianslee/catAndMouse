@@ -8,7 +8,6 @@
 
 #include "helper.h"
 
-
 sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
     double tx = vec.x, ty = vec.y;
     if (400.0 > tx)tx = 400;
