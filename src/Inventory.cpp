@@ -7,3 +7,69 @@
 //
 
 #include "Inventory.h"
+
+
+//constructor
+Inventory::Inventory(sf::Texture& texture, int h, int w){
+
+        //split up the texture into three 
+        height = h;
+        width = w;
+        hasItem = false;
+        spriteSheet.setTexture(texture);
+}
+
+//check if the size of items in the bag, then place item after it. 
+bool Inventory::addItem(std::string item){
+
+        if(hasItem)
+        {
+                return false;
+        }
+        else
+        {
+
+        if(item == "Trap"){
+                hasItem = true;
+                updateInventorySprite();
+                return true;
+                }
+        }
+}
+
+
+//remove the item from inventory, update the inventory sprite
+void Inventory::deleteItem(std::string item)
+{
+
+        hasItem = false;
+        updateInventorySprite();
+}
+
+
+
+//set the sprite of the inventory, as it is reflected in the inventory array
+void Inventory::updateInventorySprite(){
+
+        if(hasItem)
+        {
+
+                //check for bomb type and change to approprite sprite           
+
+                spriteSheet.setTextureRect((sf::IntRect(0, 1200, height, width)));
+
+        }
+        else
+        {
+                //change to empty sprite
+                spriteSheet.setTextureRect((sf::IntRect(0, 0, height, width)));
+
+        }
+
+}
+
+void Inventory::setPos(float x,float y){
+        spriteSheet.setPosition(x,y);
+}
+
+
