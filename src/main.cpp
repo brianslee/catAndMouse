@@ -24,6 +24,9 @@ angle, player position, projectile position, item position
 #include <vector>
 #include "alienattack.h"
 #include "attack.h"
+#include "character.h"
+#include "Marine.h"
+#include "Alien.h"
 #include "entity.h"
 #include "helper.h"
 //#include "network.h"
@@ -39,20 +42,6 @@ angle, player position, projectile position, item position
     //REFACTOR - PLACED INTO ALIEN AND MARINE CLASSES
     int aSpriteCounter = 0, aSpriteNum = 4, aSpriteLength = 215, aSpriteWidth = 215;
     int mSpriteCounter = 0, mSpriteNum = 9, mSpriteLength = 216, mSpriteWidth = 216;
-
-
-//setup player sprites
-//REFACTOR - PLACED INTO CHARACTER CLASS
-void setupPlayer(Character & player, sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
-{
-    player.getSprite().setTexture(texture);
-    player.getSprite().setTextureRect(sf::IntRect(0, 0, spriteLength, spriteWidth));
-    player.getSprite().setScale(78.0 / (double)(spriteLength), 78.0 / (double)(spriteWidth));
-    player.getSprite().setOrigin(sf::Vector2f(spriteLength/2, spriteWidth/2));
-    player.rect.move(x,y);
-    player.getSprite().move(x,y);
-}
-
 
 int main()
 {
@@ -177,14 +166,14 @@ int main()
     std::cout << "Initializing...\n";
     maze.load(image);
     if(network.isMarine()){
-        setupPlayer(player, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
-        setupPlayer(player2, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
+        player.setupSprite(marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
+        player2.setupSprite(alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
 
         audio.playMarineIntro();
 
     }else{
-        setupPlayer(player, alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
-        setupPlayer(player2, marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
+        player.setupSprite(alienTexture, 1720, 2140, aSpriteLength, aSpriteWidth);
+        player2.setupSprite(marineTexture, 280, 440, mSpriteLength, mSpriteWidth);
    
     audio.playAlienIntro();
  }
@@ -236,19 +225,19 @@ int main()
                         reactedType=player.react(manager.getIAList());
                         break;
                     case sf::Keyboard::W:
-                        if (checkAccess(player, 0, maze))
+                        if (player.checkAccess(0, maze))
                             player.walk(0);
                         break;
                     case sf::Keyboard::S:
-                        if (checkAccess(player, 1, maze))
+                        if (player.checkAccess(1, maze))
                             player.walk(1);
                         break;
                     case sf::Keyboard::A:
-                        if (checkAccess(player, 2, maze))
+                        if (player.checkAccess(2, maze))
                             player.walk(2);
                         break;
                     case sf::Keyboard::D:
-                        if (checkAccess(player, 3, maze))
+                        if (player.checkAccess(3, maze))
                             player.walk(3);
                         break;
               //For Debug
@@ -290,17 +279,17 @@ int main()
                 window.setView(view);
             }//end if (keypressed)
             if(network.isMarine()){
-                aSpriteCounter = updateSprite(player2.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
-                mSpriteCounter = updateSprite(player.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+                aSpriteCounter = player2.updateSprite(window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+                mSpriteCounter = player.updateSprite(window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
             else{
-                aSpriteCounter = updateSprite(player.getSprite(), window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
-                mSpriteCounter = updateSprite(player2.getSprite(), window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
+                aSpriteCounter = player.updateSprite(window, alienClock, aSpriteLength, aSpriteWidth, aSpriteNum, aSpriteCounter);
+                mSpriteCounter = player2.updateSprite(window, marineClock, mSpriteLength, mSpriteWidth, mSpriteNum, mSpriteCounter);
             }
 
 
 
-            updateRotation(player, view, window);
+            player.updateRotation(view, window);
 
             
             window.draw(player.getHPBar()->getSprite());

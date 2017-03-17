@@ -236,7 +236,7 @@ void  Character::setCanRotate(bool canRotate) {
 }
 
 //REFACTORED CODE BEGINS HERE
-/*
+
 void Character::setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth)
 {
 	getSprite().setTexture(texture);
@@ -305,6 +305,6 @@ bool Character::checkAccess(int dir, bigMap& map)
     
     return 1;
 }
-*/
+
 
 

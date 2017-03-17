@@ -38,15 +38,18 @@ class Character:public entity{
     bool alive = true;
 
     //BEGIN REFACTOR
-    /*
+    
     void setupSprite(sf::Texture& texture, int x, int y, int spriteLength, int spriteWidth);
 
+    // Rotate the character direction to mouse direction
     void updateRotation(sf::View& view, sf::RenderWindow& window);
 
+    // Check if moving towards dir is legal
     bool checkAccess(int dir, bigMap& map);
 
+    // Update character sprite for animations
     int updateSprite(sf::RenderWindow& window, sf::Clock& clock , int spriteLength, int spriteWidth, int spriteNum,int spriteCounter);
-    */
+    
     virtual bool isMarine() {return false;}
     virtual bool isAlien() {return false;}
 

@@ -7,10 +7,6 @@
 #include <typeinfo>
 
 #include "character.h"
-#include "chest.h"
-#include "entity.h"
-#include "interactable.h"
-#include "HealthBar.h"
 
 class Alien : Character
 {
@@ -32,4 +28,5 @@ private:
 	int spriteLength;
 	int spriteWidth;
 	sf::Texture alienTexture;
+};
 #endif
