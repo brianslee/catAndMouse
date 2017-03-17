@@ -174,8 +174,8 @@ int main()
 
     }else
     {
-        player.setCharacter(true);
-        player2.setCharacter(false);
+        player.setCharacter(false);
+        player2.setCharacter(true);
         player.setupSprite(alienTexture, 1720, 2140);
         player2.setupSprite(marineTexture, 280, 440);
    
