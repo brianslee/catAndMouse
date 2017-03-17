@@ -16,13 +16,6 @@ public:
 	//Show if main character is marine
 	bool isMarine(){return marine;}
 
-	void packPacket(sf::Vector2f&  data);
-	void packPacket(int&  data,bool integer);
-	void packPacket(float&  data);
-
-	void clearPacket();
-
-	void sendPacket();
 
 	//Send all data
 	void sendAllData(sf::Vector2f& playerPos, sf::Vector2f& rectPos,int& playerRot,
@@ -32,9 +25,6 @@ public:
 	void receiveAllData(sf::Vector2f& playerPos,sf::Vector2f& rectPos, int& playerRot,
 			sf::Vector2f& projectilePos, int& projectileDir, float& projectileRot, InteractableManager* im);
 
-	void sendIATypeChanged(short iaTypeChanged);
-
-	void receiveIATypeChanged(short iaTypeChanged);
 
 
 private:
@@ -42,7 +32,6 @@ private:
 	sf::UdpSocket socket;
 
 	sf::IpAddress remoteIP; 
-	sf::Packet packetSend;
 	
     //sf::Packet packet;
 	unsigned short remotePort;
