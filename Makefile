@@ -1,7 +1,7 @@
 PROJECTNAME=catAndMouse
 SRC=src
 BUILDPATH=build
-CC=mingw32-g++
+CC=g++
 
 
 ifeq ($(OS),Windows_NT)
