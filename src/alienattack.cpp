@@ -13,12 +13,12 @@ projectile2::projectile2()
     rect.setSize(sf::Vector2f(6, 6));
     rect.setFillColor(sf::Color::Red);
     movementSpeed = 9;
-     attackDamage = 10;
-     lifeTime = 50;
-     direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
-     destroy = false;
-     counterLifetime = 0;
-     angle=0;
+    attackDamage = 10;
+    lifeTime = 50;
+    direction = 0; // 1 - up, 2 - down, 3 - left, 4 - right
+    destroy = false;
+    counterLifetime = 0;
+    angle=0;
    
 }
 

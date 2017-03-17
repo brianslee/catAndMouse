@@ -24,6 +24,7 @@ public:
 	int getSpriteNum();
 	int getSpriteLength();
 	int getSpriteWidth();
+	void updateCoor();
 
 private:
 	int spriteCounter;

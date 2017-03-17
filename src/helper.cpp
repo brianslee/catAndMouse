@@ -18,7 +18,7 @@ sf::Vector2f getCenter(sf::Vector2f vec, sf::Vector2u mapSize) {
     return sf::Vector2f(tx, ty);
 }
 // REFACTOR - MOVED ALL BELOW TO CHARACTER CLASS
-/*
+
 bool checkAccess(Character& a, int dir, bigMap& map) {
     
     // Character is standing on 4 grids
@@ -81,4 +81,4 @@ int updateSprite(sf::Sprite& sprite, sf::RenderWindow& window, sf::Clock& clock 
     }
     return spriteCounter;
 }
-*/
+

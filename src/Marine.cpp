@@ -53,3 +53,8 @@ int Marine::getSpriteWidth()
 {
 	return spriteWidth;
 }
+
+void Marine::updateCoor()
+{
+    position = sf::Vector2i(int((getSprite().getPosition().x) / 80.0), int((sprite_original.getPosition().y) / 80.0));
+}
