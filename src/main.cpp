@@ -462,30 +462,42 @@ int main()
        
  // Delete Dead Enemy
     
-        if (player.alive == false)
-        {
+    if (player.alive == false){
 	    sf::Font font;
-         sf::Vector2f textposition;
-	if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
-	{
-   		 return 0;
-	}
-    textposition.x = player.getPos().x;
-    textposition.y = player.getPos().y;
+		if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
+		{
+	   		return 0;
+		}
+       	
        
-     while (!sf::Keyboard::isKeyPressed((sf::Keyboard::Space))){
-	sf::Text text("You Lose",font,100);
-    sf::Text text2("Press Space To Quit",font,30);
-	text.setColor(sf::Color::Red);
-    text.setPosition(textposition.x,textposition.y);
-    text2.setPosition(textposition.x+30,textposition.y + 120);
-	
-	window.clear();
-	window.draw(text);
-window.draw(text2);
-	window.display();
-        }
-        return 0;
+		sf::Text text("You Lose",font,100);
+	    sf::Text text2("Press Space To Quit",font,30);
+		text.setColor(sf::Color::Red);
+		
+	    sf::Vector2f textposition;
+	    textposition.x = getCenter(player.getPos(), image.getSize()).x-text.getLocalBounds().width/2;
+	    textposition.y = getCenter(player.getPos(), image.getSize()).y-text.getLocalBounds().height/2-100;
+        sf::Vector2f text2position;
+	    text2position.x = getCenter(player.getPos(), image.getSize()).x-text2.getLocalBounds().width/2;
+	    text2position.y = getCenter(player.getPos(), image.getSize()).y-text2.getLocalBounds().height/2+20;
+	    text.setPosition(textposition.x, textposition.y);
+	    text2.setPosition(text2position.x, text2position.y);
+	    
+		window.clear();
+		window.draw(text);
+		window.draw(text2);
+		window.display();
+		while(window.isOpen()){
+			sf::Event event;
+			while (window.pollEvent(event)){
+				if (event.type == sf::Event::Closed)
+    	            window.close(); 
+				if (event.type == sf::Event::KeyPressed) {
+					if(event.key.code==sf::Keyboard::Space)
+						window.close();
+				}
+			}
+		}	
 
     }
       
@@ -495,30 +507,40 @@ window.draw(text2);
         
         if (player2.alive == false)
         {
-	    sf::Font font;
-        sf::Vector2f textposition;
-	if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
-	{
-   		 return 0;
-	}
-    textposition.x = player.getPos().x;
-    textposition.y = player.getPos().y;
-       
-    while (!sf::Keyboard::isKeyPressed((sf::Keyboard::Space))){
-	sf::Text text("You Win",font,100);
-    sf::Text text2("Press Space To Quit",font,30);
-	text.setColor(sf::Color::Red);
-    text.setPosition(textposition.x,textposition.y);
-    text2.setPosition(textposition.x+30,textposition.y + 120);
-	
-	window.clear();
-	window.draw(text);
-window.draw(text2);
-	window.display();
-        }
-        return 0;
-
-}
+		    sf::Font font;
+			if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
+			{
+   				return 0;
+			}
+		    sf::Text text("You Win",font,100);
+			sf::Text text2("Press Space To Quit",font,30);
+			text.setColor(sf::Color::Red);
+			
+    	    sf::Vector2f textposition;
+		    textposition.x = getCenter(player.getPos(), image.getSize()).x-text.getLocalBounds().width/2;
+		    textposition.y = getCenter(player.getPos(), image.getSize()).y-text.getLocalBounds().height/2-100;
+    	    sf::Vector2f text2position;
+		    text2position.x = getCenter(player.getPos(), image.getSize()).x-text2.getLocalBounds().width/2;
+		    text2position.y = getCenter(player.getPos(), image.getSize()).y-text2.getLocalBounds().height/2+20;
+		    text.setPosition(textposition.x, textposition.y);
+		    text2.setPosition(text2position.x, text2position.y);
+		    
+			window.clear();	
+			window.draw(text);
+			window.draw(text2);
+			window.display();	
+			while(window.isOpen()){
+				sf::Event event;
+				while (window.pollEvent(event)){
+					if (event.type == sf::Event::Closed)
+    		            window.close(); 
+					if (event.type == sf::Event::KeyPressed) {
+						if(event.key.code==sf::Keyboard::Space)
+							window.close();
+					}
+				}
+			}	
+		}
    
         
         //Draw All In Game Objects
@@ -579,8 +601,6 @@ window.draw(text2);
                 std::cout <<"enemy hit" << std::endl;
                 player.setHP(player.getHP()-enemyBullets[counter3].attackDamage);
 
-                if (player.getHP() <= 0)
-                    player.alive = false;
             }
             window.draw(enemyBullets[counter3].rect);
             counter3++;
