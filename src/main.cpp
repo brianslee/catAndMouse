@@ -79,6 +79,11 @@ int main()
     int rpRot, rbDir;
     short interactableTypeChanged;//0=nothing,1=interactable,2=chest,3=trap,4=hidingPlace
 
+    
+    //Starts up network, prompts user for IP address and player choice.
+    Network network;  
+    network.setup();
+    
     //Save previous movement
     sf::Vector2f oldMove;
 
@@ -91,9 +96,6 @@ int main()
     window.setView(view);
     window.setFramerateLimit(60);
 
-    //Starts up network, prompts user for IP address and player choice.
-    Network network;  
-    network.setup();
 
     //Start up audio, play background music.
     Audio audio;
@@ -424,7 +426,7 @@ int main()
         {
             if (enemyBullets[counter].destroy == true)
             {
-                enemyBullets.erase(myBullets.begin() + counter);
+                enemyBullets.erase(enemyBullets.begin() + counter);
                 break;
             }
             
