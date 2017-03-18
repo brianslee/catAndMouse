@@ -97,10 +97,13 @@ class Character : public entity
     //get current position of the sprite
     sf::Vector2f getPos();
     
+	// check if the character is loaded
     bool isIsLoaded();
     
+	 // check if the character can attack
     bool isCanAttack();
     
+	// check if the character can rotate
     bool isCanRotate();
     
     //set the coordinate of character
@@ -133,6 +136,7 @@ class Character : public entity
     //Game Related Code
     HealthBar* getHPBar();
     
+	//getter/ setter
     int getHP();
     
     void setHP(int hp);
