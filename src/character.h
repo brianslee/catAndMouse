@@ -41,7 +41,7 @@ class Character : public entity
     int counterWalking = 0;
     int direction = 0;
     int counter = 0;
-    bool alive = true;
+    bool alive;
     bool isAlien = false;
     bool isMarine = false;
     bool isTerm = false;

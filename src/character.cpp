@@ -21,6 +21,7 @@ Character::Character(sf::Vector2i initPos, int v, int s)
 	speed = v;
 	originalSpeed=speed;
 	sight = s;
+	alive=true;
 	isLoaded=true;
 	canRotate=true;
 	canAttack=true;

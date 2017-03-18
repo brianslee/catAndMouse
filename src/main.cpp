@@ -86,7 +86,7 @@ int main()
     Network network;  
     network.setup();
     
-//    bool connected=false;
+	bool connected=false;
 
     //Save previous movement
     sf::Vector2f oldMove;
@@ -137,7 +137,7 @@ int main()
     std::cout << "Creating Instances...\n";
     Character player = Character(sf::Vector2i(5,5),playerMovementSpeed,3);
     Character player2 = Character(sf::Vector2i(5,9),playerMovementSpeed,3);
-
+    player2.alive=true;
     bigMap maze = bigMap(30);
 
     //Interactable
@@ -392,10 +392,13 @@ int main()
 
         network.receiveAllData(rpPos,rectPos, rpRot, rbPos, rbDir, rbRot,manager,player2Loaded,player2HP);
     //set new received positions
+		if(player2Pos!=rpPos)
+			connected=true;
         player2Pos = rpPos;
         player2Dir = rpRot;
         player2.setIsLoaded(player2Loaded);
-        player2.setHP(player2HP);
+		if(connected)
+	        player2.setHP(player2HP);
 
 
         player2.getSprite().setRotation(player2Dir);
@@ -533,11 +536,9 @@ int main()
 
     }
       
-        
 
- 
         
-        if (!player2.alive&&player2.getHP()==0)
+    if (!player2.alive&&player2.getHP()==0)
         {
 		    sf::Font font;
 			if (!font.loadFromFile("img/fourHand_TRIAL.ttf"))
